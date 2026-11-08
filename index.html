@@ -512,6 +512,37 @@ html[data-theme="dark"] .anim-info-line .vtag{color:#1B1533;}
 }
 .lesson-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;}
 .lesson-controls .note{font-size:12px;color:var(--ink-2);}
+/* 化学键先导课 */
+.lesson-bridge{
+  margin-top:14px;padding:11px 14px;border-radius:12px;
+  background:var(--brand-soft);border:1px solid var(--line);
+  font-size:13px;line-height:1.7;color:var(--brand-ink);
+}
+.lesson-bridge b{display:block;font-size:13.5px;margin-bottom:2px;}
+.lesson-bridge p{margin:2px 0 8px;}
+.lesson-bridge a{color:var(--brand);font-weight:600;text-decoration:none;}
+.lesson-bridge a:hover{text-decoration:underline;}
+.bi-wrap{width:100%;}
+.bi-tabs{display:flex;gap:6px;justify-content:center;margin-bottom:6px;}
+.bi-svg{display:block;width:100%;max-width:620px;height:auto;margin:0 auto;user-select:none;}
+.bi-axis{stroke:var(--line);stroke-width:1.5;}
+.bi-curve{fill:none;stroke:var(--brand);stroke-width:2.4;}
+.bi-curve.dashed{stroke:var(--bond);stroke-dasharray:5 5;stroke-width:1.8;}
+.bi-guide{stroke:var(--ink-2);stroke-width:1;stroke-dasharray:4 4;}
+.bi-label{font-size:11.5px;fill:var(--ink-2);}
+.bi-label.b{font-weight:600;fill:var(--ink);}
+.bi-atom{fill:#EDEFF3;stroke:#B9BFCC;stroke-width:1.5;}
+.bi-atom-t{font-size:12px;font-weight:700;fill:#22262F;text-anchor:middle;dominant-baseline:central;}
+.bi-controls{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:center;margin-top:6px;font-size:12.5px;color:var(--ink-2);}
+.bi-controls input[type=range]{width:150px;accent-color:var(--brand);vertical-align:middle;}
+.bi-controls b{color:var(--ink);min-width:52px;display:inline-block;text-align:center;}
+.bi-cat{display:inline-flex;align-items:center;gap:6px;cursor:pointer;}
+.bi-status{margin:10px 0 0;padding:8px 12px;border-radius:10px;background:var(--panel-2);font-size:13px;line-height:1.7;color:var(--ink-2);}
+.bi-status.good{background:#EAF7EF;color:var(--ok);}
+.bi-status.warn{background:#FFF3F1;color:var(--danger);}
+html[data-theme="dark"] .bi-status.good{background:#12291F;color:#A7E8C2;}
+html[data-theme="dark"] .bi-status.warn{background:#301A1A;color:#FFB4AC;}
+.bi-off{display:none !important;}
 .modebtn{
   border:1px solid var(--line);background:var(--panel);color:var(--ink-2);
   font-family:inherit;font-size:12px;line-height:1.3;padding:4px 10px;
@@ -1064,7 +1095,7 @@ summary:focus-visible,
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v2.4 · 2026-11-08</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v2.5 · 2026-11-08</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -2808,7 +2839,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v2.4 · 2026-11-08</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v2.5 · 2026-11-08</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -3953,6 +3984,21 @@ function metalArt() {
    ============================================================ */
 const LESSONS = [
   {
+    id: 'bondintro', group: '课内', title: '什么是化学键', scene: 'bondintro',
+    lead: '原子为什么不单独待着？键到底是什么，为什么成键会放能、断键要吸能？',
+    points: [
+      '化学键是相邻原子或离子之间强烈的相互作用；不是分子间作用力。',
+      '原子通过共用电子、转移电子或共享自由电子，趋向稳定结构，体系能量降低。',
+      '成键放出能量，断键吸收能量；键能就是断开 1 mol 这种键需要的能量。',
+      '键决定物质的熔点、硬度、导电性和延展性；化学反应的实质是旧键断裂、新键形成。',
+      '键长、键能、键角是描述键的三个参数；键长越短通常键能越大（拓展）。'
+    ],
+    extra: '<div class="lesson-bridge"><b>和「能量门槛」的关系</b>'
+      + '<p>成键放能、断键吸能；反应之所以有坡，是因为要先拉开旧键。井深是键能，坡高是活化能。</p>'
+      + '<a href="#/why/activation">去看「能量门槛」实验 →</a></div>',
+    pitfall: '化学键不是“胶水”，本质是电性吸引；分子间作用力、氢键不是化学键。'
+  },
+  {
     id: 'overview', group: '课内', title: '三种化学键', scene: 'overview',
     lead: '物质由什么构成，就有什么样的键。点下面的维度，把三种键放在一起比：共同点、不同点、牢靠程度。',
     points: [
@@ -4214,6 +4260,194 @@ const BOND_CMP = [
     tip: '三类键之间没有固定强弱顺序；但都远强于分子间作用力。'
   }
 ];
+
+/* ---------- 化学键先导课：键能与活化能 ---------- */
+function biBondE(d) { return 160 * (Math.pow(1 - Math.exp(-4 * (d - 1)), 2) - 1); }
+function biBondX(d) {
+  return d <= 1 ? 50 + (d - 0.5) / 0.5 * 230 : 280 + (d - 1) / 2 * 240;
+}
+function biBondY(E) { return 280 - (E + 170) * 0.857; }
+function biReactE(t, peak) {
+  return (1 - t) * (1 - t) * (-20) + 2 * (1 - t) * t * peak + t * t * (-100);
+}
+function biReactY(E) { return 280 - (E + 110) * 0.818; }
+function biReactX(t) { return 50 + t * 470; }
+function biReactPeakT(peak) { return (peak + 20) / (2 * peak + 100); }
+
+function bondIntroScene() {
+  let bondPath = '';
+  for (let d = 0.5; d <= 3.0001; d += 0.05) {
+    const x = biBondX(d), y = biBondY(biBondE(d));
+    bondPath += (bondPath ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
+  }
+  function reactPath(peak) {
+    let p = '';
+    for (let i = 0; i <= 50; i++) {
+      const t = i / 50;
+      p += (i ? 'L' : 'M') + biReactX(t).toFixed(1) + ' ' + biReactY(biReactE(t, peak)).toFixed(1);
+    }
+    return p;
+  }
+  const rn = reactPath(160), rc = reactPath(70);
+  const eqX = biBondX(1), eqY = biBondY(-160);
+  const tPeak = biReactPeakT(160);
+  const peakX = biReactX(tPeak);
+  const peakY = biReactY(biReactE(tPeak, 160));
+  return '<div class="bi-wrap">'
+    + '<div class="bi-tabs">'
+    + '<button type="button" class="modebtn on" data-bi-view="bond">看成键</button>'
+    + '<button type="button" class="modebtn" data-bi-view="react">看反应</button></div>'
+    + '<svg class="bi-svg" viewBox="0 0 560 340" role="img" aria-label="键能与活化能">'
+    + '<g data-bi-bond-view>'
+    + '<line class="bi-axis" x1="50" y1="100" x2="50" y2="280"/>'
+    + '<line class="bi-axis" x1="50" y1="280" x2="520" y2="280"/>'
+    + '<path class="bi-curve" d="' + bondPath + '"/>'
+    + '<line class="bi-guide" x1="' + eqX.toFixed(1) + '" y1="' + eqY.toFixed(1) + '" x2="' + eqX.toFixed(1) + '" y2="' + (eqY - 45).toFixed(1) + '"/>'
+    + '<text class="bi-label b" x="' + (eqX + 12).toFixed(1) + '" y="' + (eqY - 22).toFixed(1) + '">井深 = 键能</text>'
+    + '<circle data-bi-bond-dot cx="' + eqX.toFixed(1) + '" cy="' + eqY.toFixed(1) + '" r="5" fill="var(--brand)"/>'
+    + '<text class="bi-label" x="' + (eqX - 14).toFixed(1) + '" y="' + (eqY - 8).toFixed(1) + '" text-anchor="end">键长</text>'
+    + '<circle class="bi-atom" data-bi-atom-l cx="240" cy="58" r="16"/>'
+    + '<text class="bi-atom-t" data-bi-atom-lt x="240" y="58">H</text>'
+    + '<circle class="bi-atom" data-bi-atom-r cx="320" cy="58" r="16"/>'
+    + '<text class="bi-atom-t" data-bi-atom-rt x="320" y="58">H</text>'
+    + '<text class="bi-label" x="50" y="92">能量</text>'
+    + '<text class="bi-label" x="520" y="300" text-anchor="end">原子距离 →</text>'
+    + '</g>'
+    + '<g data-bi-react-view class="bi-off">'
+    + '<line class="bi-axis" x1="50" y1="100" x2="50" y2="280"/>'
+    + '<line class="bi-axis" x1="50" y1="280" x2="520" y2="280"/>'
+    + '<path class="bi-curve" data-bi-rn d="' + rn + '"/>'
+    + '<path class="bi-curve dashed bi-off" data-bi-rc d="' + rc + '"/>'
+    + '<circle data-bi-react-dot cx="50" cy="' + biReactY(-20).toFixed(1) + '" r="5" fill="var(--brand)"/>'
+    + '<text class="bi-label" x="56" y="' + (biReactY(-20) - 8).toFixed(1) + '">反应物</text>'
+    + '<text class="bi-label" x="516" y="' + (biReactY(-100) - 8).toFixed(1) + '" text-anchor="end">产物</text>'
+    + '<line class="bi-guide" data-bi-barrier x1="' + peakX.toFixed(1) + '" y1="' + biReactY(-20).toFixed(1) + '" x2="' + peakX.toFixed(1) + '" y2="' + peakY.toFixed(1) + '"/>'
+    + '<text class="bi-label b" data-bi-barrier-label x="' + peakX.toFixed(1) + '" y="' + (peakY - 12).toFixed(1) + '" text-anchor="middle">坡高 = 活化能</text>'
+    + '<text class="bi-label" x="50" y="92">能量</text>'
+    + '<text class="bi-label" x="520" y="300" text-anchor="end">反应进程 →</text>'
+    + '</g>'
+    + '</svg>'
+    + '<div class="bi-controls">'
+    + '<div data-bi-bond-ctrl><span>原子距离</span> <input type="range" min="50" max="300" value="160" data-bi-dist> <b data-bi-dist-val>1.60</b></div>'
+    + '<div data-bi-react-ctrl class="bi-off"><span>反应进程</span> <input type="range" min="0" max="100" value="0" data-bi-prog> <b data-bi-prog-val>0%</b></div>'
+    + '<label class="bi-cat bi-off" data-bi-cat-wrap><input type="checkbox" data-bi-cat> 加催化剂</label>'
+    + '</div>'
+    + '<p class="bi-status" data-bi-status></p>'
+    + '<p class="bi-label" style="text-align:center;margin:6px 0 0">井深是键能，坡高是活化能；催化剂只削坡，不填井。</p>'
+    + '</div>';
+}
+
+function bindBondIntro(stage) {
+  let view = 'bond';
+  let cat = false;
+  const dist = stage.querySelector('[data-bi-dist]');
+  const prog = stage.querySelector('[data-bi-prog]');
+  const catBox = stage.querySelector('[data-bi-cat]');
+  const bondView = stage.querySelector('[data-bi-bond-view]');
+  const reactView = stage.querySelector('[data-bi-react-view]');
+  const bondCtrl = stage.querySelector('[data-bi-bond-ctrl]');
+  const reactCtrl = stage.querySelector('[data-bi-react-ctrl]');
+  const catWrap = stage.querySelector('[data-bi-cat-wrap]');
+  const bondDot = stage.querySelector('[data-bi-bond-dot]');
+  const atomL = stage.querySelector('[data-bi-atom-l]');
+  const atomR = stage.querySelector('[data-bi-atom-r]');
+  const atomLt = stage.querySelector('[data-bi-atom-lt]');
+  const atomRt = stage.querySelector('[data-bi-atom-rt]');
+  const rn = stage.querySelector('[data-bi-rn]');
+  const rc = stage.querySelector('[data-bi-rc]');
+  const rdot = stage.querySelector('[data-bi-react-dot]');
+  const barrier = stage.querySelector('[data-bi-barrier]');
+  const barrierLabel = stage.querySelector('[data-bi-barrier-label]');
+  const status = stage.querySelector('[data-bi-status]');
+  const distVal = stage.querySelector('[data-bi-dist-val]');
+  const progVal = stage.querySelector('[data-bi-prog-val]');
+  const tabs = Array.prototype.slice.call(stage.querySelectorAll('[data-bi-view]'));
+
+  function updateBond() {
+    const d = Number(dist.value) / 100;
+    const x = biBondX(d), y = biBondY(biBondE(d));
+    bondDot.setAttribute('cx', x.toFixed(1));
+    bondDot.setAttribute('cy', y.toFixed(1));
+    const sep = 36 + (d - 0.5) / 2.5 * 230;
+    const lx = 280 - sep / 2, rx = 280 + sep / 2;
+    atomL.setAttribute('cx', lx.toFixed(1));
+    atomR.setAttribute('cx', rx.toFixed(1));
+    atomLt.setAttribute('x', lx.toFixed(1));
+    atomRt.setAttribute('x', rx.toFixed(1));
+    distVal.textContent = d.toFixed(2);
+    let msg, cls = '';
+    if (d > 2.3) {
+      msg = '太远：两个原子几乎没有作用，能量接近 0。';
+    } else if (d > 1.12) {
+      msg = '靠近：能量下降，成键会放出能量。';
+      cls = 'good';
+    } else if (d >= 0.88) {
+      msg = '键长附近：能量最低，最稳定；井深就是键能。';
+      cls = 'good';
+    } else {
+      msg = '太近：原子核互相排斥，能量急剧升高。';
+      cls = 'warn';
+    }
+    status.className = 'bi-status' + (cls ? ' ' + cls : '');
+    status.textContent = msg;
+  }
+
+  function updateReact() {
+    const t = Number(prog.value) / 100;
+    const peak = cat ? 70 : 160;
+    const tMax = biReactPeakT(peak);
+    const x = biReactX(t), y = biReactY(biReactE(t, peak));
+    rdot.setAttribute('cx', x.toFixed(1));
+    rdot.setAttribute('cy', y.toFixed(1));
+    if (cat) {
+      rn.setAttribute('class', 'bi-curve dashed');
+      rc.setAttribute('class', 'bi-curve');
+    } else {
+      rn.setAttribute('class', 'bi-curve');
+      rc.setAttribute('class', 'bi-curve dashed bi-off');
+    }
+    const px = biReactX(tMax);
+    const py = biReactY(biReactE(tMax, peak));
+    barrier.setAttribute('x1', px.toFixed(1));
+    barrier.setAttribute('x2', px.toFixed(1));
+    barrier.setAttribute('y1', biReactY(-20).toFixed(1));
+    barrier.setAttribute('y2', py.toFixed(1));
+    barrierLabel.setAttribute('x', px.toFixed(1));
+    barrierLabel.setAttribute('y', (py - 12).toFixed(1));
+    progVal.textContent = Math.round(t * 100) + '%';
+    let msg, cls = '';
+    if (t < 0.08) msg = '反应物：旧键还没断，能量较低。';
+    else if (Math.abs(t - tMax) < 0.06) msg = '过渡态：旧键快断、新键将成，这是最费劲的一步。';
+    else if (t < tMax) msg = '爬坡：拉开旧键要吸收能量。';
+    else if (t > 0.92) { msg = '产物：新键形成，能量降低，多余能量放出。'; cls = 'good'; }
+    else msg = '下坡：形成新键，放出能量。';
+    if (cat) msg = '催化剂把坡削低（活化能变小），但反应热不变。' + msg;
+    status.className = 'bi-status' + (cls ? ' ' + cls : '');
+    status.textContent = msg;
+  }
+
+  function update() {
+    if (view === 'bond') updateBond();
+    else updateReact();
+  }
+
+  tabs.forEach(function (b) {
+    b.addEventListener('click', function () {
+      view = b.dataset.biView;
+      tabs.forEach(function (x) { x.classList.toggle('on', x === b); });
+      bondView.classList.toggle('bi-off', view !== 'bond');
+      reactView.classList.toggle('bi-off', view !== 'react');
+      bondCtrl.classList.toggle('bi-off', view !== 'bond');
+      reactCtrl.classList.toggle('bi-off', view !== 'react');
+      catWrap.classList.toggle('bi-off', view !== 'react');
+      update();
+    });
+  });
+  dist.addEventListener('input', updateBond);
+  prog.addEventListener('input', updateReact);
+  catBox.addEventListener('change', function () { cat = catBox.checked; updateReact(); });
+  update();
+}
 
 function overviewScene() {
   const cards = [
@@ -4634,6 +4868,7 @@ function valenceScene() {
 }
 
 const SCENES = {
+  bondintro: { html: bondIntroScene, after: bindBondIntro, note: '拖动滑块，切换「成键 / 反应」两个视角；催化剂只削坡，不填井。' },
   overview: { html: overviewScene, after: bindOverviewCompare, note: '点上面的维度按钮，三张卡会一起换成这个维度的内容。' },
   covalent: { modes: [['H2', 'H₂'], ['O2', 'O₂'], ['N2', 'N₂'], ['HCl', 'HCl']], build: covalentScene },
   ionic: { modes: [['solid', '固体'], ['melt', '熔融']], build: ionicScene },
@@ -4780,6 +5015,9 @@ const WHY_LESSONS = [
       'N₂ 很稳定：三键难断，启动门槛也高。',
       'MnO₂ 让 H₂O₂ 分解更快；催化剂不改变生成物。'
     ],
+    extra: '<div class="lesson-bridge"><b>这一坡从哪来？</b>'
+      + '<p>坡高和旧键强弱、断键难易有关；催化剂只降低坡高（活化能），不改变键能，也不改变反应热。</p>'
+      + '<a href="#/bond/bondintro">回到「什么是化学键」→</a></div>',
     pitfall: '催化剂不是让不能发生的反应发生，而是让能发生的反应更快、或在更低条件下进行。'
   },
   {
