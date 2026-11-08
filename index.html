@@ -1095,7 +1095,7 @@ summary:focus-visible,
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v2.5 · 2026-11-08</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v2.6 · 2026-11-08</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -2839,7 +2839,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v2.5 · 2026-11-08</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v2.6 · 2026-11-08</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -4944,8 +4944,7 @@ function buildLab(l) {
   LAB.paint = built.setup(stage);
   LAB.paint(0);
 
-  let h = '<button class="btn" data-lab-play="1">暂停</button>'
-    + '<button class="btn" data-lab-replay="1">重播</button>';
+  let h = '<button class="btn" data-lab-play="1">暂停</button>';
   if (cfg.modes) {
     h += '<span class="note">切换：</span>' + cfg.modes.map(function (m) {
       return '<button class="modebtn' + (m[0] === mode ? ' on' : '') + '" data-lab-mode="' + m[0] + '">' + m[1] + '</button>';
@@ -8321,11 +8320,6 @@ document.getElementById('view').addEventListener('click', function (e) {
     if (LAB.playing) { labPause(); }
     else if (LAB.t >= LAB.dur && !LAB.loop) { labReplay(); }
     else { labStart(); }
-    return;
-  }
-
-  if (e.target.closest('[data-lab-replay]')) {
-    labReplay();
     return;
   }
 
