@@ -777,18 +777,25 @@ html[data-theme="dark"] .calc-status.good{background:#12321F;color:#A7E8C2;}
 .pf-answer b{color:var(--ink);}
 .g9-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;}
 /* 练习场 */
-.elab-atoms{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px;}
+.elab-tool{padding:12px 14px;}
+.elab-layout{display:grid;grid-template-columns:228px minmax(0,1fr);gap:14px;align-items:start;}
+.elab-palette{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;}
+.elab-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+.elab-head h4{margin:0;font-size:14px;}
+.elab-reset{padding:4px 10px;font-size:12px;border-radius:8px;}
+.elab-atoms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0;}
 .elab-atom{
-  border:1px solid var(--line);background:var(--panel);border-radius:12px;
-  padding:7px 12px;font-family:inherit;font-size:14px;cursor:pointer;color:var(--ink);
-  min-width:56px;transition:border-color .15s,background .15s;
+  border:1px solid var(--line);background:var(--panel);border-radius:8px;
+  padding:6px 0;font-family:inherit;font-size:13px;cursor:pointer;color:var(--ink);
+  min-width:0;transition:border-color .15s,background .15s;
 }
-.elab-atom:hover{border-color:var(--brand);}
+.elab-atom:hover:not(:disabled){border-color:var(--brand);}
 .elab-atom.on{background:var(--brand-soft);border-color:#C9C2FF;color:var(--brand-ink);font-weight:700;}
-.elab-atom:disabled{opacity:.45;cursor:default;}
-.elab-hint{font-size:12px;color:var(--ink-2);margin:4px 0 0;}
+.elab-atom.on:disabled{opacity:1;background:var(--brand-soft);color:var(--brand-ink);}
+.elab-atom:disabled{opacity:.38;cursor:default;background:var(--panel-2);color:var(--ink-2);}
+.elab-hint{font-size:11.5px;color:var(--ink-2);margin:6px 0 0;line-height:1.6;}
 .elab-legend{font-size:11.5px;color:var(--ink-2);text-align:center;margin:6px 0 0;line-height:1.6;}
-.elab-stage{margin-top:10px;background:var(--panel-2);border-radius:14px;padding:6px;}
+.elab-stage{margin-top:0;background:var(--panel-2);border-radius:14px;padding:6px;}
 .elab-stage svg{display:block;width:100%;height:auto;max-width:620px;margin:0 auto;}
 .elab-stage svg [data-bond]{opacity:0;transition:opacity .35s;}
 .elab-stage svg.played [data-bond]{opacity:1;}
@@ -800,6 +807,14 @@ html[data-theme="dark"] .calc-status.good{background:#12321F;color:#A7E8C2;}
 .elab-cell{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:13px;color:var(--ink-2);line-height:1.55;}
 .elab-cell b{color:var(--ink);}
 .elab-cell .big{font-size:17px;font-weight:700;color:var(--ink);}
+.elab-view{min-width:0;}
+@media (max-width:680px){
+  .elab-layout{grid-template-columns:1fr;gap:10px;}
+  .elab-atoms{grid-template-columns:repeat(6,minmax(0,1fr));}
+  .elab-palette{padding:8px 10px;}
+  .elab-tool{padding:10px 12px;}
+  .elab-head{margin-bottom:6px;}
+}
 .pred-q{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;}
 .pred-eq{font-size:20px;text-align:center;margin:8px 0 14px;font-family:ui-monospace,Consolas,monospace;letter-spacing:.5px;}
 .pred-opts{display:flex;flex-direction:column;gap:8px;}
@@ -1087,10 +1102,40 @@ summary:focus-visible,
 .expnav-item:hover{border-color:var(--brand);color:var(--brand);}
 .expnav-item.on{background:var(--brand-soft);border-color:var(--brand);color:var(--brand-ink);font-weight:600;}
 .expnav-item b{margin-left:auto;font-size:11px;color:var(--brand);}
-.explab-stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 10px 4px;}
+.explab-stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 10px 4px;position:relative;}
 .exp-svg{display:block;width:100%;height:auto;}
-.exp-app{opacity:.55;transition:opacity .25s;}
-.exp-app.on,.explab-stage.done .exp-app{opacity:1;}
+.exp-app{opacity:.68;transition:opacity .25s;}
+.exp-app.on,.exp-app.done,.explab-stage.done .exp-app{opacity:1;}
+.exp-check{opacity:0;transform:scale(.4);transform-box:fill-box;transform-origin:center;transition:opacity .25s,transform .25s;}
+.exp-app.done .exp-check{opacity:1;transform:scale(1);}
+.exp-app.just .exp-check{animation:expCheckPop .5s cubic-bezier(.2,.9,.3,1.5) both;}
+@keyframes expCheckPop{0%{opacity:0;transform:scale(.2);}60%{opacity:1;transform:scale(1.18);}100%{opacity:1;transform:scale(1);}}
+.exp-fx-show{opacity:0;transition:opacity .3s;}
+.exp-app.done .exp-fx-show{opacity:1;}
+.exp-app.just .exp-fx-show{animation:expFxIn .45s ease-out both;}
+@keyframes expFxIn{0%{opacity:0;}100%{opacity:1;}}
+.exp-app.just .exp-fx-weight{animation:expWeightDrop .55s cubic-bezier(.2,.9,.3,1.3) both;}
+@keyframes expWeightDrop{0%{opacity:0;transform:translateY(-16px);}60%{opacity:1;transform:translateY(2px);}100%{opacity:1;transform:translateY(0);}}
+.exp-app.just .exp-fx-pile{transform-box:fill-box;transform-origin:bottom;animation:expPileGrow .5s ease-out both;}
+@keyframes expPileGrow{0%{opacity:0;transform:scale(.2);}100%{opacity:1;transform:scale(1);}}
+.exp-app.just .exp-fx-rise{transform-box:fill-box;transform-origin:bottom;animation:expFillUp .65s ease-out both;}
+@keyframes expFillUp{0%{transform:scaleY(.18);}100%{transform:scaleY(1);}}
+.exp-app.just .exp-fx-stir{transform-box:fill-box;transform-origin:top center;animation:expStir .7s ease-in-out 2;}
+@keyframes expStir{0%,100%{transform:rotate(-9deg);}50%{transform:rotate(9deg);}}
+.exp-app.just .exp-fx-paper{transform-box:fill-box;transform-origin:center;animation:expPaperIn .55s ease-out both;}
+@keyframes expPaperIn{0%{opacity:0;transform:scale(.55);}100%{opacity:1;transform:scale(1);}}
+.exp-app.just .exp-fx-crystal{transform-box:fill-box;transform-origin:bottom;animation:expCrystalIn .6s ease-out both;}
+@keyframes expCrystalIn{0%{opacity:0;transform:scale(.2) translateY(4px);}100%{opacity:1;transform:scale(1) translateY(0);}}
+.exp-app.just .exp-fx-marble{animation:expWeightDrop .5s cubic-bezier(.2,.9,.3,1.3) both;}
+.exp-app.just .exp-fx-gasfill{transform-box:fill-box;transform-origin:bottom;animation:expFillUp .8s ease-out both;}
+.exp-app.just .exp-fx-flame{transform-box:fill-box;transform-origin:bottom;animation:expFlameOut .9s ease-in forwards;}
+@keyframes expFlameOut{0%{opacity:1;transform:scale(1);}70%{opacity:.6;transform:scale(.55);}100%{opacity:0;transform:scale(.15);}}
+.exp-app.just .exp-fx-cloud{animation:expCloudIn .9s ease-out both;}
+@keyframes expCloudIn{0%{opacity:0;}100%{opacity:.9;}}
+.exp-app.just{filter:drop-shadow(0 0 6px rgba(15,157,88,.35));}
+.exp-toast{position:absolute;top:7px;left:50%;transform:translateX(-50%);z-index:3;background:#EAF7EF;border:1px solid #BFE3CC;color:var(--ok);font-size:12px;font-weight:600;line-height:1.4;padding:5px 12px;border-radius:999px;white-space:nowrap;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;box-shadow:0 4px 14px rgba(15,157,88,.16);animation:expToast 1.5s ease forwards;}
+html[data-theme="dark"] .exp-toast{background:#12291F;border-color:#245C3F;color:#A7E8C2;}
+@keyframes expToast{0%{opacity:0;transform:translate(-50%,-6px);}15%,70%{opacity:1;transform:translate(-50%,0);}100%{opacity:0;transform:translate(-50%,-4px);}}
 .exp-stage-hint{display:none;font-size:11px;color:var(--ink-2);text-align:center;margin:2px 0 4px;}
 .exp-label{font-size:11px;fill:var(--ink-2);}
 .exp-label.b{font-weight:600;fill:var(--ink);}
@@ -1161,7 +1206,7 @@ html[data-theme="dark"] .exp-feedback.bad{background:#301A1A;border-color:#6B2D2
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v3.0 · 2026-11-14</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v3.1 · 2026-11-14</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -2906,7 +2951,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.0 · 2026-11-14</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.1 · 2026-11-14</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -7016,37 +7061,81 @@ const ELAB_ATOMS = {
   Mg: { name: '镁', shells: [2, 8, 2], type: 'metal', fill: '#0E9F6E', stroke: '#0A7A54', ink: '#FFFFFF' },
   Al: { name: '铝', shells: [2, 8, 3], type: 'metal', fill: '#6B7280', stroke: '#4B5563', ink: '#FFFFFF' },
   K: { name: '钾', shells: [2, 8, 8, 1], type: 'metal', fill: '#7A4FBF', stroke: '#5F3B99', ink: '#FFFFFF' },
+  Ca: { name: '钙', shells: [2, 8, 8, 2], type: 'metal', fill: '#D97706', stroke: '#B45309', ink: '#FFFFFF' },
+  S: { name: '硫', shells: [2, 8, 6], type: 'nonmetal', fill: '#F2C200', stroke: '#B58900', ink: '#2B2200' },
   Cl: { name: '氯', shells: [2, 8, 7], type: 'nonmetal', fill: '#33A34D', stroke: '#257C3A', ink: '#FFFFFF' }
 };
 
 const ELAB_CASES = [
   {
-    a: 'Na', b: 'Cl', kind: 'ionic', formula: 'NaCl', name: '氯化钠', transfer: 1,
+    a: 'Na', b: 'Cl', kind: 'ionic', formula: 'NaCl', name: '氯化钠', transfer: 1, ratio: [1, 1],
     ionLabels: ['Na⁺', 'Cl⁻'],
     ions: 'Na⁺（失去 1 个电子） · Cl⁻（得到 1 个）',
     valence: 'Na +1 · Cl −1',
     note: '钠最外层只有 1 个电子，容易失去；氯最外层 7 个，还差 1 个。电子从钠转到氯，两者都变成 8 电子稳定结构，再靠静电吸引结合。'
   },
   {
-    a: 'Mg', b: 'Cl', kind: 'ionic', formula: 'MgCl₂', name: '氯化镁', transfer: 2,
+    a: 'Mg', b: 'Cl', kind: 'ionic', formula: 'MgCl₂', name: '氯化镁', transfer: 0, ratio: [1, 2],
     ionLabels: ['Mg²⁺', 'Cl⁻'],
     ions: 'Mg²⁺（失去 2 个） · 2 × Cl⁻（各得 1 个）',
     valence: 'Mg +2 · Cl −1',
     note: '镁失去 2 个电子变成 Mg²⁺，需要 2 个氯各得 1 个，所以化学式是 MgCl₂。'
   },
   {
-    a: 'K', b: 'O', kind: 'ionic', formula: 'K₂O', name: '氧化钾', transfer: 2,
+    a: 'K', b: 'O', kind: 'ionic', formula: 'K₂O', name: '氧化钾', transfer: 0, ratio: [2, 1],
     ionLabels: ['K⁺', 'O²⁻'],
     ions: '2 × K⁺（各失 1 个） · O²⁻（得到 2 个）',
     valence: 'K +1 · O −2',
     note: '氧最外层 6 个电子，还差 2 个；两个钾各给 1 个，正好凑成 O²⁻。'
   },
   {
-    a: 'Al', b: 'O', kind: 'ionic', formula: 'Al₂O₃', name: '氧化铝', transfer: 3,
+    a: 'Al', b: 'O', kind: 'ionic', formula: 'Al₂O₃', name: '氧化铝', transfer: 0, ratio: [2, 3],
     ionLabels: ['Al³⁺', 'O²⁻'],
-    ions: 'Al³⁺（失去 3 个） · O²⁻（得到 2 个）',
+    ions: '2 × Al³⁺（各失 3 个） · 3 × O²⁻（各得 2 个）',
     valence: 'Al +3 · O −2',
     note: '铝失 3 个、氧得 2 个，最小公倍数是 6，所以 2 个铝配 3 个氧。'
+  },
+  {
+    a: 'Ca', b: 'O', kind: 'ionic', formula: 'CaO', name: '氧化钙', transfer: 2, ratio: [1, 1],
+    ionLabels: ['Ca²⁺', 'O²⁻'],
+    ions: 'Ca²⁺（失去 2 个） · O²⁻（得到 2 个）',
+    valence: 'Ca +2 · O −2',
+    note: '钙最外层 2 个电子，氧还差 2 个，正好一对：钙失 2 个，氧得 2 个。'
+  },
+  {
+    a: 'Mg', b: 'O', kind: 'ionic', formula: 'MgO', name: '氧化镁', transfer: 2, ratio: [1, 1],
+    ionLabels: ['Mg²⁺', 'O²⁻'],
+    ions: 'Mg²⁺（失去 2 个） · O²⁻（得到 2 个）',
+    valence: 'Mg +2 · O −2',
+    note: '镁失 2 个电子，氧得 2 个，形成 MgO。'
+  },
+  {
+    a: 'K', b: 'Cl', kind: 'ionic', formula: 'KCl', name: '氯化钾', transfer: 1, ratio: [1, 1],
+    ionLabels: ['K⁺', 'Cl⁻'],
+    ions: 'K⁺（失去 1 个） · Cl⁻（得到 1 个）',
+    valence: 'K +1 · Cl −1',
+    note: '钾最外层 1 个电子，氯还差 1 个，一对一转移，形成 KCl。'
+  },
+  {
+    a: 'Na', b: 'O', kind: 'ionic', formula: 'Na₂O', name: '氧化钠', transfer: 0, ratio: [2, 1],
+    ionLabels: ['Na⁺', 'O²⁻'],
+    ions: '2 × Na⁺（各失 1 个） · O²⁻（得到 2 个）',
+    valence: 'Na +1 · O −2',
+    note: '氧还差 2 个电子，需要两个钠各给 1 个，所以是 Na₂O。'
+  },
+  {
+    a: 'Ca', b: 'Cl', kind: 'ionic', formula: 'CaCl₂', name: '氯化钙', transfer: 0, ratio: [1, 2],
+    ionLabels: ['Ca²⁺', 'Cl⁻'],
+    ions: 'Ca²⁺（失去 2 个） · 2 × Cl⁻（各得 1 个）',
+    valence: 'Ca +2 · Cl −1',
+    note: '钙失 2 个电子，每个氯得 1 个，需要两个氯，所以是 CaCl₂。'
+  },
+  {
+    a: 'Al', b: 'Cl', kind: 'ionic', formula: 'AlCl₃', name: '氯化铝', transfer: 0, ratio: [1, 3],
+    ionLabels: ['Al³⁺', 'Cl⁻'],
+    ions: 'Al³⁺（失去 3 个） · 3 × Cl⁻（各得 1 个）',
+    valence: 'Al +3 · Cl −1',
+    note: '铝失 3 个电子，每个氯得 1 个，需要三个氯，所以是 AlCl₃。'
   },
   {
     a: 'H', b: 'H', kind: 'covalent', formula: 'H₂', name: '氢气', order: 1, layout: 2, polar: false,
@@ -7064,9 +7153,19 @@ const ELAB_CASES = [
     note: '两个氮各出 3 个电子，共用 3 对，形成 N≡N 三键。三键很难拉断，所以氮气不活泼。'
   },
   {
+    a: 'Cl', b: 'Cl', kind: 'covalent', formula: 'Cl₂', name: '氯气', order: 1, layout: 2, polar: false,
+    valence: 'Cl 0（单质）',
+    note: '两个氯各出 1 个电子，共用 1 对，形成 Cl–Cl 单键。'
+  },
+  {
     a: 'H', b: 'Cl', kind: 'covalent', formula: 'HCl', name: '氯化氢', order: 1, layout: 2, polar: true,
     valence: 'H +1 · Cl −1',
     note: '共用 1 对电子，但氯抢电子能力更强，电子对偏向氯，所以是极性共价键。'
+  },
+  {
+    a: 'H', b: 'F', kind: 'covalent', formula: 'HF', name: '氟化氢', order: 1, layout: 2, polar: true,
+    valence: 'H +1 · F −1',
+    note: '氟抢电子能力比氯还强，共用电子对明显偏向氟，是极性共价键。'
   },
   {
     a: 'H', b: 'O', kind: 'covalent', formula: 'H₂O', name: '水', order: 1, layout: 3, center: 'O', polar: true,
@@ -7074,9 +7173,24 @@ const ELAB_CASES = [
     note: '氧还差 2 个电子，所以两个氢各与氧共用 1 对，形成 2 个 O–H 单键。'
   },
   {
+    a: 'H', b: 'S', kind: 'covalent', formula: 'H₂S', name: '硫化氢', order: 1, layout: 3, center: 'S', polar: true,
+    valence: 'H +1 · S −2',
+    note: '硫还差 2 个电子，两个氢各与硫共用 1 对，形成 2 个 S–H 单键。'
+  },
+  {
     a: 'C', b: 'O', kind: 'covalent', formula: 'CO₂', name: '二氧化碳', order: 2, layout: 3, center: 'C', polar: true,
     valence: 'C +4 · O −2',
     note: '碳要 4 个电子，每个氧要 2 个，所以碳和每个氧共用 2 对，形成 2 个 C=O 双键。'
+  },
+  {
+    a: 'S', b: 'O', kind: 'covalent', formula: 'SO₂', name: '二氧化硫', order: 2, layout: 3, center: 'S', polar: true,
+    valence: 'S +4 · O −2',
+    note: '硫和每个氧共用 2 对电子，形成 2 个 S=O 双键；硫在这里显 +4 价。'
+  },
+  {
+    a: 'N', b: 'H', kind: 'covalent', formula: 'NH₃', name: '氨气', order: 1, layout: 3, center: 'N', polar: true,
+    valence: 'N −3 · H +1',
+    note: '氮还差 3 个电子，三个氢各与氮共用 1 对，形成 3 个 N–H 单键。'
   }
 ];
 
@@ -7211,6 +7325,7 @@ function elabFigure(c) {
   }
 
   let charge = '';
+  let ratio = '';
   if (c.kind === 'ionic') {
     const mIdx = ELAB_ATOMS[els[0]].type === 'metal' ? 0 : 1;
     const nmIdx = 1 - mIdx;
@@ -7225,11 +7340,23 @@ function elabFigure(c) {
       + '<line data-bond x1="' + (xs[0] + shellR(ELAB_ATOMS[els[0]].shells.length - 1) + 10) + '" y1="' + cy
       + '" x2="' + (xs[1] - shellR(ELAB_ATOMS[els[1]].shells.length - 1) - 10) + '" y2="' + cy
       + '" stroke="#B45309" stroke-width="2" stroke-dasharray="5 5"/>';
+    if (c.ratio) {
+      if (c.ratio[0] > 1) {
+        ratio += '<text class="elab-ratio" x="' + (xs[mIdx] + shellR(ELAB_ATOMS[els[mIdx]].shells.length - 1) + 14)
+          + '" y="' + (cy + 6) + '" font-size="12" font-weight="700" fill="var(--brand)">×' + c.ratio[0] + '</text>';
+      }
+      if (c.ratio[1] > 1) {
+        ratio += '<text class="elab-ratio" x="' + (xs[nmIdx] + shellR(ELAB_ATOMS[els[nmIdx]].shells.length - 1) + 14)
+          + '" y="' + (cy + 6) + '" font-size="12" font-weight="700" fill="var(--brand)">×' + c.ratio[1] + '</text>';
+      }
+    }
   }
 
   const vbH = c.layout === 3 ? 300 : 280;
-  return '<svg viewBox="0 0 620 ' + vbH + '" role="img" aria-label="电子实验室">'
-    + atoms + movers + charge
+  const vbX = c.layout === 3 ? 50 : 75;
+  const vbW = c.layout === 3 ? 520 : 470;
+  return '<svg viewBox="' + vbX + ' 24 ' + vbW + ' ' + (c.layout === 3 ? 276 : 256) + '" role="img" aria-label="电子实验室">'
+    + atoms + movers + charge + ratio
     + '<text x="310" y="' + (vbH - 12) + '" text-anchor="middle" font-size="11.5" fill="var(--ink-2)">'
     + (c.kind === 'ionic' ? '金属原子失去电子 → 变成阳离子；非金属原子得到电子 → 变成阴离子'
       : c.layout === 3 ? '中心原子与两侧原子各出电子，共用电子对 → 形成共价键'
@@ -7248,38 +7375,66 @@ function elabResult(c) {
     + '<p class="g9-ans" style="padding:9px 0 0">' + c.note + '</p></div>';
 }
 
+function elabPlaceholder(a) {
+  const q = function (x) {
+    return '<circle cx="' + x + '" cy="110" r="34" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 6"/>'
+      + '<text x="' + x + '" y="120" text-anchor="middle" font-size="24" fill="var(--ink-2)">?</text>';
+  };
+  const lr = a ? shellR(ELAB_ATOMS[a].shells.length - 1) : 34;
+  return '<svg viewBox="75 40 470 190" role="img" aria-label="电子实验室">'
+    + (a ? elabAtomSvg(a, 170, 110, []) : q(170))
+    + q(450)
+    + '<line x1="' + (170 + lr + 14) + '" y1="110" x2="402" y2="110" stroke="var(--line)" stroke-width="2" stroke-dasharray="5 6" opacity=".7"/>'
+    + '</svg>';
+}
+
 function elabPanelHtml() {
   const a = PRACSTATE.elabA, b = PRACSTATE.elabB;
   const keys = Object.keys(ELAB_ATOMS);
-  let atoms = keys.map(function (k) {
+  const hasCase = function (k) {
+    return ELAB_CASES.some(function (c) { return c.a === k || c.b === k; });
+  };
+  const canPick = function (k) {
+    if (a && !b) return k === a ? !!elabFind(a, a) : !!elabFind(a, k);
+    return hasCase(k);
+  };
+  const atoms = keys.map(function (k) {
     const on = (k === a || k === b) ? ' on' : '';
-    return '<button class="elab-atom' + on + '" data-elab="' + k + '">' + k + '</button>';
+    const disabled = !canPick(k);
+    return '<button class="elab-atom' + on + '" data-elab="' + k + '"'
+      + (disabled ? ' disabled title="初中不涉及这个组合"' : '') + '>' + k + '</button>';
   }).join('');
 
   let body;
   if (a && b) {
     const c = elabFind(a, b);
     if (c) {
+      const ratioTip = c.kind === 'ionic' && c.ratio && (c.ratio[0] > 1 || c.ratio[1] > 1);
       body = '<div class="elab-stage">' + elabFigure(c) + '</div>'
         + '<p class="elab-legend">' + (c.kind === 'ionic'
           ? '橙色虚线 = 阴阳离子间的静电吸引；紫色小点 = 电子'
-          : '紫色小点 = 电子；中间成对 = 共用电子对') + '</p>'
-        + '<div class="ai-row"><button class="btn primary" data-elab-play>演示</button>'
-        + '<button class="btn" data-elab-reset>重选</button></div>'
+          : '紫色小点 = 电子；中间成对 = 共用电子对')
+        + (ratioTip ? '<br>图中画一对离子代表，×2 / ×3 表示实际离子个数' : '') + '</p>'
+        + '<div class="ai-row"><button class="btn primary" data-elab-play>演示</button></div>'
         + elabResult(c);
     } else {
-      body = '<p class="tool-readout">这个组合初中不要求。试试：Na + Cl、Mg + Cl、K + O、Al + O、H + H、O + O、N + N、H + Cl、H + O、C + O。</p>'
-        + '<div class="ai-row"><button class="btn" data-elab-reset>重选</button></div>';
+      body = '<div class="elab-stage">' + elabPlaceholder(a) + '</div>'
+        + '<p class="tool-readout">这个组合初中不要求，点「重选」换一组。</p>';
     }
   } else {
-    body = '<p class="tool-readout">' + (a ? '已选 <b>' + a + '</b>，再点一个原子。' : '点两个原子，看看它们怎么结合。')
+    body = '<div class="elab-stage">' + elabPlaceholder(a) + '</div>'
+      + '<p class="elab-hint">' + (a ? '已选 <b>' + a + '</b>，再点一个亮着的原子。' : '点两个原子，看看它们怎么结合。')
       + '</p>';
   }
 
-  return '<div class="g9-tool"><h4>原子台</h4>'
+  return '<div class="g9-tool elab-tool"><div class="elab-layout">'
+    + '<aside class="elab-palette"><div class="elab-head"><h4>原子台</h4>'
+    + '<button class="btn elab-reset" data-elab-reset' + (a || b ? '' : ' disabled') + '>重选</button></div>'
     + '<div class="elab-atoms">' + atoms + '</div>'
     + '<p class="elab-hint">规则：金属 + 非金属 → 电子转移，离子键；非金属 + 非金属 → 共用电子对，共价键。</p>'
-    + body + '</div>';
+    + '<p class="elab-hint">灰掉 = 初中不涉及这个组合。</p></aside>'
+    + '<section class="elab-view">' + body + '</section>'
+    + '</div></div>';
 }
 
 function elabPlay() {
@@ -8042,22 +8197,38 @@ const EXP_STATIONS = [
   }
 ];
 
-const EXPSTATE = { id: null, step: 0, score: 10, records: [], fb: null, done: false, finalDone: false };
+const EXPSTATE = { id: null, step: 0, score: 10, records: [], fb: null, done: false, finalDone: false, justStep: null };
 
 function expStation(id) { return EXP_STATIONS.find(function (s) { return s.id === id; }) || null; }
 function expBest(id) { return (PROG.lab && PROG.lab[id] && PROG.lab[id].best) || 0; }
 
-function expStageHtml(st, step, done) {
-  if (st.id === 'salt') return expSvgSalt(step, done);
-  if (st.id === 'solution') return expSvgSolution(step, done);
-  return expSvgGas(step, done);
+function expG(on, done, just) {
+  return '<g class="exp-app' + (on ? ' on' : '') + (done ? ' done' : '') + (just ? ' just' : '') + '">';
 }
 
-function expSvgSalt(step, done) {
+function expCheck(x, y) {
+  return '<g transform="translate(' + x + ',' + y + ')"><g class="exp-check">'
+    + '<circle r="9" fill="var(--ok)"/>'
+    + '<path d="M-4 0 l3 3 l5 -6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
+    + '</g></g>';
+}
+
+function expStageHtml(st, step, done, justStep) {
+  if (st.id === 'salt') return expSvgSalt(step, done, justStep);
+  if (st.id === 'solution') return expSvgSolution(step, done, justStep);
+  return expSvgGas(step, done, justStep);
+}
+
+function expSvgSalt(step, done, justStep) {
   const active = ['balance', 'cylinder', 'beaker', 'funnel', 'funnel', 'dish', 'dish'][step] || '';
   const steam = step >= 5 || done;
-  return '<svg class="exp-svg" viewBox="0 90 640 240" role="img" aria-label="粗盐提纯实验台">'
-    + '<g class="exp-app ' + (active === 'balance' ? 'on' : '') + '">'
+  const dB = done || step >= 1;
+  const dC = done || step >= 2;
+  const dK = done || step >= 3;
+  const dF = done || step >= 4;
+  const dD = done || step >= 6;
+  let s = '<svg class="exp-svg" viewBox="0 90 640 240" role="img" aria-label="粗盐提纯实验台">'
+    + expG(active === 'balance', dB, justStep === 0)
     + '<line x1="100" y1="250" x2="100" y2="190" stroke="var(--ink-2)" stroke-width="2"/>'
     + '<line x1="55" y1="190" x2="145" y2="190" stroke="var(--ink-2)" stroke-width="2"/>'
     + '<path d="M55 190 L40 215 M55 190 L70 215" stroke="var(--ink-2)" fill="none"/>'
@@ -8065,37 +8236,59 @@ function expSvgSalt(step, done) {
     + '<path d="M145 190 L130 215 M145 190 L160 215" stroke="var(--ink-2)" fill="none"/>'
     + '<ellipse cx="145" cy="218" rx="18" ry="4" fill="none" stroke="var(--ink-2)"/>'
     + '<rect x="60" y="250" width="80" height="7" rx="3" fill="var(--line)"/>'
+    + (dB ? '<path class="exp-fx-show exp-fx-pile" d="M40 216 Q55 203 70 216 Z" fill="#fff" stroke="var(--line)"/>'
+      + '<rect class="exp-fx-show exp-fx-weight" x="132" y="207" width="12" height="10" rx="2" fill="var(--ink-2)"/>'
+      + '<rect class="exp-fx-show exp-fx-weight" x="146" y="211" width="9" height="7" rx="2" fill="var(--ink-2)"/>' : '')
+    + expCheck(145, 172)
     + '<text x="100" y="300" text-anchor="middle" class="exp-label">托盘天平</text></g>'
-    + '<g class="exp-app ' + (active === 'cylinder' ? 'on' : '') + '">'
+    + expG(active === 'cylinder', dC, justStep === 1)
     + '<rect x="210" y="150" width="44" height="110" rx="5" fill="none" stroke="var(--line)" stroke-width="2"/>'
-    + '<rect x="214" y="196" width="36" height="60" class="exp-liquid water"/>'
+    + '<rect x="214" y="196" width="36" height="60" class="exp-liquid water' + (justStep === 1 ? ' exp-fx-rise' : '') + '"/>'
     + '<line x1="210" y1="180" x2="222" y2="180" stroke="var(--ink-2)"/>'
     + '<line x1="210" y1="200" x2="222" y2="200" stroke="var(--ink-2)"/>'
     + '<line x1="210" y1="220" x2="222" y2="220" stroke="var(--ink-2)"/>'
+    + (justStep === 1 ? '<circle class="exp-drop" cx="232" cy="166" r="2.6"/><circle class="exp-drop" cx="236" cy="158" r="2.2"/>' : '')
+    + expCheck(250, 144)
     + '<text x="232" y="300" text-anchor="middle" class="exp-label">量筒</text></g>'
-    + '<g class="exp-app ' + (active === 'beaker' ? 'on' : '') + '">'
+    + expG(active === 'beaker', dK, justStep === 2)
     + '<path d="M310 160 L310 248 Q310 258 320 258 L380 258 Q390 258 390 248 L390 160" fill="none" stroke="var(--line)" stroke-width="2"/>'
     + '<rect x="314" y="205" width="72" height="49" class="exp-liquid water"/>'
-    + '<line x1="350" y1="150" x2="366" y2="240" stroke="var(--ink-2)" stroke-width="3"/>'
+    + (justStep === 2 ? '<g class="exp-fx-stir"><line x1="350" y1="150" x2="366" y2="240" stroke="var(--ink-2)" stroke-width="3"/></g>'
+      : '<line x1="350" y1="150" x2="366" y2="240" stroke="var(--ink-2)" stroke-width="3"/>')
+    + expCheck(390, 145)
     + '<text x="350" y="300" text-anchor="middle" class="exp-label">烧杯 + 玻璃棒</text></g>'
-    + '<g class="exp-app ' + (active === 'funnel' ? 'on' : '') + '">'
+    + expG(active === 'funnel', dF, justStep === 3 || justStep === 4)
     + '<path d="M420 160 L500 160 L460 212 L460 248" fill="none" stroke="var(--line)" stroke-width="2"/>'
-    + '<path d="M424 164 L496 164 L460 208 Z" fill="#fff" opacity=".35"/>'
-    + '<circle class="exp-drop" cx="460" cy="220" r="3"/>'
+    + '<path d="M424 164 L496 164 L460 208 Z" fill="#fff" opacity=".55"' + (justStep === 3 ? ' class="exp-fx-paper"' : '') + '/>'
+    + ((step >= 5 || done) ? '<g class="exp-fx-show"><rect x="436" y="252" width="48" height="34" rx="3" fill="none" stroke="var(--line)" stroke-width="2"/>'
+      + '<rect x="440" y="266" width="40" height="16" class="exp-liquid water' + (justStep === 4 ? ' exp-fx-rise' : '') + '"/>'
+      + '<circle class="exp-drop" cx="460" cy="218" r="3"/><circle class="exp-drop" cx="460" cy="226" r="2.4"/></g>' : '')
+    + expCheck(500, 150)
     + '<text x="460" y="300" text-anchor="middle" class="exp-label">漏斗 + 滤纸</text></g>'
-    + '<g class="exp-app ' + (active === 'dish' ? 'on' : '') + '">'
+    + expG(active === 'dish', dD, justStep === 5 || justStep === 6)
     + '<ellipse cx="560" cy="245" rx="48" ry="14" fill="var(--panel-2)" stroke="var(--line)" stroke-width="2"/>'
     + '<path d="M530 245 Q560 232 590 245" fill="none" stroke="var(--line)"/>'
     + (steam ? '<path class="exp-steam" d="M548 228 q8 -10 0 -20 M568 228 q8 -10 0 -20" fill="none"/>' : '')
-    + (steam ? '<rect x="540" y="240" width="40" height="6" rx="3" fill="#fff" opacity=".8"/>' : '')
+    + (dD ? '<g class="exp-fx-show exp-fx-crystal"><path d="M545 244 l6 -8 l6 8 Z" fill="#fff" stroke="var(--line)"/>'
+      + '<path d="M558 245 l5 -6 l5 6 Z" fill="#fff" stroke="var(--line)"/>'
+      + '<path d="M570 244 l5 -5 l5 5 Z" fill="#fff" stroke="var(--line)"/></g>' : '')
+    + expCheck(604, 220)
     + '<text x="560" y="300" text-anchor="middle" class="exp-label">蒸发皿</text></g>'
     + '</svg>';
+  return s;
 }
 
-function expSvgSolution(step, done) {
+function expSvgSolution(step, done, justStep) {
   const active = ['', 'balance', 'cylinder', 'beaker', 'bottle'][step] || '';
+  const dB = done || step >= 2;
+  const dC = done || step >= 3;
+  const dK = done || step >= 4;
+  const dP = done || step >= 5;
   return '<svg class="exp-svg" viewBox="0 90 640 240" role="img" aria-label="溶液配制实验台">'
-    + '<g class="exp-app ' + (active === 'balance' ? 'on' : '') + '">'
+    + ((step >= 1 || done) ? '<g class="exp-fx-show' + (justStep === 0 ? ' exp-fx-paper' : '') + '">'
+      + '<rect x="238" y="96" width="360" height="30" rx="15" fill="var(--brand-soft)" stroke="var(--line)"/>'
+      + '<text x="418" y="116" text-anchor="middle" class="exp-label b">50 g × 6% = 3 g NaCl，水 47 g</text></g>' : '')
+    + expG(active === 'balance', dB, justStep === 1)
     + '<line x1="110" y1="250" x2="110" y2="190" stroke="var(--ink-2)" stroke-width="2"/>'
     + '<line x1="65" y1="190" x2="155" y2="190" stroke="var(--ink-2)" stroke-width="2"/>'
     + '<path d="M65 190 L50 215 M65 190 L80 215" stroke="var(--ink-2)" fill="none"/>'
@@ -8103,65 +8296,98 @@ function expSvgSolution(step, done) {
     + '<path d="M155 190 L140 215 M155 190 L170 215" stroke="var(--ink-2)" fill="none"/>'
     + '<ellipse cx="155" cy="218" rx="18" ry="4" fill="none" stroke="var(--ink-2)"/>'
     + '<rect x="70" y="250" width="80" height="7" rx="3" fill="var(--line)"/>'
+    + (dB ? '<path class="exp-fx-show exp-fx-pile" d="M50 216 Q65 204 80 216 Z" fill="#fff" stroke="var(--line)"/>'
+      + '<rect class="exp-fx-show exp-fx-weight" x="142" y="207" width="12" height="10" rx="2" fill="var(--ink-2)"/>'
+      + '<rect class="exp-fx-show exp-fx-weight" x="156" y="211" width="9" height="7" rx="2" fill="var(--ink-2)"/>' : '')
+    + expCheck(155, 172)
     + '<text x="110" y="300" text-anchor="middle" class="exp-label">托盘天平</text></g>'
-    + '<g class="exp-app ' + (active === 'cylinder' ? 'on' : '') + '">'
+    + expG(active === 'cylinder', dC, justStep === 2)
     + '<rect x="250" y="140" width="46" height="120" rx="5" fill="none" stroke="var(--line)" stroke-width="2"/>'
-    + '<rect x="254" y="190" width="38" height="66" class="exp-liquid water"/>'
+    + '<rect x="254" y="190" width="38" height="66" class="exp-liquid water' + (justStep === 2 ? ' exp-fx-rise' : '') + '"/>'
     + '<line x1="250" y1="170" x2="262" y2="170" stroke="var(--ink-2)"/>'
     + '<line x1="250" y1="195" x2="262" y2="195" stroke="var(--ink-2)"/>'
+    + (justStep === 2 ? '<circle class="exp-drop" cx="273" cy="158" r="2.6"/><circle class="exp-drop" cx="277" cy="150" r="2.2"/>' : '')
+    + expCheck(296, 134)
     + '<text x="273" y="300" text-anchor="middle" class="exp-label">量筒</text></g>'
-    + '<g class="exp-app ' + (active === 'beaker' ? 'on' : '') + '">'
+    + expG(active === 'beaker', dK, justStep === 3)
     + '<path d="M385 160 L385 248 Q385 258 395 258 L455 258 Q465 258 465 248 L465 160" fill="none" stroke="var(--line)" stroke-width="2"/>'
     + '<rect x="389" y="205" width="72" height="49" class="exp-liquid water"/>'
-    + '<line x1="425" y1="150" x2="441" y2="240" stroke="var(--ink-2)" stroke-width="3"/>'
+    + (justStep === 3 ? '<g class="exp-fx-stir"><line x1="425" y1="150" x2="441" y2="240" stroke="var(--ink-2)" stroke-width="3"/></g>'
+      : '<line x1="425" y1="150" x2="441" y2="240" stroke="var(--ink-2)" stroke-width="3"/>')
+    + expCheck(465, 145)
     + '<text x="425" y="300" text-anchor="middle" class="exp-label">烧杯 + 玻璃棒</text></g>'
-    + '<g class="exp-app ' + (active === 'bottle' ? 'on' : '') + '">'
+    + expG(active === 'bottle', dP, justStep === 4)
     + '<rect x="540" y="190" width="60" height="70" rx="8" fill="var(--panel-2)" stroke="var(--line)" stroke-width="2"/>'
     + '<rect x="548" y="170" width="44" height="22" rx="5" fill="none" stroke="var(--line)" stroke-width="2"/>'
-    + '<rect x="546" y="215" width="48" height="40" class="exp-liquid water" opacity=".7"/>'
+    + '<rect x="546" y="215" width="48" height="40" class="exp-liquid water' + (justStep === 4 ? ' exp-fx-rise' : '') + '" opacity=".7"/>'
+    + (dP ? '<text x="570" y="283" text-anchor="middle" class="exp-label b">NaCl 6%</text>' : '')
+    + expCheck(604, 162)
     + '<text x="570" y="300" text-anchor="middle" class="exp-label">试剂瓶</text></g>'
     + '<text x="320" y="320" text-anchor="middle" class="exp-label">目标：50 g 6% NaCl 溶液</text>'
     + '</svg>';
 }
 
-function expSvgGas(step, done) {
+function expSvgGas(step, done, justStep) {
   const active = ['flask', 'flask', 'flask', 'wash1', 'wash2', 'jar', 'jar', 'test'][step] || '';
   const bubbles = function (cx, cy) {
     return '<circle class="exp-bubble" cx="' + cx + '" cy="' + cy + '" r="3"/>'
       + '<circle class="exp-bubble d2" cx="' + (cx + 10) + '" cy="' + (cy + 6) + '" r="2.6"/>'
       + '<circle class="exp-bubble d3" cx="' + (cx + 5) + '" cy="' + (cy + 12) + '" r="2.2"/>';
   };
+  const dF = done || step >= 1;
+  const dW1 = done || step >= 4;
+  const dW2 = done || step >= 5;
+  const dJ = done || step >= 6;
+  const dT = done || step >= 8;
   return '<svg class="exp-svg" viewBox="0 90 640 240" role="img" aria-label="气体制取与净化实验台">'
     + '<path d="M150 180 C210 180 220 150 250 150 M305 150 C340 150 350 140 380 140 M430 140 C450 140 455 155 470 155" fill="none" stroke="var(--line)" stroke-dasharray="4 4"/>'
-    + '<g class="exp-app ' + (active === 'flask' || active === 'wash1' ? 'on' : '') + '">'
+    + expG(active === 'flask', dF, justStep === 0 || justStep === 1 || justStep === 2)
     + '<path d="M90 250 L90 205 L112 170 L112 140 L128 140 L128 170 L150 205 L150 250 Z" fill="none" stroke="var(--line)" stroke-width="2"/>'
     + '<path d="M94 250 L94 218 L112 188 L112 145 L128 145 L128 188 L146 218 L146 250 Z" class="exp-liquid acid" opacity=".7"/>'
-    + bubbles(110, 236) + bubbles(130, 230)
+    + (step >= 3 || done ? '<g class="exp-fx-show' + (justStep === 2 ? ' exp-fx-marble' : '') + '">'
+      + '<circle cx="108" cy="244" r="4" fill="var(--ink-2)"/>'
+      + '<circle cx="121" cy="247" r="3.6" fill="var(--ink-2)"/>'
+      + '<circle cx="134" cy="243" r="3.2" fill="var(--ink-2)"/></g>' : '')
+    + (step >= 3 || done ? '<g class="exp-fx-show">' + bubbles(110, 236) + bubbles(130, 230) + '</g>' : '')
     + '<line x1="170" y1="120" x2="170" y2="230" stroke="var(--line)" stroke-width="2"/>'
     + '<path d="M158 120 L182 120 L170 134 Z" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + expCheck(194, 112)
     + '<text x="130" y="300" text-anchor="middle" class="exp-label">锥形瓶 + 长颈漏斗</text></g>'
-    + '<g class="exp-app ' + (active === 'wash1' ? 'on' : '') + '">'
+    + expG(active === 'wash1', dW1, justStep === 3)
     + '<rect x="250" y="180" width="55" height="80" rx="6" fill="none" stroke="var(--line)" stroke-width="2"/>'
     + '<rect x="254" y="215" width="47" height="41" class="exp-liquid water"/>'
     + '<line x1="268" y1="160" x2="268" y2="235" stroke="var(--ink-2)" stroke-width="2"/>'
     + '<line x1="290" y1="160" x2="290" y2="205" stroke="var(--ink-2)" stroke-width="2"/>'
     + bubbles(270, 240)
+    + expCheck(310, 174)
     + '<text x="278" y="300" text-anchor="middle" class="exp-label">饱和 NaHCO₃</text></g>'
-    + '<g class="exp-app ' + (active === 'wash2' ? 'on' : '') + '">'
+    + expG(active === 'wash2', dW2, justStep === 4)
     + '<rect x="355" y="180" width="55" height="80" rx="6" fill="none" stroke="var(--line)" stroke-width="2"/>'
     + '<rect x="359" y="215" width="47" height="41" class="exp-liquid acid"/>'
     + '<line x1="373" y1="160" x2="373" y2="235" stroke="var(--ink-2)" stroke-width="2"/>'
     + '<line x1="395" y1="160" x2="395" y2="205" stroke="var(--ink-2)" stroke-width="2"/>'
     + bubbles(375, 240)
+    + expCheck(415, 174)
     + '<text x="383" y="300" text-anchor="middle" class="exp-label">浓硫酸</text></g>'
-    + '<g class="exp-app ' + (active === 'jar' || done ? 'on' : '') + '">'
+    + expG(active === 'jar', dJ, justStep === 5 || justStep === 6)
     + '<rect x="470" y="150" width="70" height="110" rx="8" fill="none" stroke="var(--line)" stroke-width="2"/>'
-    + '<rect x="474" y="190" width="62" height="66" fill="var(--brand-soft)" opacity="' + (done ? '.8' : '.35') + '"/>'
+    + (dJ ? '<rect x="474" y="190" width="62" height="66" fill="var(--brand-soft)" opacity=".8"'
+      + (justStep === 5 ? ' class="exp-fx-gasfill"' : '') + '/>' : '')
     + '<rect x="470" y="145" width="70" height="8" rx="4" fill="var(--line)"/>'
+    + (step >= 7 || done ? (justStep === 6
+      ? '<g><line x1="526" y1="143" x2="514" y2="118" stroke="var(--ink-2)" stroke-width="2"/>'
+        + '<ellipse class="exp-fx-flame" cx="512" cy="112" rx="5" ry="8" fill="#F59E0B"/></g>'
+      : '<g><line x1="526" y1="143" x2="514" y2="118" stroke="var(--ink-2)" stroke-width="2"/>'
+        + '<path d="M512 108 q6 -8 0 -14" fill="none" stroke="var(--ink-2)" stroke-width="1.4" opacity=".5"/></g>') : '')
+    + expCheck(548, 138)
     + '<text x="505" y="300" text-anchor="middle" class="exp-label">集气瓶</text></g>'
-    + '<g class="exp-app ' + (active === 'test' ? 'on' : '') + '">'
+    + expG(active === 'test', dT, justStep === 7)
     + '<rect x="565" y="175" width="30" height="88" rx="15" fill="none" stroke="var(--line)" stroke-width="2"/>'
     + '<rect x="568" y="215" width="24" height="45" rx="10" class="exp-liquid water"/>'
+    + (dT ? '<g class="exp-fx-show exp-fx-cloud"><circle cx="575" cy="238" r="4" fill="#fff" opacity=".9"/>'
+      + '<circle cx="585" cy="246" r="3.4" fill="#fff" opacity=".9"/>'
+      + '<circle cx="578" cy="252" r="3" fill="#fff" opacity=".9"/></g>' : '')
+    + expCheck(602, 168)
     + '<text x="580" y="300" text-anchor="middle" class="exp-label">澄清石灰水</text></g>'
     + '</svg>';
 }
@@ -8211,6 +8437,7 @@ function expReset() {
   EXPSTATE.fb = null;
   EXPSTATE.done = false;
   EXPSTATE.finalDone = false;
+  EXPSTATE.justStep = null;
 }
 
 function expSave(st) {
@@ -8256,8 +8483,10 @@ function renderLab(id, keepScroll) {
     + '<p class="hintline">' + st.lead + '</p>'
     + '<div class="explab"><aside class="explab-nav">' + nav + '</aside>'
     + '<section class="explab-stage' + (EXPSTATE.done ? ' done' : '') + '">'
+    + (EXPSTATE.justStep != null && st.steps[EXPSTATE.justStep]
+      ? '<div class="exp-toast">✓ ' + st.steps[EXPSTATE.justStep].record + '</div>' : '')
     + '<div class="exp-stage-hint">左右滑动查看完整实验台 →</div>'
-    + expStageHtml(st, EXPSTATE.step, EXPSTATE.done) + '</section>'
+    + expStageHtml(st, EXPSTATE.step, EXPSTATE.done, EXPSTATE.justStep) + '</section>'
     + expPanelHtml(st, EXPSTATE) + '</div>';
   document.querySelectorAll('[data-exp-opt]').forEach(function (b) {
     b.addEventListener('click', function () { expAnswer(st, Number(b.dataset.expOpt)); });
@@ -8279,8 +8508,10 @@ function renderLab(id, keepScroll) {
 function expAnswer(st, i) {
   if (EXPSTATE.done) return;
   const cur = st.steps[EXPSTATE.step];
+  EXPSTATE.justStep = null;
   if (i === cur.ans) {
     EXPSTATE.records.push(cur.record);
+    EXPSTATE.justStep = EXPSTATE.step;
     EXPSTATE.step++;
     EXPSTATE.fb = { type: 'good', text: cur.ok };
     if (EXPSTATE.step >= st.steps.length) {
@@ -8292,6 +8523,9 @@ function expAnswer(st, i) {
     EXPSTATE.fb = { type: 'bad', text: cur.bad };
   }
   renderLab(st.id, true);
+  if (EXPSTATE.justStep != null) {
+    setTimeout(function () { EXPSTATE.justStep = null; }, 80);
+  }
 }
 
 function expFinal(st, i) {
