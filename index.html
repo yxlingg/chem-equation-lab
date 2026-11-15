@@ -533,8 +533,9 @@ html[data-theme="dark"] .anim-info-line .vtag{color:#1B1533;}
 .bi-label.b{font-weight:600;fill:var(--ink);}
 .bi-atom{fill:#EDEFF3;stroke:#B9BFCC;stroke-width:1.5;}
 .bi-atom-t{font-size:12px;font-weight:700;fill:#22262F;text-anchor:middle;dominant-baseline:central;}
-.bi-note{max-width:620px;margin:2px auto 0;text-align:center;font-size:11.5px;color:var(--ink-2);}
-.bi-readout{max-width:620px;margin:8px auto 0;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);padding:9px 12px;transition:border-color .2s,background .2s;}
+.bi-axisline{max-width:620px;margin:2px auto 0;padding:0 4px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-2);}
+.bi-axis-name{white-space:nowrap;}
+.bi-readout{max-width:620px;margin:8px auto 0;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);padding:9px 12px 10px;transition:border-color .2s,background .2s;}
 .bi-status-head{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ink-2);margin-bottom:3px;}
 .bi-status-tag{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:1px 7px;font-weight:600;}
 .bi-dir{margin-left:auto;font-weight:700;color:var(--brand);}
@@ -547,9 +548,7 @@ html[data-theme="dark"] .bi-readout.good{background:#12291F;border-color:#245C3F
 html[data-theme="dark"] .bi-readout.good .bi-dir{color:#A7E8C2;}
 html[data-theme="dark"] .bi-readout.warn{background:#301A1A;border-color:#6B2D2A;}
 html[data-theme="dark"] .bi-readout.warn .bi-dir{color:#FFB4AC;}
-.bi-control-card{max-width:620px;margin:10px auto 0;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:9px 12px 10px;}
-.bi-control-tip{margin:0 0 7px;font-size:12px;color:var(--ink-2);}
-.bi-controls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:flex-start;margin-top:0;font-size:12.5px;color:var(--ink-2);}
+.bi-controls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:flex-start;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-2);}
 .bi-ctrl-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
 .bi-controls input[type=range]{width:150px;accent-color:var(--brand);vertical-align:middle;}
 .bi-controls b{color:var(--ink);min-width:42px;display:inline-block;text-align:center;}
@@ -558,7 +557,7 @@ html[data-theme="dark"] .bi-readout.warn .bi-dir{color:#FFB4AC;}
 .bi-cat{display:inline-flex;align-items:center;gap:6px;cursor:pointer;}
 .bi-summary{text-align:center;margin:8px auto 0;max-width:620px;line-height:1.75;font-size:11.5px;color:var(--ink-2);}
 @media (max-width:700px){
-  .bi-note,.bi-readout,.bi-control-card,.bi-summary{max-width:none;}
+  .bi-axisline,.bi-readout,.bi-summary{max-width:none;}
   .bi-controls{justify-content:center;}
   .bi-ctrl-row{justify-content:center;}
   .bi-controls input[type=range]{width:130px;}
@@ -1253,7 +1252,7 @@ html[data-theme="dark"] .exp-feedback.bad{background:#301A1A;border-color:#6B2D2
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v3.7 · 2026-11-15</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v3.8 · 2026-11-15</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -2998,7 +2997,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.7 · 2026-11-15</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.8 · 2026-11-15</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -4456,7 +4455,7 @@ function bondIntroScene() {
     + '<div class="bi-tabs">'
     + '<button type="button" class="modebtn on" data-bi-view="bond">看成键</button>'
     + '<button type="button" class="modebtn" data-bi-view="react">看反应</button></div>'
-    + '<svg class="bi-svg" viewBox="0 0 560 340" role="img" aria-label="键能与活化能">'
+    + '<svg class="bi-svg" viewBox="0 0 560 310" role="img" aria-label="键能与活化能">'
     + '<g data-bi-bond-view>'
     + '<line class="bi-axis" x1="50" y1="100" x2="50" y2="280"/>'
     + '<line class="bi-axis" x1="50" y1="280" x2="520" y2="280"/>'
@@ -4470,7 +4469,6 @@ function bondIntroScene() {
     + '<circle class="bi-atom" data-bi-atom-r cx="320" cy="58" r="16"/>'
     + '<text class="bi-atom-t" data-bi-atom-rt x="320" y="58">H</text>'
     + '<text class="bi-label" x="50" y="92">能量</text>'
-    + '<text class="bi-label" x="520" y="300" text-anchor="end">原子距离 →</text>'
     + '</g>'
     + '<g data-bi-react-view class="bi-off">'
     + '<line class="bi-axis" x1="50" y1="100" x2="50" y2="280"/>'
@@ -4483,20 +4481,16 @@ function bondIntroScene() {
     + '<line class="bi-guide" data-bi-barrier x1="' + peakX.toFixed(1) + '" y1="' + biReactY(-20).toFixed(1) + '" x2="' + peakX.toFixed(1) + '" y2="' + peakY.toFixed(1) + '"/>'
     + '<text class="bi-label b" data-bi-barrier-label x="' + peakX.toFixed(1) + '" y="' + (peakY - 12).toFixed(1) + '" text-anchor="middle">坡高 = 活化能</text>'
     + '<text class="bi-label" x="50" y="92">能量</text>'
-    + '<text class="bi-label" x="520" y="300" text-anchor="end">反应进程 →</text>'
     + '</g>'
     + '</svg>'
-    + '<p class="bi-note" data-bi-note>图里的「能量」，指两个原子之间储存的势能。</p>'
+    + '<div class="bi-axisline"><span data-bi-note>图里的能量 = 两个原子之间的势能</span><span class="bi-axis-name" data-bi-axis>原子距离 →</span></div>'
     + '<div class="bi-readout" data-bi-readout>'
     + '<div class="bi-status-head"><span class="bi-status-tag">当前状态</span><span class="bi-dir" data-bi-dir></span></div>'
     + '<p class="bi-status" data-bi-status></p>'
-    + '</div>'
-    + '<div class="bi-control-card">'
-    + '<p class="bi-control-tip" data-bi-tip>拖动滑块，让两个氢原子靠近或远离。</p>'
     + '<div class="bi-controls">'
     + '<div class="bi-ctrl-row" data-bi-bond-ctrl><span>原子距离</span><span class="bi-end">← 靠近</span>'
     + '<input type="range" min="50" max="300" value="160" data-bi-dist>'
-    + '<span class="bi-end">远离 →</span><b data-bi-dist-val>1.60</b><span class="bi-bondnote">键长记为 1.00</span></div>'
+    + '<span class="bi-end">远离 →</span><b data-bi-dist-val>1.60</b><span class="bi-bondnote">键长 1.00</span></div>'
     + '<div class="bi-ctrl-row bi-off" data-bi-react-ctrl><span>反应进程</span>'
     + '<input type="range" min="0" max="100" value="0" data-bi-prog> <b data-bi-prog-val>0%</b></div>'
     + '<label class="bi-cat bi-off" data-bi-cat-wrap><input type="checkbox" data-bi-cat> 加催化剂</label>'
@@ -4529,8 +4523,8 @@ function bindBondIntro(stage) {
   const status = stage.querySelector('[data-bi-status]');
   const readout = stage.querySelector('[data-bi-readout]');
   const dirEl = stage.querySelector('[data-bi-dir]');
-  const tip = stage.querySelector('[data-bi-tip]');
   const note = stage.querySelector('[data-bi-note]');
+  const axis = stage.querySelector('[data-bi-axis]');
   const distVal = stage.querySelector('[data-bi-dist-val]');
   const progVal = stage.querySelector('[data-bi-prog-val]');
   const tabs = Array.prototype.slice.call(stage.querySelectorAll('[data-bi-view]'));
@@ -4638,12 +4632,12 @@ function bindBondIntro(stage) {
       catWrap.classList.toggle('bi-off', view !== 'react');
       if (view === 'bond') {
         lastD = Number(dist.value) / 100; lastDir = '';
-        tip.textContent = '拖动滑块，让两个氢原子靠近或远离。';
-        note.textContent = '图里的「能量」，指两个原子之间储存的势能。';
+        note.textContent = '图里的能量 = 两个原子之间的势能';
+        axis.textContent = '原子距离 →';
       } else {
         lastT = Number(prog.value) / 100; lastTDir = '';
-        tip.textContent = '拖动滑块，让反应从反应物走到产物。';
-        note.textContent = '这张图按放热反应画：产物能量比反应物低。图里的「能量」也是势能。';
+        note.textContent = '按放热反应画：产物能量更低，能量也是势能';
+        axis.textContent = '反应进程 →';
       }
       update();
     });
