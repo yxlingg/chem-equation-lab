@@ -1255,7 +1255,7 @@ html[data-theme="dark"] .exp-feedback.bad{background:#301A1A;border-color:#6B2D2
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v3.9 · 2026-11-15</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v4.0 · 2026-11-15</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -3000,7 +3000,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.9 · 2026-11-15</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v4.0 · 2026-11-15</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -7942,7 +7942,12 @@ function wrongList() {
       i = PREDICT.findIndex(function (q) { return q.left === key; });
     }
     if (i < 0) return;
-    out.push({ key: key, i: i, q: PREDICT[i], picked: typeof e.picked === 'number' ? e.picked : -1, times: e.times || 1, ts: e.ts || 0 });
+    let picked = typeof e.picked === 'number' ? e.picked : -1;
+    if (e.pickedT) {
+      const at = PREDICT[i].opts.findIndex(function (o) { return o.t === e.pickedT; });
+      if (at >= 0) picked = at;
+    }
+    out.push({ key: key, i: i, q: PREDICT[i], picked: picked, times: e.times || 1, ts: e.ts || 0 });
   });
   out.sort(function (a, b) { return b.ts - a.ts; });
   return out;
@@ -7963,6 +7968,7 @@ function markWrong(q, picked, idx) {
   PROG.wrong[key] = {
     i: idx,
     picked: picked,
+    pickedT: (q.opts[picked] && q.opts[picked].t) || '',
     times: (cur && cur.times ? cur.times : 0) + 1,
     ts: Date.now()
   };
@@ -8301,8 +8307,115 @@ const EXP_STATIONS = [
       { q: '收集 CO₂ 时，导管为什么要伸到集气瓶底部？', opts: ['把瓶内空气排干净', '防止气体从瓶口逸出', '让 CO₂ 更快溶于水'], ans: 0, why: ['CO₂ 密度比空气大，导管伸到底部才能把空气从瓶口赶出去。', '导管伸到底部不是为了封住瓶口，空气仍要从瓶口排出。', '用排空气法收集与溶不溶于水无关；CO₂ 能溶于水，所以不用排水法。'] },
       { q: '用向上排空气法收集 CO₂，说明它有什么性质？', opts: ['密度比空气大，且能溶于水', '密度比空气小，且不支持燃烧', '密度比空气大，且难溶于水'], ans: 0, why: ['密度比空气大才能向上排空气；能溶于水，所以不用排水法。', '密度比空气小要用向下排空气，与这里矛盾。', '如果难溶于水，就可以用排水法收集了。'] }
     ]
+  },
+  {
+    id: 'oxygen', name: '氧气的制取与性质', tag: '气体制备', exam: '河北中考·氧气制取与性质',
+    lead: '从过氧化氢到铁丝燃烧：选装置、看气泡、验满、认现象、说清瓶底为什么放水。',
+    review: '#/g9a/u2',
+    steps: [
+      { q: '用过氧化氢溶液制氧气，选哪套发生装置？', opts: ['固液常温：锥形瓶 + 长颈漏斗', '固固加热：试管 + 酒精灯', '电解水装置'], ans: 0, why: ['过氧化氢在二氧化锰催化下常温分解，用固液常温装置。', '过氧化氢不需要加热，固固加热装置用不上。', '电解水得到的是氢气和氧气，不是用过氧化氢制氧气。'], record: '选择固液常温发生装置' },
+      { q: '二氧化锰在这个反应里起什么作用？', opts: ['催化剂，加快分解，本身质量和化学性质不变', '反应物，反应后被消耗掉', '溶剂，用来溶解氧气'], ans: 0, why: ['二氧化锰改变反应速率，反应前后质量和化学性质都不变，是催化剂。', '二氧化锰不是反应物，反应结束后仍能回收。', '水才是溶剂，二氧化锰是固体催化剂。'], record: '加入 MnO₂，加快分解' },
+      { q: '收集氧气，选哪种方法？', opts: ['排水法', '向下排空气法', '直接排在空气中不收集'], ans: 0, why: ['氧气不易溶于水，可以用排水法收集，收集到的气体更纯。', '氧气密度比空气大，向下排空气法收集不到。', '不收集就没法做性质实验，气体也会扩散到空气中。'], record: '排水法收集氧气' },
+      { q: '用排水法收集，什么时候开始收集？', opts: ['导管口有连续均匀气泡冒出时', '刚出现第一个气泡时', '集气瓶还没装满水时'], ans: 0, why: ['刚开始的气泡里混有装置内的空气，等气泡连续均匀再收集。', '第一个气泡主要是装置内的空气，收集了氧气不纯。', '集气瓶要先装满水倒扣在水槽里，否则瓶内残留空气。'], record: '气泡连续均匀，开始收集' },
+      { q: '用向上排空气法收集氧气，怎么验满？', opts: ['带火星木条放在集气瓶口，木条复燃', '带火星木条伸入瓶底', '闻气味'], ans: 0, why: ['带火星木条放瓶口复燃，说明瓶口已经充满氧气。', '伸入瓶内不能判断瓶口是否已满。', '氧气无色无味，闻气味不能验满。'], record: '木条复燃，已收集满' },
+      { q: '铁丝在氧气中燃烧，看到的现象是？', opts: ['剧烈燃烧、火星四射、生成黑色固体', '发出淡蓝色火焰、生成无色气体', '燃烧很慢、只冒白烟'], ans: 0, why: ['铁丝在氧气中剧烈燃烧，火星四射，放出热量，生成黑色的四氧化三铁。', '淡蓝色火焰是氢气或硫燃烧的现象，与铁丝不符。', '铁丝在氧气中燃烧很剧烈，不是缓慢冒白烟。'], record: '铁丝剧烈燃烧，火星四射' },
+      { q: '铁丝燃烧的集气瓶底为什么要放少量水或细沙？', opts: ['防止高温熔融物溅落，炸裂瓶底', '让铁丝更容易点燃', '吸收生成的有毒气体'], ans: 0, why: ['熔融物温度很高，落到瓶底会让集气瓶受热不均而炸裂。', '水或细沙不能降低铁丝的着火点，与点燃难易无关。', '四氧化三铁不是有毒气体，这里的目的不是吸收。'], record: '瓶底放水或细沙' }
+    ],
+    practice: [
+      { q: '用高锰酸钾制氧气，试管口放一团棉花的作用是？', opts: ['防止粉末进入导管，堵塞导管', '防止氧气逸出', '加快反应速率'], ans: 0, why: ['加热时高锰酸钾粉末会随气流进入导管，棉花可以挡住粉末。', '棉花挡不住气体，氧气仍从导管排出。', '棉花不是催化剂，不会加快反应。'] },
+      { q: '用过氧化氢制氧气，长颈漏斗下端要伸入液面以下，原因是？', opts: ['形成液封，防止氧气从长颈漏斗逸出', '让过氧化氢更容易分解', '防止液体溅出'], ans: 0, why: ['下端浸入液面形成液封，气体只能从导管排出。', '分解快慢由二氧化锰决定，与液封无关。', '液封不是为了防止溅出，是为了不让气体跑掉。'] },
+      { q: '铁丝在氧气中燃烧的化学方程式是？', opts: ['3Fe + 2O₂ —点燃→ Fe₃O₄', 'Fe + O₂ —点燃→ FeO₂', '2Fe + O₂ —点燃→ Fe₂O₃'], ans: 0, why: ['铁在氧气中燃烧生成四氧化三铁，方程式为 3Fe + 2O₂ → Fe₃O₄。', '铁燃烧的产物是 Fe₃O₄，没有 FeO₂ 这种物质。', 'Fe₂O₃ 是铁生锈的主要成分，不是铁燃烧的产物。'] }
+    ]
+  },
+  {
+    id: 'burn', name: '燃烧条件的探究', tag: '探究实验', exam: '河北中考·燃烧条件',
+    lead: '白磷、红磷、热水、氧气：一步步对比，把「燃烧需要什么」问清楚。',
+    review: '#/g9a/u7',
+    steps: [
+      { q: '铜片上分别放少量白磷和红磷，用热水隔水加热，看到什么现象？', opts: ['铜片上的白磷燃烧，红磷不燃烧，水中的白磷不燃烧', '白磷和红磷都燃烧', '三种情况都不燃烧'], ans: 0, why: ['白磷着火点约 40 ℃，热水就够；红磷约 240 ℃，达不到；水中的白磷没有氧气。', '红磷着火点高，热水温度达不到，所以不燃烧。', '铜片上的白磷接触空气且达到着火点，会燃烧。'], record: '白磷燃烧，红磷和水中的白磷不燃烧' },
+      { q: '向水中的白磷通入氧气后，会怎样？', opts: ['水中的白磷开始燃烧', '仍然不燃烧', '白磷溶解在水里'], ans: 0, why: ['水中白磷温度已达到着火点，只缺氧气，通氧后就能燃烧。', '它之前不燃烧是缺氧气，补上氧气就会燃烧。', '白磷不溶于水，通氧是让它接触氧气。'], record: '水中白磷通氧后燃烧' },
+      { q: '这个实验里热水的作用是什么？', opts: ['提供热量，并隔绝水中的白磷与空气', '只是用来洗仪器', '降低白磷的着火点'], ans: 0, why: ['热水给铜片和白磷提供热量，同时水把水中白磷与空气隔开。', '热水在这个实验里承担加热和隔绝空气两个作用。', '着火点是物质本身的性质，热水不能降低着火点。'], record: '热水提供热量并隔绝空气' },
+      { q: '铜片上白磷燃烧而红磷不燃烧，说明燃烧需要？', opts: ['温度达到可燃物的着火点', '可燃物足够多', '有催化剂'], ans: 0, why: ['两者都与空气接触，差别在温度是否达到各自着火点。', '可燃物多少不是这里不燃烧的原因。', '这个实验没有加催化剂。'], record: '燃烧需要温度达到着火点' },
+      { q: '实验时看到的大量白烟是什么？', opts: ['五氧化二磷固体小颗粒', '水蒸气', '二氧化碳'], ans: 0, why: ['白磷燃烧生成五氧化二磷，白烟是它的固体小颗粒。', '水蒸气是无色气体，不会形成白烟。', '二氧化碳无色，也不是这个反应的产物。'], record: '白烟是 P₂O₅ 固体小颗粒' },
+      { q: '实验室里少量白磷为什么要保存在水中？', opts: ['白磷着火点低，水能隔绝氧气，防止自燃', '白磷能溶于水', '为了让白磷更纯'], ans: 0, why: ['白磷约 40 ℃ 就着火，放在水中隔绝氧气，避免自燃。', '白磷不溶于水，保存与水溶解无关。', '水不能提纯白磷，目的是防止它自燃。'], record: '白磷保存在水中，防止自燃' },
+      { q: '用灯帽盖灭酒精灯，利用的灭火原理是？', opts: ['隔绝氧气', '降低酒精的着火点', '清除可燃物'], ans: 0, why: ['盖上灯帽后酒精与空气隔绝，火焰熄灭。', '着火点是酒精本身的性质，不能被降低。', '酒精还在灯里，并没有被清除。'], record: '盖灯帽隔绝氧气' }
+    ],
+    practice: [
+      { q: '燃烧需要同时满足的条件是？', opts: ['可燃物、氧气（或空气）、温度达到着火点', '只要可燃物和氧气', '只要温度足够高'], ans: 0, why: ['三个条件必须同时满足，缺一不可。', '温度不够时，有可燃物和氧气也不燃烧。', '没有可燃物或没有氧气，温度再高也不会燃烧。'] },
+      { q: '用嘴吹灭蜡烛，灭火原理是？', opts: ['使温度降到着火点以下', '降低石蜡的着火点', '隔绝氧气'], ans: 0, why: ['吹气带走热量，温度降到石蜡着火点以下，火焰熄灭。', '着火点是物质本身的性质，不能被降低。', '吹气反而带来空气，不是隔绝氧气。'] },
+      { q: '图书、档案着火，为什么常用二氧化碳灭火器？', opts: ['灭火后不留痕迹，不损坏图书', '二氧化碳能降低着火点', '二氧化碳能燃烧'], ans: 0, why: ['二氧化碳不留下固体残留，适合扑救图书、档案。', '着火点不能被降低，只能把温度降到着火点以下。', '二氧化碳不能燃烧，也不支持燃烧，正是靠这一点灭火。'] }
+    ]
+  },
+  {
+    id: 'metal', name: '金属的化学性质', tag: '物质性质', exam: '河北中考·金属化学性质',
+    lead: '铜不冒泡、铁能换铜、铝有氧化膜：用四支试管把金属活动性排个队。',
+    review: '#/g9/unit8',
+    steps: [
+      { q: '把铜片放入稀盐酸中，会看到什么？', opts: ['没有明显现象', '产生大量气泡', '铜片溶解，溶液变蓝'], ans: 0, why: ['铜排在氢后面，不能置换出稀盐酸中的氢，所以不反应。', '能产生气泡的是氢前的金属，如锌、铁。', '铜不与稀盐酸反应，不会溶解。'], record: '铜与稀盐酸不反应' },
+      { q: '把铁钉放入硫酸铜溶液中，现象是？', opts: ['铁钉表面出现红色固体，溶液由蓝色变为浅绿色', '铁钉表面出现气泡', '没有变化'], ans: 0, why: ['铁把铜置换出来，铜附着在铁钉表面；溶液中的 Cu²⁺ 变成 Fe²⁺，颜色由蓝变浅绿。', '硫酸铜溶液与铁反应不产生气体。', '铁比铜活泼，反应会发生。'], record: '铁钉表面变红，溶液变浅绿' },
+      { q: '铁与硫酸铜反应的化学方程式是？', opts: ['Fe + CuSO₄ = FeSO₄ + Cu', 'Fe + CuSO₄ = Fe₂(SO₄)₃ + Cu', '2Fe + 3CuSO₄ = Fe₂(SO₄)₃ + 3Cu'], ans: 0, why: ['铁置换铜生成硫酸亚铁，铁显 +2 价：Fe + CuSO₄ = FeSO₄ + Cu。', '这个反应生成 FeSO₄，不是 Fe₂(SO₄)₃。', '铁与硫酸铜反应生成 +2 价铁，不是 +3 价。'], record: 'Fe + CuSO₄ = FeSO₄ + Cu' },
+      { q: '把铁钉放入硫酸锌溶液中，会反应吗？', opts: ['不反应，因为锌比铁活泼', '反应，铁把锌置换出来', '反应，生成氢气'], ans: 0, why: ['锌排在铁前面，铁不能把锌从其盐溶液中置换出来。', '只有较活泼的金属才能置换较不活泼的金属。', '硫酸锌溶液与铁不反应，不会产生氢气。'], record: '铁与硫酸锌不反应' },
+      { q: '常见金属的活动性顺序是？', opts: ['K Ca Na Mg Al Zn Fe Sn Pb (H) Cu Hg Ag Pt Au', 'K Ca Na Mg Al Fe Zn Sn Pb (H) Cu Hg Ag Pt Au', 'K Na Ca Mg Al Zn Fe Sn Pb Cu (H) Hg Ag Pt Au'], ans: 0, why: ['顺序中锌在铁前，氢在铜前，这是教材给出的活动性顺序。', '锌比铁活泼，锌应排在铁前面。', '氢排在铜前面，不能放到铜后面。'], record: '记住金属活动性顺序' },
+      { q: '铝制品在空气中比较耐腐蚀，原因是？', opts: ['铝表面生成一层致密的氧化铝薄膜，阻止内部继续反应', '铝不与氧气反应', '铝的熔点很高'], ans: 0, why: ['铝与氧气反应生成致密的 Al₂O₃ 薄膜，覆盖在表面起保护作用。', '铝常温下就能与氧气反应，只是生成的膜很致密。', '耐腐蚀与熔点无关，铝的熔点并不高。'], record: '铝表面生成致密氧化膜' },
+      { q: '镁、锌、铁、铜分别放入稀盐酸中，反应剧烈程度是？', opts: ['Mg > Zn > Fe > Cu', 'Cu > Fe > Zn > Mg', 'Fe > Mg > Zn > Cu'], ans: 0, why: ['金属越活泼，与酸反应越剧烈；铜在氢后，不反应。', '铜不与稀盐酸反应，不可能最剧烈。', '镁比铁活泼，反应应该比铁剧烈。'], record: 'Mg > Zn > Fe，铜不反应' }
+    ],
+    practice: [
+      { q: '金属与稀盐酸、稀硫酸反应的条件是？', opts: ['金属排在氢前面', '金属排在氢后面', '任何金属都可以'], ans: 0, why: ['只有氢前的金属才能置换出酸中的氢。', '氢后的金属如铜、银不与稀盐酸、稀硫酸反应。', '氢后金属不反应，不是任何金属都可以。'] },
+      { q: '铁与稀盐酸反应后，溶液呈什么颜色？', opts: ['浅绿色', '蓝色', '黄色'], ans: 0, why: ['生成 FeCl₂，Fe²⁺ 在溶液中呈浅绿色。', '蓝色是 Cu²⁺ 的颜色，如硫酸铜溶液。', '黄色是 Fe³⁺ 的颜色，铁与稀盐酸生成 +2 价铁。'] },
+      { q: '波尔多液不能用铁桶配制，原因是？', opts: ['铁会与硫酸铜反应，降低药效并腐蚀铁桶', '铁桶会生锈影响颜色', '硫酸铜会挥发'], ans: 0, why: ['波尔多液含硫酸铜，铁比铜活泼，会把铜置换出来。', '这不只是生锈问题，是铁与硫酸铜发生了置换反应。', '硫酸铜不会挥发，问题在于铁与它反应。'] }
+    ]
+  },
+  {
+    id: 'neutral', name: '酸碱中和反应', tag: '探究实验', exam: '河北中考·酸碱中和',
+    lead: '酚酞变红又褪色，pH 停在 7：把「恰好完全反应」的证据找出来。',
+    review: '#/g9/unit10',
+    steps: [
+      { q: '向氢氧化钠溶液中滴入酚酞溶液，会看到什么？', opts: ['溶液变红', '溶液变蓝', '没有变化'], ans: 0, why: ['氢氧化钠溶液显碱性，酚酞遇碱变红。', '紫色石蕊遇碱才变蓝，酚酞是变红。', '氢氧化钠显碱性，酚酞一定会变色。'], record: '酚酞变红，溶液显碱性' },
+      { q: '再逐滴加入稀盐酸并不断振荡，会看到什么？', opts: ['红色逐渐变浅，最后刚好褪成无色', '红色越来越深', '立刻产生大量气泡'], ans: 0, why: ['盐酸与氢氧化钠反应，碱性减弱，酚酞红色逐渐变浅直到褪去。', '加酸后碱性减弱，红色只会变浅。', '氢氧化钠与盐酸反应不产生气体。'], record: '红色褪去，溶液不再显碱性' },
+      { q: '酚酞刚好褪成无色，能说明什么？', opts: ['溶液不再显碱性，氢氧化钠已被消耗', '氢氧化钠一定恰好完全反应', '溶液一定变成了酸性'], ans: 0, why: ['酚酞在碱性溶液中才显红色，褪色说明碱性消失。', '酚酞在 pH 约 8.2 以下就无色，单凭褪色不能证明恰好完全反应。', '褪色只能说明不显碱性，不能说明已经显酸性。'], record: '褪色说明碱性消失' },
+      { q: '要确认盐酸与氢氧化钠恰好完全反应，还需要？', opts: ['用 pH 试纸测反应后溶液 pH 是否等于 7', '再滴一滴酚酞看颜色', '闻一闻有没有酸味'], ans: 0, why: ['pH = 7 说明溶液中既没有多余的酸，也没有多余的碱。', '再加酚酞只能看是否显碱性，不能判断是否恰好中和。', '稀盐酸浓度低时气味不明显，不能作为判断依据。'], record: 'pH = 7，恰好完全反应' },
+      { q: '氢氧化钠与盐酸反应的实质是？', opts: ['H⁺ + OH⁻ = H₂O', 'Na⁺ + Cl⁻ = NaCl', 'H⁺ + Cl⁻ = HCl'], ans: 0, why: ['中和反应的实质是氢离子与氢氧根离子结合生成水。', '钠离子和氯离子留在溶液中，没有参加反应。', '盐酸是反应物，不是生成物。'], record: '中和实质：H⁺ + OH⁻ = H₂O' },
+      { q: '氢氧化钠与盐酸反应的化学方程式是？', opts: ['NaOH + HCl = NaCl + H₂O', 'NaOH + HCl = NaCl + H₂', '2NaOH + HCl = NaCl + H₂O'], ans: 0, why: ['酸与碱反应生成盐和水：NaOH + HCl = NaCl + H₂O。', '生成的是水，不是氢气。', '方程式没有配平，钠的个数左边 2 个、右边 1 个。'], record: 'NaOH + HCl = NaCl + H₂O' },
+      { q: '盐酸不小心沾到皮肤上，应该怎么处理？', opts: ['立即用大量水冲洗，再涂上碳酸氢钠溶液', '直接涂氢氧化钠溶液中和', '用毛巾擦干就行'], ans: 0, why: ['先用大量水冲掉酸，再涂弱碱性的碳酸氢钠溶液。', '氢氧化钠是强碱，会灼伤皮肤，不能直接涂。', '只擦干会让酸继续腐蚀皮肤，必须先大量水冲洗。'], record: '大量水冲洗，再涂碳酸氢钠溶液' }
+    ],
+    practice: [
+      { q: '下列反应属于中和反应的是？', opts: ['Ca(OH)₂ + 2HCl = CaCl₂ + 2H₂O', 'CO₂ + Ca(OH)₂ = CaCO₃↓ + H₂O', 'Fe + 2HCl = FeCl₂ + H₂↑'], ans: 0, why: ['酸与碱作用生成盐和水，是中和反应。', '二氧化碳不是酸，这个反应不属于中和反应。', '铁是单质，不是碱，这个反应是置换反应。'] },
+      { q: '向稀盐酸中逐滴加入氢氧化钠溶液，pH 会怎样变化？', opts: ['由小于 7 逐渐增大，可到 7 甚至大于 7', '一直减小', '始终等于 7'], ans: 0, why: ['盐酸显酸性，加碱后酸性减弱，pH 增大，过量后显碱性。', '加氢氧化钠不会让溶液更酸。', '恰好完全反应时才等于 7，继续加碱会大于 7。'] },
+      { q: '农业上用熟石灰改良酸性土壤，利用的是？', opts: ['中和反应', '置换反应', '分解反应'], ans: 0, why: ['熟石灰是碱，与土壤中的酸反应生成盐和水，属于中和反应。', '置换反应是单质与化合物反应，这里没有单质参加。', '分解反应是一种物质生成多种物质，这里不是。'] }
+    ]
   }
 ];
+
+/* 选项洗牌：只打乱每题内部顺序，题目顺序不变；本次打开内稳定，刷新后重排 */
+function shuffleIndexes(n) {
+  const idx = [];
+  for (let i = 0; i < n; i++) idx.push(i);
+  for (let i = n - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = idx[i]; idx[i] = idx[j]; idx[j] = t;
+  }
+  return idx;
+}
+
+function shuffleExpQuestion(q) {
+  const map = shuffleIndexes(q.opts.length);
+  const opts = map.map(function (k) { return q.opts[k]; });
+  if (Array.isArray(q.why)) q.why = map.map(function (k) { return q.why[k]; });
+  q.ans = map.indexOf(q.ans);
+  q.opts = opts;
+}
+
+function shufflePredQuestion(q) {
+  const map = shuffleIndexes(q.opts.length);
+  q.opts = map.map(function (k) { return q.opts[k]; });
+  q.ok = map.indexOf(q.ok);
+}
+
+EXP_STATIONS.forEach(function (st) {
+  st.steps.forEach(shuffleExpQuestion);
+  st.practice.forEach(shuffleExpQuestion);
+});
+PREDICT.forEach(shufflePredQuestion);
 
 const EXPSTATE = {
   id: null, step: 0, score: 10, records: [], done: false,
@@ -8329,6 +8442,10 @@ function expCheck(x, y) {
 function expStageHtml(st, step, done, justStep) {
   if (st.id === 'salt') return expSvgSalt(step, done, justStep);
   if (st.id === 'solution') return expSvgSolution(step, done, justStep);
+  if (st.id === 'oxygen') return expSvgOxygen(step, done, justStep);
+  if (st.id === 'burn') return expSvgBurn(step, done, justStep);
+  if (st.id === 'metal') return expSvgMetal(step, done, justStep);
+  if (st.id === 'neutral') return expSvgNeutral(step, done, justStep);
   return expSvgGas(step, done, justStep);
 }
 
@@ -8502,6 +8619,230 @@ function expSvgGas(step, done, justStep) {
       + '<circle cx="578" cy="252" r="3" fill="#fff" opacity=".9"/></g>' : '')
     + expCheck(602, 168)
     + '<text x="580" y="300" text-anchor="middle" class="exp-label">澄清石灰水</text></g>'
+    + '</svg>';
+}
+
+function expSvgOxygen(step, done, justStep) {
+  const active = ['flask', 'flask', 'collect', 'collect', 'jar', 'iron', 'iron'][step] || '';
+  const bubbles = function (cx, cy) {
+    return '<circle class="exp-bubble" cx="' + cx + '" cy="' + cy + '" r="3"/>'
+      + '<circle class="exp-bubble d2" cx="' + (cx + 9) + '" cy="' + (cy + 6) + '" r="2.6"/>'
+      + '<circle class="exp-bubble d3" cx="' + (cx + 4) + '" cy="' + (cy + 12) + '" r="2.2"/>';
+  };
+  const dF = done || step >= 1;
+  const dC = done || step >= 4;
+  const dJ = done || step >= 5;
+  const dI = done || step >= 7;
+  return '<svg class="exp-svg" viewBox="0 90 640 240" role="img" aria-label="氧气的制取与性质实验台">'
+    + expG(active === 'flask', dF, justStep === 0 || justStep === 1)
+    + '<path d="M78 250 L78 208 L100 176 L100 146 L116 146 L116 176 L138 208 L138 250 Z" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<path d="M82 250 L82 214 L103 188 L103 152 L113 152 L113 188 L134 214 L134 250 Z" class="exp-liquid water" opacity=".7"/>'
+    + (step >= 1 || done ? '<g class="exp-fx-show">' + bubbles(104, 238) + bubbles(122, 228) + '</g>' : '')
+    + '<line x1="158" y1="120" x2="158" y2="228" stroke="var(--line)" stroke-width="2"/>'
+    + '<path d="M146 120 L170 120 L158 134 Z" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + (step >= 1 || done ? '<text x="128" y="202" text-anchor="middle" class="exp-label b">MnO₂</text>' : '')
+    + expCheck(182, 112)
+    + '<text x="110" y="300" text-anchor="middle" class="exp-label">过氧化氢 + MnO₂</text></g>'
+    + expG(active === 'collect', dC, justStep === 2 || justStep === 3)
+    + '<path d="M218 250 L218 218 Q218 210 226 210 L392 210 Q400 210 400 218 L400 250 Z" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="222" y="220" width="174" height="28" class="exp-liquid water" opacity=".65"/>'
+    + '<rect x="286" y="132" width="62" height="112" rx="5" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="290" y="196" width="54" height="46" class="exp-liquid water" opacity=".75"/>'
+    + (step >= 3 || done ? '<rect class="exp-fx-show exp-fx-gasfill" x="290" y="136" width="54" height="60" fill="var(--brand-soft)" opacity=".85"/>' : '')
+    + (step >= 3 || done ? '<circle class="exp-bubble" cx="316" cy="202" r="3"/><circle class="exp-bubble d2" cx="326" cy="210" r="2.4"/>' : '')
+    + '<text x="317" y="126" text-anchor="middle" class="exp-label">排水法</text>'
+    + expCheck(358, 126)
+    + '<text x="309" y="300" text-anchor="middle" class="exp-label">水槽 + 集气瓶</text></g>'
+    + expG(active === 'jar', dJ, justStep === 4)
+    + '<rect x="440" y="160" width="66" height="100" rx="6" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + (dJ ? '<rect class="exp-fx-show" x="444" y="164" width="58" height="92" fill="var(--brand-soft)" opacity=".85"/>' : '')
+    + '<line x1="514" y1="158" x2="500" y2="126" stroke="var(--ink-2)" stroke-width="2"/>'
+    + (dJ ? '<circle cx="498" cy="122" r="5" fill="#F59E0B"/>' : '')
+    + expCheck(512, 152)
+    + '<text x="473" y="300" text-anchor="middle" class="exp-label">验满：木条复燃</text></g>'
+    + expG(active === 'iron', dI, justStep === 5 || justStep === 6)
+    + '<rect x="552" y="168" width="66" height="94" rx="6" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="556" y="228" width="58" height="30" class="exp-liquid water"/>'
+    + '<line x1="585" y1="128" x2="585" y2="224" stroke="var(--ink-2)" stroke-width="2"/>'
+    + (step >= 6 || done ? '<g class="exp-fx-show">'
+      + '<circle cx="573" cy="206" r="2.2" fill="#F59E0B"/><circle cx="596" cy="198" r="2" fill="#F59E0B"/>'
+      + '<circle cx="568" cy="188" r="1.8" fill="#F59E0B"/><circle cx="601" cy="214" r="1.8" fill="#F59E0B"/>'
+      + '<circle cx="585" cy="220" r="3" fill="#3A3A3A"/></g>' : '')
+    + expCheck(618, 160)
+    + '<text x="585" y="300" text-anchor="middle" class="exp-label">铁丝在氧气中燃烧</text></g>'
+    + '</svg>';
+}
+
+function expSvgBurn(step, done, justStep) {
+  const active = ['copper', 'water', 'water', 'water', 'smoke', 'store', 'cover'][step] || '';
+  const dC = done || step >= 1;
+  const dW = done || step >= 4;
+  const dS = done || step >= 5;
+  const dL = done || step >= 7;
+  return '<svg class="exp-svg" viewBox="0 90 640 240" role="img" aria-label="燃烧条件的探究实验台">'
+    + expG(active === 'copper', dC, justStep === 0 || justStep === 3)
+    + '<path d="M62 152 L62 248 Q62 258 74 258 L232 258 Q244 258 244 248 L244 152" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="66" y="192" width="174" height="62" class="exp-liquid water" opacity=".75"/>'
+    + '<rect x="82" y="168" width="146" height="7" rx="3" fill="var(--ink-2)"/>'
+    + '<circle cx="118" cy="164" r="5" fill="#fff" stroke="var(--line)"/>'
+    + '<circle cx="190" cy="164" r="5" fill="#B23A2E"/>'
+    + '<text x="118" y="140" text-anchor="middle" class="exp-label">白磷</text>'
+    + '<text x="190" y="140" text-anchor="middle" class="exp-label">红磷</text>'
+    + (step >= 1 || done ? '<g class="exp-fx-show"><path d="M118 158 q6 -9 0 -16 q8 6 4 16 z" fill="#F59E0B"/></g>' : '')
+    + expCheck(238, 142)
+    + '<text x="153" y="300" text-anchor="middle" class="exp-label">铜片 + 热水</text></g>'
+    + expG(active === 'water', dW, justStep === 1 || justStep === 2)
+    + '<path d="M270 200 L270 250 Q270 258 280 258 L356 258 Q366 258 366 250 L366 200" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="274" y="216" width="88" height="38" class="exp-liquid water" opacity=".75"/>'
+    + '<circle cx="318" cy="242" r="5" fill="#fff" stroke="var(--line)"/>'
+    + '<line x1="352" y1="150" x2="326" y2="238" stroke="var(--line)" stroke-width="2" stroke-dasharray="4 4"/>'
+    + '<text x="318" y="210" text-anchor="middle" class="exp-label">水中白磷</text>'
+    + (step >= 2 || done ? '<g class="exp-fx-show">'
+      + '<circle class="exp-bubble" cx="330" cy="246" r="2.6"/><circle class="exp-bubble d2" cx="310" cy="248" r="2.2"/>'
+      + '<path d="M318 236 q6 -11 0 -18 q9 7 5 18 z" fill="#F59E0B"/></g>' : '')
+    + expCheck(340, 194)
+    + '<text x="318" y="300" text-anchor="middle" class="exp-label">通氧气</text></g>'
+    + expG(active === 'smoke', dS, justStep === 4)
+    + '<circle cx="118" cy="124" r="6" fill="#E8E8EC" opacity=".9"/>'
+    + '<circle cx="132" cy="110" r="8" fill="#E8E8EC" opacity=".8"/>'
+    + '<circle cx="104" cy="102" r="7" fill="#E8E8EC" opacity=".7"/>'
+    + '<text x="176" y="112" text-anchor="middle" class="exp-label">白烟：P₂O₅</text>'
+    + expCheck(216, 108)
+    + '</g>'
+    + expG(active === 'store', dS, justStep === 5)
+    + '<rect x="404" y="180" width="70" height="78" rx="8" fill="var(--panel-2)" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="412" y="160" width="54" height="22" rx="5" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="408" y="200" width="62" height="54" class="exp-liquid water" opacity=".8"/>'
+    + '<circle cx="438" cy="242" r="6" fill="#fff" stroke="var(--line)"/>'
+    + '<text x="439" y="150" text-anchor="middle" class="exp-label">白磷存水中</text>'
+    + expCheck(480, 150)
+    + '<text x="439" y="300" text-anchor="middle" class="exp-label">试剂瓶</text></g>'
+    + expG(active === 'cover', dL, justStep === 6)
+    + '<rect x="536" y="200" width="52" height="56" rx="6" fill="var(--panel-2)" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="552" y="188" width="20" height="14" fill="var(--line)"/>'
+    + '<path d="M540 186 L584 186 L576 146 L548 146 Z" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<text x="562" y="300" text-anchor="middle" class="exp-label">盖灯帽灭火</text>'
+    + expCheck(598, 138)
+    + '</g>'
+    + '<text x="320" y="320" text-anchor="middle" class="exp-label">燃烧条件：可燃物 + 氧气 + 温度达到着火点</text>'
+    + '</svg>';
+}
+
+function expSvgMetal(step, done, justStep) {
+  const active = ['acid', 'acid', 'cuso4', 'cuso4', 'order', 'al', 'order'][step] || '';
+  const dA = done || step >= 2;
+  const dCu = done || step >= 4;
+  const dO = done || step >= 4;
+  const dAl = done || step >= 6;
+  const tube = function (x, label) {
+    return '<path d="M' + x + ' 160 L' + x + ' 248 Q' + x + ' 258 ' + (x + 10) + ' 258 L' + (x + 30) + ' 258 Q' + (x + 40) + ' 258 ' + (x + 40) + ' 248 L' + (x + 40) + ' 160" fill="none" stroke="var(--line)" stroke-width="2"/>'
+      + '<text x="' + (x + 20) + '" y="278" text-anchor="middle" class="exp-label">' + label + '</text>';
+  };
+  const bubble = function (cx, cy) {
+    return '<circle class="exp-bubble" cx="' + cx + '" cy="' + cy + '" r="2.6"/>'
+      + '<circle class="exp-bubble d2" cx="' + (cx + 6) + '" cy="' + (cy + 7) + '" r="2.2"/>';
+  };
+  return '<svg class="exp-svg" viewBox="0 90 640 240" role="img" aria-label="金属的化学性质实验台">'
+    + expG(active === 'acid', dA, justStep === 0 || justStep === 1)
+    + tube(66, 'Zn') + tube(122, 'Fe') + tube(178, 'Cu')
+    + '<rect x="70" y="210" width="32" height="42" class="exp-liquid acid"/>'
+    + '<rect x="126" y="210" width="32" height="42" class="exp-liquid acid"/>'
+    + '<rect x="182" y="210" width="32" height="42" class="exp-liquid acid"/>'
+    + '<rect x="78" y="222" width="16" height="6" rx="2" fill="var(--ink-2)"/>'
+    + '<rect x="134" y="222" width="16" height="6" rx="2" fill="var(--ink-2)"/>'
+    + '<rect x="190" y="222" width="16" height="6" rx="2" fill="#B87333"/>'
+    + (step >= 1 || done ? '<g class="exp-fx-show">' + bubble(82, 244) + bubble(138, 240) + '</g>' : '')
+    + expCheck(214, 152)
+    + '<text x="142" y="300" text-anchor="middle" class="exp-label">稀盐酸</text></g>'
+    + expG(active === 'cuso4', dCu, justStep === 2 || justStep === 3)
+    + '<path d="M262 160 L262 248 Q262 258 272 258 L312 258 Q322 258 322 248 L322 160" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="266" y="196" width="52" height="56" fill="' + (step >= 3 || done ? '#CFEBD8' : '#CFE0F7') + '"/>'
+    + '<line x1="292" y1="166" x2="292" y2="240" stroke="var(--ink-2)" stroke-width="3"/>'
+    + '<rect x="280" y="162" width="24" height="7" rx="3" fill="var(--ink-2)"/>'
+    + (step >= 3 || done ? '<g class="exp-fx-show">'
+      + '<circle cx="286" cy="210" r="3" fill="#B87333"/><circle cx="298" cy="222" r="3" fill="#B87333"/>'
+      + '<circle cx="287" cy="232" r="2.6" fill="#B87333"/></g>' : '')
+    + expCheck(330, 152)
+    + '<text x="292" y="300" text-anchor="middle" class="exp-label">铁钉 + CuSO₄</text></g>'
+    + expG(active === 'order', dO, justStep === 4 || justStep === 6)
+    + '<rect x="352" y="138" width="188" height="112" rx="12" fill="var(--panel-2)" stroke="var(--line)"/>'
+    + '<text x="446" y="166" text-anchor="middle" class="exp-label b">金属活动性顺序</text>'
+    + '<text x="446" y="194" text-anchor="middle" class="exp-label">K Ca Na Mg Al Zn Fe</text>'
+    + '<text x="446" y="216" text-anchor="middle" class="exp-label">Sn Pb (H) Cu Hg Ag Pt Au</text>'
+    + '<text x="446" y="238" text-anchor="middle" class="exp-label">越靠前越活泼</text>'
+    + expCheck(536, 132)
+    + '</g>'
+    + expG(active === 'al', dAl, justStep === 5)
+    + '<rect x="556" y="178" width="62" height="72" rx="6" fill="#DDE3EC" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="556" y="178" width="62" height="10" rx="4" fill="#AEB8C8"/>'
+    + '<text x="587" y="160" text-anchor="middle" class="exp-label">Al₂O₃ 薄膜</text>'
+    + '<text x="587" y="270" text-anchor="middle" class="exp-label">铝片</text>'
+    + expCheck(622, 170)
+    + '</g>'
+    + '<text x="320" y="320" text-anchor="middle" class="exp-label">氢前金属能置换酸中的氢，活泼的金属能置换不活泼的金属</text>'
+    + '</svg>';
+}
+
+function expSvgNeutral(step, done, justStep) {
+  const active = ['phenol', 'drop', 'drop', 'ph', 'ion', 'eq', 'wash'][step] || '';
+  const dP = done || step >= 1;
+  const dD = done || step >= 3;
+  const dPh = done || step >= 4;
+  const dI = done || step >= 5;
+  const dE = done || step >= 6;
+  const dW = done || step >= 7;
+  return '<svg class="exp-svg" viewBox="0 90 640 240" role="img" aria-label="酸碱中和反应实验台">'
+    + expG(active === 'phenol', dP, justStep === 0)
+    + '<path d="M70 170 L70 250 Q70 258 82 258 L178 258 Q190 258 190 250 L190 170" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<ellipse cx="130" cy="170" rx="60" ry="4.5" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="74" y="204" width="112" height="50" fill="' + (step >= 2 || done ? 'var(--meta-liquid)' : '#F3C3D1') + '"/>'
+    + '<path d="M112 120 L128 120 L128 148 L120 160 L112 148 Z" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<text x="120" y="110" text-anchor="middle" class="exp-label">酚酞</text>'
+    + expCheck(204, 146)
+    + '<text x="130" y="300" text-anchor="middle" class="exp-label">NaOH 溶液</text></g>'
+    + expG(active === 'drop', dD, justStep === 1 || justStep === 2)
+    + '<path d="M112 118 L128 118 L128 146 L120 158 L112 146 Z" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<circle class="exp-drop" cx="120" cy="172" r="2.8"/>'
+    + '<circle class="exp-drop" cx="126" cy="180" r="2.2"/>'
+    + '<text x="164" y="112" text-anchor="middle" class="exp-label">稀盐酸</text>'
+    + expCheck(204, 110)
+    + '</g>'
+    + expG(active === 'ph', dPh, justStep === 3)
+    + '<rect x="244" y="150" width="26" height="100" rx="4" fill="#FFF6D8" stroke="var(--line)"/>'
+    + '<rect x="246" y="154" width="22" height="16" fill="#E4572E"/>'
+    + '<rect x="246" y="172" width="22" height="16" fill="#F2A93B"/>'
+    + '<rect x="246" y="190" width="22" height="16" fill="#F9E04B"/>'
+    + '<rect x="246" y="208" width="22" height="16" fill="#6FBF73"/>'
+    + '<rect x="246" y="226" width="22" height="16" fill="#3D8BD4"/>'
+    + '<text x="280" y="180" class="exp-label b">pH = 7</text>'
+    + '<text x="280" y="202" class="exp-label">恰好中和</text>'
+    + expCheck(298, 266)
+    + '</g>'
+    + expG(active === 'ion', dI, justStep === 4)
+    + '<circle cx="342" cy="208" r="17" fill="var(--brand-soft)" stroke="var(--line)"/>'
+    + '<text x="342" y="214" text-anchor="middle" class="exp-label b">H⁺</text>'
+    + '<text x="366" y="214" text-anchor="middle" class="exp-label">+</text>'
+    + '<circle cx="392" cy="208" r="19" fill="var(--meta-liquid)" stroke="var(--line)"/>'
+    + '<text x="392" y="214" text-anchor="middle" class="exp-label b">OH⁻</text>'
+    + '<line x1="416" y1="208" x2="438" y2="208" stroke="var(--ink-2)" stroke-width="2"/>'
+    + '<path d="M438 208 l-7 -4 l0 8 z" fill="var(--ink-2)"/>'
+    + '<circle cx="466" cy="208" r="19" fill="var(--meta-liquid)" stroke="var(--line)"/>'
+    + '<text x="466" y="214" text-anchor="middle" class="exp-label b">H₂O</text>'
+    + expCheck(500, 180)
+    + '</g>'
+    + expG(active === 'eq', dE, justStep === 5)
+    + '<rect x="220" y="108" width="400" height="40" rx="12" fill="var(--brand-soft)"/>'
+    + '<text x="420" y="134" text-anchor="middle" class="exp-label b">NaOH + HCl = NaCl + H₂O</text>'
+    + '</g>'
+    + expG(active === 'wash', dW, justStep === 6)
+    + '<path d="M540 150 L540 170 Q540 180 550 180 L556 180" fill="none" stroke="var(--ink-2)" stroke-width="3"/>'
+    + '<line x1="556" y1="182" x2="556" y2="246" stroke="#9CC7F5" stroke-width="4"/>'
+    + '<text x="556" y="268" text-anchor="middle" class="exp-label">大量水冲洗</text>'
+    + '<rect x="578" y="196" width="46" height="62" rx="8" fill="var(--panel-2)" stroke="var(--line)" stroke-width="2"/>'
+    + '<text x="601" y="232" text-anchor="middle" class="exp-label b">NaHCO₃</text>'
+    + expCheck(570, 170)
+    + '</g>'
+    + '<text x="320" y="320" text-anchor="middle" class="exp-label">中和反应：酸 + 碱 → 盐 + 水</text>'
     + '</svg>';
 }
 
