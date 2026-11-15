@@ -227,20 +227,20 @@ h2{font-size:25px;margin:12px 0 4px;font-weight:600;}
 .sp .nm{color:var(--ink-2);font-size:12px;}
 .valrow{
   display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;
-  font-size:12px;color:var(--ink-2);
+  font-size:14px;line-height:1.6;color:var(--ink-2);
 }
 .valrow .vitem b{color:var(--val);font-weight:700;}
 .valrow .vtag{
   background:#F1EBFF;color:var(--val);border-radius:6px;
-  padding:1px 6px;font-weight:600;font-size:11px;
+  padding:1px 7px;font-weight:600;font-size:12px;
 }
 .bondrow{
   display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;
-  font-size:12px;color:var(--ink-2);
+  font-size:14px;line-height:1.6;color:var(--ink-2);
 }
 .bondrow .btag{
   background:#E4F5F8;color:var(--bondc);border-radius:6px;
-  padding:1px 6px;font-weight:600;font-size:11px;
+  padding:1px 7px;font-weight:600;font-size:12px;
 }
 .bondrow .bitem{padding:1px 0;}
 .top-right{display:flex;align-items:center;gap:14px;}
@@ -373,22 +373,22 @@ h2{font-size:25px;margin:12px 0 4px;font-weight:600;}
 .anim-info{
   position:absolute;left:0;right:0;bottom:0;
   display:grid;grid-template-columns:1fr 1fr;gap:2px 22px;
-  padding:8px 18px 2px;font-size:10.5px;line-height:1.5;
+  padding:8px 18px 2px;font-size:13px;line-height:1.6;
   background:linear-gradient(180deg,rgba(255,255,255,0) 0%,var(--panel) 45%);
   pointer-events:none;
 }
 html[data-theme="dark"] .anim-info{background:linear-gradient(180deg,rgba(23,28,38,0) 0%,var(--panel) 45%);}
 .anim-info-col{display:flex;flex-direction:column;gap:1px;}
-.anim-info-line{display:flex;flex-wrap:wrap;gap:2px 6px;align-items:baseline;color:var(--ink-2);}
+.anim-info-line{display:flex;flex-wrap:wrap;gap:2px 7px;align-items:baseline;color:var(--ink-2);}
 .anim-info-line b{color:var(--ink);font-weight:600;}
-.anim-info-line .v{color:var(--val);font-weight:700;font-size:11px;display:inline-flex;align-items:center;gap:3px;}
-.anim-info-line .vtag{font-style:normal;font-weight:700;font-size:9px;line-height:1.5;padding:0 4px;border-radius:4px;background:var(--val);color:#fff;}
+.anim-info-line .v{color:var(--val);font-weight:700;font-size:12px;display:inline-flex;align-items:center;gap:3px;}
+.anim-info-line .vtag{font-style:normal;font-weight:700;font-size:10px;line-height:1.5;padding:0 5px;border-radius:4px;background:var(--val);color:#fff;}
 html[data-theme="dark"] .anim-info-line .vtag{color:#1B1533;}
 .anim-info-line .b{color:var(--bondc);}
 .anim-info-note{
   grid-column:1/-1;justify-self:start;
   display:inline-flex;align-items:center;gap:5px;
-  font-size:11px;line-height:1.4;padding:3px 10px;border-radius:999px;
+  font-size:13px;line-height:1.5;padding:4px 11px;border-radius:999px;
   background:var(--brand-soft);color:var(--brand-ink);
 }
 .anim-info-note b{color:var(--val);font-weight:700;}
@@ -1271,7 +1271,7 @@ html[data-theme="dark"] .exp-feedback.bad{background:#301A1A;border-color:#6B2D2
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v4.3 · 2026-11-15</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v4.4 · 2026-11-15</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -3016,7 +3016,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v4.3 · 2026-11-15</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v4.4 · 2026-11-15</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
