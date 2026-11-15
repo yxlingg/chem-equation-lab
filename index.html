@@ -1203,6 +1203,7 @@ html[data-theme="dark"] .exp-why.bad b{color:#FFB4AC;}
 .exp-navrow .btn.primary:disabled{background:var(--panel-2);border-color:var(--line);color:var(--ink-2);}
 .exp-navrow .exp-analysis-btn{margin-left:auto;}
 @media (max-width:420px){.exp-navrow .exp-analysis-btn{margin-left:0;}}
+.exp-quiz-head{font-size:12px;color:var(--brand);font-weight:600;letter-spacing:.4px;margin:2px 0 4px;}
 .exp-practice-note{font-size:11.5px;color:var(--ink-2);margin:8px 0 0;line-height:1.6;}
 .exp-practice-btn{padding:6px 12px;font-size:12.5px;}
 .exp-feedback{margin-top:10px;border-radius:10px;padding:8px 11px;font-size:12.5px;line-height:1.65;border:1px solid var(--line);background:var(--panel-2);color:var(--ink-2);}
@@ -1252,7 +1253,7 @@ html[data-theme="dark"] .exp-feedback.bad{background:#301A1A;border-color:#6B2D2
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v3.6 · 2026-11-15</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v3.7 · 2026-11-15</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -2997,7 +2998,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.6 · 2026-11-15</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.7 · 2026-11-15</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -8256,7 +8257,11 @@ const EXP_STATIONS = [
       { q: '蒸发时，什么时候停止加热？', opts: ['出现较多固体时停止，余热蒸干', '一直加热到完全蒸干', '水一沸腾就停止'], ans: 0, why: ['出现较多固体就停，余热把剩余水分蒸干，避免晶体飞溅。', '蒸干才停容易飞溅，损失精盐。', '水刚沸腾就停，大部分水还没蒸发，得不到晶体。'], record: '蒸发，出现白色晶体' },
       { q: '产率怎么算？', opts: ['精盐质量 ÷ 粗盐质量 × 100%', '粗盐质量 ÷ 精盐质量 × 100%', '水的质量 ÷ 精盐质量 × 100%'], ans: 0, why: ['产率是得到的精盐占粗盐的质量分数，分母是粗盐。', '分子分母颠倒，算出来不是产率。', '产率与水的质量无关，分母不能用水的质量。'], record: '产率 = 精盐质量 ÷ 粗盐质量 × 100%' }
     ],
-    final: { q: '下列操作会使产率偏低的是？', opts: ['蒸发时晶体飞溅', '过滤时液面高于滤纸边缘', '称量精盐时砝码生锈', '精盐未完全干燥'], ans: 0, why: ['晶体飞溅会损失精盐，产率偏低。', '液面高于滤纸边缘，杂质进入滤液，精盐质量偏大，产率偏高。', '砝码生锈质量偏大，称得的精盐偏多，产率偏高。', '精盐未完全干燥，含水使质量偏大，产率偏高。'] }
+    practice: [
+      { q: '下列操作会使产率偏低的是？', opts: ['蒸发时晶体飞溅', '过滤时液面高于滤纸边缘', '称量精盐时砝码生锈', '精盐未完全干燥'], ans: 0, why: ['晶体飞溅会损失精盐，产率偏低。', '液面高于滤纸边缘，杂质进入滤液，精盐质量偏大，产率偏高。', '砝码生锈质量偏大，称得的精盐偏多，产率偏高。', '精盐未完全干燥，含水使质量偏大，产率偏高。'] },
+      { q: '过滤时，玻璃棒的作用是？', opts: ['引流，防止液体溅出', '搅拌，加快过滤', '转移固体'], ans: 0, why: ['玻璃棒斜靠在三层滤纸上，把液体引流进漏斗，防止液体溅出或冲破滤纸。', '过滤时不能在漏斗里搅拌，会把滤纸弄破。', '转移固体用纸槽或药匙，玻璃棒在这里是引流。'] },
+      { q: '蒸发时用玻璃棒不断搅拌，目的是？', opts: ['防止液体受热不均、飞溅', '加快蒸发，让盐析出更多', '把晶体研碎'], ans: 0, why: ['局部过热会暴沸溅出，搅拌让液体受热均匀。', '搅拌不会让产率变高，蒸发快慢主要看加热。', '研碎晶体用研钵，搅拌不是为了研碎。'] }
+    ]
   },
   {
     id: 'solution', name: '溶液配制', tag: '定量实验', exam: '实验操作·配制溶液',
@@ -8269,7 +8274,11 @@ const EXP_STATIONS = [
       { q: '把 NaCl 放入水中后，怎样溶解？', opts: ['烧杯 + 玻璃棒搅拌', '试管 + 酒精灯加热', '蒸发皿 + 漏斗'], ans: 0, why: ['烧杯内用玻璃棒搅拌，加快溶解。', '配制溶液不需要加热，试管也不适合大量配制。', '蒸发皿和漏斗不是溶解容器，漏斗更不能装液体搅拌。'], record: '搅拌溶解' },
       { q: '配好后怎么处理？', opts: ['装入试剂瓶，贴标签「NaCl 溶液 6%」', '敞口放在烧杯里', '装瓶但不贴标签'], ans: 0, why: ['装瓶并贴标签，写清名称和质量分数，便于取用。', '敞口放置水分会蒸发，浓度改变，还会落入杂质。', '不贴标签容易和其他溶液混淆。'], record: '装瓶，贴标签「NaCl 溶液 6%」' }
     ],
-    final: { q: '量水时仰视读数，配得溶液的质量分数会？', opts: ['偏小', '偏大', '不变'], ans: 0, why: ['仰视读数时实际水量偏多，溶质质量不变，质量分数偏小。', '俯视读数才会水量偏少、质量分数偏大；仰视正好相反。', '水量改变了，溶液质量和质量分数都会变。'] }
+    practice: [
+      { q: '量水时仰视读数，配得溶液的质量分数会？', opts: ['偏小', '偏大', '不变'], ans: 0, why: ['仰视读数时实际水量偏多，溶质质量不变，质量分数偏小。', '俯视读数才会水量偏少、质量分数偏大；仰视正好相反。', '水量改变了，溶液质量和质量分数都会变。'] },
+      { q: '量取 47 mL 水，最后少量水用什么加？', opts: ['胶头滴管', '玻璃棒', '药匙'], ans: 0, why: ['量筒量到接近刻度后，用胶头滴管逐滴加到刻度线，避免超过。', '玻璃棒用来搅拌或引流，不能精确滴加。', '药匙用来取固体，不能加水。'] },
+      { q: '配好的溶液装瓶时洒出一部分，质量分数会？', opts: ['偏大', '偏小', '不变'], ans: 2, why: ['倒出的溶液浓度和整瓶一样，剩下溶液不会变浓。', '倒出不会让剩下溶液变稀，质量分数不变。', '溶液均一、稳定，洒出一部分后剩下的浓度不变。'] }
+    ]
   },
   {
     id: 'gas', name: '气体制取与净化', tag: '综合实验', exam: '河北中考·气体制备',
@@ -8285,15 +8294,20 @@ const EXP_STATIONS = [
       { q: '验满 CO₂，怎么做？', opts: ['燃着木条放在集气瓶口', '燃着木条伸入瓶内', '闻气味'], ans: 0, why: ['燃着木条放瓶口，熄灭说明瓶口已充满 CO₂。', '伸入瓶内会受瓶内气体影响，不能判断瓶口是否满。', 'CO₂ 无色无味，闻气味不能验满。'], record: '木条熄灭，已收集满' },
       { q: '检验 CO₂，用？', opts: ['澄清石灰水，变浑浊', '燃着木条，熄灭', '紫色石蕊，变蓝'], ans: 0, why: ['澄清石灰水变浑浊是 CO₂ 的特征检验。', '木条熄灭只能说明不支持燃烧，不能确定是 CO₂。', 'CO₂ 使紫色石蕊变红，不是变蓝。'], record: '澄清石灰水变浑浊，是 CO₂' }
     ],
-    final: { q: '长颈漏斗下端没有液封，后果是？', opts: ['气体从长颈漏斗逸出', 'CO₂ 更纯', '反应停止'], ans: 0, why: ['下端没有浸入液面，生成的气体会从长颈漏斗口跑掉。', '气体逸出不会让 CO₂ 更纯，反而收集不到。', '石灰石和稀盐酸仍会反应，只是气体跑了。'] }
+    practice: [
+      { q: '长颈漏斗下端没有液封，后果是？', opts: ['气体从长颈漏斗逸出', 'CO₂ 更纯', '反应停止'], ans: 0, why: ['下端没有浸入液面，生成的气体会从长颈漏斗口跑掉。', '气体逸出不会让 CO₂ 更纯，反而收集不到。', '石灰石和稀盐酸仍会反应，只是气体跑了。'] },
+      { q: '收集 CO₂ 时，导管为什么要伸到集气瓶底部？', opts: ['把瓶内空气排干净', '防止气体从瓶口逸出', '让 CO₂ 更快溶于水'], ans: 0, why: ['CO₂ 密度比空气大，导管伸到底部才能把空气从瓶口赶出去。', '导管伸到底部不是为了封住瓶口，空气仍要从瓶口排出。', '用排空气法收集与溶不溶于水无关；CO₂ 能溶于水，所以不用排水法。'] },
+      { q: '用向上排空气法收集 CO₂，说明它有什么性质？', opts: ['密度比空气大，且能溶于水', '密度比空气小，且不支持燃烧', '密度比空气大，且难溶于水'], ans: 0, why: ['密度比空气大才能向上排空气；能溶于水，所以不用排水法。', '密度比空气小要用向下排空气，与这里矛盾。', '如果难溶于水，就可以用排水法收集了。'] }
+    ]
   }
 ];
 
 const EXPSTATE = {
   id: null, step: 0, score: 10, records: [], done: false,
-  finalPicked: -1, justStep: null, picked: -1, answered: false,
+  justStep: null, picked: -1, answered: false,
   answers: [], showAnalysis: false,
-  practice: false, practicePicked: -1
+  practice: false,
+  quizIndex: 0, quizPicks: [], quizShows: []
 };
 
 function expStation(id) { return EXP_STATIONS.find(function (s) { return s.id === id; }) || null; }
@@ -8528,42 +8542,47 @@ function expStepPanelHtml(st, s) {
     + '</aside>';
 }
 
-function expPracticePanelHtml(st, s) {
-  const f = st.final;
-  const picked = s.practicePicked;
+function expQuizPanelHtml(st, s, practice) {
+  const list = st.practice;
+  const i = Math.min(s.quizIndex, list.length - 1);
+  const q = list[i];
+  const picked = s.quizPicks[i] >= 0 ? s.quizPicks[i] : -1;
+  const show = !!s.quizShows[i];
   return '<aside class="explab-panel">'
-    + '<div class="exp-step">练习模式 · 中考改编题'
-    + '<span class="exp-score" style="color:var(--ink-2)">不计分</span></div>'
-    + '<h3>' + f.q + '</h3>'
-    + expOptionsHtml(f, picked, picked >= 0, 'data-exp-practice-opt')
-    + (picked >= 0 ? expAnalysisHtml(f, picked) : '')
-    + '<p class="exp-practice-note">练习不计分，也不会改变实验最好成绩。</p>'
-    + '<div class="exp-reset">'
-    + (picked >= 0 ? '<button class="btn" data-exp-practice-reset>再做一次</button>' : '')
-    + '<button class="btn" data-exp-practice-back>← 回到实验</button></div>'
-    + '</aside>';
-}
-
-function expFinalPanelHtml(st, s) {
-  const f = st.final;
-  const picked = s.finalPicked;
-  return '<aside class="explab-panel">'
-    + '<div class="exp-step">第 ' + st.steps.length + ' / ' + st.steps.length + ' 步'
-    + '<span class="exp-score">' + s.score + ' 分</span></div>'
-    + '<div class="exp-done"><b>实验完成，操作得分 ' + s.score + ' / 10</b><br>'
-    + '刚才的操作已经记录在下面。再做一道中考改编题，检查你有没有真正理解。</div>'
-    + '<h3 style="margin-top:12px">' + f.q + '</h3>'
-    + expOptionsHtml(f, picked, picked >= 0, 'data-exp-final')
-    + (picked >= 0 ? expAnalysisHtml(f, picked) : '')
-    + expRecordsHtml(s)
-    + '<div class="exp-reset"><button class="btn" data-exp-reset="1">重做实验</button>'
-    + '<a class="btn" href="' + st.review + '">去看相关复习 →</a></div>'
+    + '<div class="exp-step">' + (practice
+      ? '练习模式 · 中考改编题'
+      : '第 ' + st.steps.length + ' / ' + st.steps.length + ' 步')
+    + (practice
+      ? '<span class="exp-score" style="color:var(--ink-2)">不计分</span>'
+      : '<span class="exp-score">' + s.score + ' 分</span>')
+    + '</div>'
+    + (!practice ? '<div class="exp-done"><b>实验完成，操作得分 ' + s.score + ' / 10</b><br>'
+      + '刚才的操作已经记录在下面。下面 3 道中考改编题，检查你有没有真正理解。</div>' : '')
+    + '<div class="exp-quiz-head">练习 ' + (i + 1) + ' / ' + list.length + '</div>'
+    + '<h3>' + q.q + '</h3>'
+    + expOptionsHtml(q, picked, picked >= 0, 'data-exp-quiz-opt')
+    + '<div class="exp-navrow">'
+    + '<button class="btn primary" data-exp-quiz-next' + (i + 1 >= list.length ? ' disabled' : '') + '>下一题</button>'
+    + '<button class="btn" data-exp-quiz-prev' + (i <= 0 ? ' disabled' : '') + '>上一题</button>'
+    + '<button class="btn exp-analysis-btn" data-exp-quiz-analysis'
+    + (picked < 0 ? ' disabled title="先选一个答案"' : '') + '>'
+    + (show ? '收起解析' : '答案解析') + '</button>'
+    + '</div>'
+    + (show && picked >= 0 ? expAnalysisHtml(q, picked) : '')
+    + (practice
+      ? '<p class="exp-practice-note">练习不计分，也不会改变实验最好成绩。</p>'
+        + '<div class="exp-reset">'
+        + '<button class="btn" data-exp-quiz-reset>重做练习</button>'
+        + '<button class="btn" data-exp-practice-back>← 回到实验</button></div>'
+      : expRecordsHtml(s)
+        + '<div class="exp-reset"><button class="btn" data-exp-reset="1">重做实验</button>'
+        + '<a class="btn" href="' + st.review + '">去看相关复习 →</a></div>')
     + '</aside>';
 }
 
 function expPanelHtml(st, s) {
-  if (s.practice) return expPracticePanelHtml(st, s);
-  if (s.done) return expFinalPanelHtml(st, s);
+  if (s.practice) return expQuizPanelHtml(st, s, true);
+  if (s.done) return expQuizPanelHtml(st, s, false);
   return expStepPanelHtml(st, s);
 }
 
@@ -8583,14 +8602,15 @@ function expReset() {
   EXPSTATE.score = 10;
   EXPSTATE.records = [];
   EXPSTATE.done = false;
-  EXPSTATE.finalPicked = -1;
   EXPSTATE.justStep = null;
   EXPSTATE.picked = -1;
   EXPSTATE.answered = false;
   EXPSTATE.answers = [];
   EXPSTATE.showAnalysis = false;
   EXPSTATE.practice = false;
-  EXPSTATE.practicePicked = -1;
+  EXPSTATE.quizIndex = 0;
+  EXPSTATE.quizPicks = [];
+  EXPSTATE.quizShows = [];
 }
 
 function expSave(st) {
@@ -8612,7 +8632,7 @@ function renderLab(id, keepScroll) {
         + '<h3>' + s.name + '</h3><p>' + s.lead + '</p></div>';
     }).join('');
     view.innerHTML = '<div class="detail-head"><span class="l-tag">中考</span><h2 style="margin:0">中考实验考场</h2></div>'
-      + '<p class="hintline">按中考评分点完整做一遍：选仪器、排顺序、看现象、写结论。每站满分 10 分，只配一道改编题。</p>'
+      + '<p class="hintline">按中考评分点完整做一遍：选仪器、排顺序、看现象、写结论。每站满分 10 分，配 3 道中考改编题。</p>'
       + '<div class="expcards">' + cards + '</div>';
     document.querySelectorAll('[data-exp-go]').forEach(function (el) {
       el.addEventListener('click', function () { window.location.hash = '#/lab/' + el.dataset.expGo; });
@@ -8658,20 +8678,26 @@ function renderLab(id, keepScroll) {
       renderLab(st.id, true);
     });
   });
-  document.querySelectorAll('[data-exp-final]').forEach(function (b) {
-    b.addEventListener('click', function () { expFinal(st, Number(b.dataset.expFinal)); });
-  });
   document.querySelectorAll('[data-exp-practice]').forEach(function (b) {
     b.addEventListener('click', function () { EXPSTATE.practice = true; renderLab(st.id, true); });
-  });
-  document.querySelectorAll('[data-exp-practice-opt]').forEach(function (b) {
-    b.addEventListener('click', function () { expPractice(st, Number(b.dataset.expPracticeOpt)); });
   });
   document.querySelectorAll('[data-exp-practice-back]').forEach(function (b) {
     b.addEventListener('click', function () { EXPSTATE.practice = false; renderLab(st.id, true); });
   });
-  document.querySelectorAll('[data-exp-practice-reset]').forEach(function (b) {
-    b.addEventListener('click', function () { EXPSTATE.practicePicked = -1; renderLab(st.id, true); });
+  document.querySelectorAll('[data-exp-quiz-opt]').forEach(function (b) {
+    b.addEventListener('click', function () { expQuizPick(st, Number(b.dataset.expQuizOpt)); });
+  });
+  document.querySelectorAll('[data-exp-quiz-next]').forEach(function (b) {
+    b.addEventListener('click', function () { expQuizNav(st, 1); });
+  });
+  document.querySelectorAll('[data-exp-quiz-prev]').forEach(function (b) {
+    b.addEventListener('click', function () { expQuizNav(st, -1); });
+  });
+  document.querySelectorAll('[data-exp-quiz-analysis]').forEach(function (b) {
+    b.addEventListener('click', function () { expQuizAnalysis(st); });
+  });
+  document.querySelectorAll('[data-exp-quiz-reset]').forEach(function (b) {
+    b.addEventListener('click', function () { expQuizReset(st); });
   });
   document.querySelectorAll('[data-exp-reset]').forEach(function (b) {
     b.addEventListener('click', function () { expReset(); renderLab(st.id); });
@@ -8732,15 +8758,30 @@ function expPrev(st) {
   renderLab(st.id, true);
 }
 
-function expFinal(st, i) {
-  if (EXPSTATE.finalPicked >= 0) return;
-  EXPSTATE.finalPicked = i;
+function expQuizPick(st, i) {
+  if (EXPSTATE.quizPicks[EXPSTATE.quizIndex] >= 0) return;
+  EXPSTATE.quizPicks[EXPSTATE.quizIndex] = i;
+  EXPSTATE.quizShows[EXPSTATE.quizIndex] = false;
   renderLab(st.id, true);
 }
 
-function expPractice(st, i) {
-  if (EXPSTATE.practicePicked >= 0) return;
-  EXPSTATE.practicePicked = i;
+function expQuizNav(st, d) {
+  const n = EXPSTATE.quizIndex + d;
+  if (n < 0 || n >= st.practice.length) return;
+  EXPSTATE.quizIndex = n;
+  renderLab(st.id, true);
+}
+
+function expQuizAnalysis(st) {
+  if (EXPSTATE.quizPicks[EXPSTATE.quizIndex] < 0) return;
+  EXPSTATE.quizShows[EXPSTATE.quizIndex] = !EXPSTATE.quizShows[EXPSTATE.quizIndex];
+  renderLab(st.id, true);
+}
+
+function expQuizReset(st) {
+  EXPSTATE.quizIndex = 0;
+  EXPSTATE.quizPicks = [];
+  EXPSTATE.quizShows = [];
   renderLab(st.id, true);
 }
 
