@@ -1196,7 +1196,13 @@ html[data-theme="dark"] .exp-why.ok{background:#12291F;border-color:#245C3F;}
 html[data-theme="dark"] .exp-why.ok b{color:#A7E8C2;}
 html[data-theme="dark"] .exp-why.bad{background:#301A1A;border-color:#6B2D2A;}
 html[data-theme="dark"] .exp-why.bad b{color:#FFB4AC;}
-.exp-next{margin-top:10px;}
+.exp-navrow{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.exp-navrow .btn{flex:0 0 auto;min-width:84px;padding:8px 12px;}
+.exp-navrow .btn:disabled{opacity:.45;cursor:not-allowed;}
+.exp-navrow .btn:disabled:hover{border-color:var(--line);color:var(--ink);}
+.exp-navrow .btn.primary:disabled{background:var(--panel-2);border-color:var(--line);color:var(--ink-2);}
+.exp-navrow .exp-analysis-btn{margin-left:auto;}
+@media (max-width:420px){.exp-navrow .exp-analysis-btn{margin-left:0;}}
 .exp-practice-note{font-size:11.5px;color:var(--ink-2);margin:8px 0 0;line-height:1.6;}
 .exp-practice-btn{padding:6px 12px;font-size:12.5px;}
 .exp-feedback{margin-top:10px;border-radius:10px;padding:8px 11px;font-size:12.5px;line-height:1.65;border:1px solid var(--line);background:var(--panel-2);color:var(--ink-2);}
@@ -1246,7 +1252,7 @@ html[data-theme="dark"] .exp-feedback.bad{background:#301A1A;border-color:#6B2D2
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v3.5 · 2026-11-15</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v3.6 · 2026-11-15</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -2991,7 +2997,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.5 · 2026-11-15</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.6 · 2026-11-15</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -8286,6 +8292,7 @@ const EXP_STATIONS = [
 const EXPSTATE = {
   id: null, step: 0, score: 10, records: [], done: false,
   finalPicked: -1, justStep: null, picked: -1, answered: false,
+  answers: [], showAnalysis: false,
   practice: false, practicePicked: -1
 };
 
@@ -8510,11 +8517,14 @@ function expStepPanelHtml(st, s) {
     + '<span class="exp-score">' + s.score + ' 分</span></div>'
     + '<h3>' + cur.q + '</h3>'
     + expOptionsHtml(cur, s.picked, s.answered, 'data-exp-opt')
-    + (s.picked >= 0 ? expAnalysisHtml(cur, s.picked) : '')
-    + (s.answered ? '<div class="exp-next"><button class="btn primary" data-exp-next>'
-      + (s.step + 1 >= n ? '完成实验 →' : '下一步 →') + '</button></div>' : '')
+    + (s.picked >= 0 ? '<div class="exp-navrow">'
+      + '<button class="btn primary" data-exp-next' + (s.answered ? '' : ' disabled title="答对后才能继续"') + '>'
+      + (s.step + 1 >= n ? '完成实验' : '下一步') + '</button>'
+      + '<button class="btn" data-exp-prev' + (s.step <= 0 ? ' disabled' : '') + '>上一步</button>'
+      + '<button class="btn exp-analysis-btn" data-exp-analysis>' + (s.showAnalysis ? '收起解析' : '答案解析') + '</button>'
+      + '</div>' : '')
+    + (s.showAnalysis && s.picked >= 0 ? expAnalysisHtml(cur, s.picked) : '')
     + expRecordsHtml(s)
-    + '<div class="exp-reset"><button class="btn" data-exp-reset="1">重新开始</button></div>'
     + '</aside>';
 }
 
@@ -8558,9 +8568,13 @@ function expPanelHtml(st, s) {
 }
 
 function expRecordsHtml(s) {
-  if (!s.records.length) return '';
+  let recs = s.records;
+  if (s.answers && s.answers.length) {
+    recs = s.answers.slice(0, s.step + 1).filter(function (a) { return a && a.correct; }).map(function (a) { return a.record; });
+  }
+  if (!recs || !recs.length) return '';
   return '<div class="exp-records"><b>实验记录</b><ul>'
-    + s.records.map(function (r) { return '<li>' + r + '</li>'; }).join('')
+    + recs.map(function (r) { return '<li>' + r + '</li>'; }).join('')
     + '</ul></div>';
 }
 
@@ -8573,6 +8587,8 @@ function expReset() {
   EXPSTATE.justStep = null;
   EXPSTATE.picked = -1;
   EXPSTATE.answered = false;
+  EXPSTATE.answers = [];
+  EXPSTATE.showAnalysis = false;
   EXPSTATE.practice = false;
   EXPSTATE.practicePicked = -1;
 }
@@ -8633,6 +8649,15 @@ function renderLab(id, keepScroll) {
   document.querySelectorAll('[data-exp-next]').forEach(function (b) {
     b.addEventListener('click', function () { expNext(st); });
   });
+  document.querySelectorAll('[data-exp-prev]').forEach(function (b) {
+    b.addEventListener('click', function () { expPrev(st); });
+  });
+  document.querySelectorAll('[data-exp-analysis]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      EXPSTATE.showAnalysis = !EXPSTATE.showAnalysis;
+      renderLab(st.id, true);
+    });
+  });
   document.querySelectorAll('[data-exp-final]').forEach(function (b) {
     b.addEventListener('click', function () { expFinal(st, Number(b.dataset.expFinal)); });
   });
@@ -8665,12 +8690,15 @@ function expAnswer(st, i) {
   const cur = st.steps[EXPSTATE.step];
   EXPSTATE.justStep = null;
   EXPSTATE.picked = i;
+  EXPSTATE.showAnalysis = false;
   if (i === cur.ans) {
     EXPSTATE.records.push(cur.record);
     EXPSTATE.answered = true;
+    EXPSTATE.answers[EXPSTATE.step] = { picked: i, correct: true, record: cur.record };
     EXPSTATE.justStep = EXPSTATE.step;
   } else {
     EXPSTATE.score = Math.max(0, EXPSTATE.score - 1);
+    EXPSTATE.answers[EXPSTATE.step] = { picked: i, correct: false, record: cur.record };
   }
   renderLab(st.id, true);
   if (EXPSTATE.justStep != null) {
@@ -8681,13 +8709,26 @@ function expAnswer(st, i) {
 function expNext(st) {
   if (!EXPSTATE.answered) return;
   EXPSTATE.step++;
-  EXPSTATE.picked = -1;
-  EXPSTATE.answered = false;
+  const a = EXPSTATE.answers[EXPSTATE.step];
+  EXPSTATE.picked = a ? a.picked : -1;
+  EXPSTATE.answered = !!(a && a.correct);
+  EXPSTATE.showAnalysis = false;
   EXPSTATE.justStep = null;
   if (EXPSTATE.step >= st.steps.length) {
     EXPSTATE.done = true;
     expSave(st);
   }
+  renderLab(st.id, true);
+}
+
+function expPrev(st) {
+  if (EXPSTATE.step <= 0) return;
+  EXPSTATE.step--;
+  const a = EXPSTATE.answers[EXPSTATE.step];
+  EXPSTATE.picked = a ? a.picked : -1;
+  EXPSTATE.answered = !!(a && a.correct);
+  EXPSTATE.showAnalysis = false;
+  EXPSTATE.justStep = null;
   renderLab(st.id, true);
 }
 
