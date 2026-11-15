@@ -1246,7 +1246,7 @@ html[data-theme="dark"] .exp-feedback.bad{background:#301A1A;border-color:#6B2D2
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v3.3 · 2026-11-15</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v3.4 · 2026-11-15</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -2991,7 +2991,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.3 · 2026-11-15</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.4 · 2026-11-15</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -4139,26 +4139,26 @@ const LESSONS = [
     id: 'bondintro', group: '课内', title: '什么是化学键', scene: 'bondintro',
     lead: '原子为什么不单独待着？键到底是什么，为什么成键会放能、断键要吸能？',
     points: [
-      '化学键是相邻原子或离子之间强烈的相互作用；不是分子间作用力。',
-      '原子通过共用电子、转移电子或共享自由电子，趋向稳定结构，体系能量降低。',
-      '成键放出能量，断键吸收能量；键能就是断开 1 mol 这种键需要的能量。',
-      '键决定物质的熔点、硬度、导电性和延展性；化学反应的实质是旧键断裂、新键形成。',
-      '键长、键能、键角是描述键的三个参数；键长越短通常键能越大（拓展）。'
+      '化学键：相邻的原子或离子之间，很强的作用，把它们拉在一起；它不是分子和分子之间那种弱作用。',
+      '原子最外层电子没排满时不太稳定，就会通过共用电子、转移电子等方式，凑成更稳定的结构；这时能量更低。',
+      '成键会放出能量，断键要吸收能量；断开这种键需要的能量，叫键能。',
+      '键决定物质好不好熔、硬不硬、导不导电、能不能拉成丝；反应的本质是旧键断开、新键形成。',
+      '键长、键能、键角是描述键的三个参数；一般键越短，键越牢（拓展）。'
     ],
     extra: '<div class="lesson-bridge"><b>和「能量门槛」的关系</b>'
-      + '<p>成键放能、断键吸能；反应之所以有坡，是因为要先拉开旧键。井深是键能，坡高是活化能。</p>'
+      + '<p>成键放能、断键吸能；反应要先爬一个坡，是因为要先拉开原来的键。井深是键能，坡高是活化能。</p>'
       + '<a href="#/why/activation">去看「能量门槛」实验 →</a></div>',
-    pitfall: '化学键不是“胶水”，本质是电性吸引；分子间作用力、氢键不是化学键。'
+    pitfall: '化学键不是“胶水”，而是原子或离子之间很强的电性作用；分子和分子之间的弱作用不算化学键。'
   },
   {
     id: 'overview', group: '课内', title: '三种化学键', scene: 'overview',
     lead: '物质由什么构成，就有什么样的键。点下面的维度，把三种键放在一起比：共同点、不同点、牢靠程度。',
     points: [
-      '都是化学键：相邻粒子之间的强烈相互作用。',
-      '本质都是电性吸引（静电作用）。',
+      '都是化学键：相邻的原子或离子之间，很强的作用。',
+      '本质都是电性作用：正电和负电互相吸引。',
       '成键放出能量，断键吸收能量。',
-      '都比分子间作用力强得多（通常差 1–2 个数量级）。',
-      '都决定物质的熔点、硬度、导电性等性质。'
+      '都比分子和分子之间的作用强得多（通常强 10–100 倍）。',
+      '都决定物质好不好熔、硬不硬、导不导电。'
     ],
     extra: bondCompareExtra(),
     pitfall: '不能记成「离子键 > 共价键 > 金属键」；离子化合物里原子团内部还有共价键。'
@@ -4207,7 +4207,7 @@ const LESSONS = [
   },
   {
     id: 'bondorder', group: '课外', title: '键级与键能', scene: 'bondorder',
-    lead: '键能 = 断开 1 mol 这种键需要的能量。键级越高，通常键能越大、越难断。',
+    lead: '键能 = 断开 1 mol 这种键需要的能量。mol 高中会学；现在先记：键能越大，键越难断。键级越高，通常键能越大。',
     points: [
       'N≡N 946、O=O 498、H–H 436、F–F 157（kJ/mol）。',
       'N₂ 三键最难断，所以空气里 78% 都是它，很不活泼。',
@@ -4479,7 +4479,7 @@ function bondIntroScene() {
     + '<text class="bi-label" x="520" y="300" text-anchor="end">反应进程 →</text>'
     + '</g>'
     + '</svg>'
-    + '<p class="bi-note">图里的「能量」，指两个原子之间储存的势能。</p>'
+    + '<p class="bi-note" data-bi-note>图里的「能量」，指两个原子之间储存的势能。</p>'
     + '<div class="bi-readout" data-bi-readout>'
     + '<div class="bi-status-head"><span class="bi-status-tag">当前状态</span><span class="bi-dir" data-bi-dir></span></div>'
     + '<p class="bi-status" data-bi-status></p>'
@@ -4494,7 +4494,7 @@ function bondIntroScene() {
     + '<input type="range" min="0" max="100" value="0" data-bi-prog> <b data-bi-prog-val>0%</b></div>'
     + '<label class="bi-cat bi-off" data-bi-cat-wrap><input type="checkbox" data-bi-cat> 加催化剂</label>'
     + '</div></div>'
-    + '<p class="bi-label bi-summary">井越深，键越牢：井深 = 键能。<br>坡越高，反应越难启动：坡高 = 活化能。<br>催化剂只把坡削低，井深不变。</p>'
+    + '<p class="bi-label bi-summary">井越深，键越牢：井深 = 键能。<br>坡越高，反应越难发生：坡高 = 活化能。<br>催化剂只把坡削低，井深不变。</p>'
     + '</div>';
 }
 
@@ -4523,6 +4523,7 @@ function bindBondIntro(stage) {
   const readout = stage.querySelector('[data-bi-readout]');
   const dirEl = stage.querySelector('[data-bi-dir]');
   const tip = stage.querySelector('[data-bi-tip]');
+  const note = stage.querySelector('[data-bi-note]');
   const distVal = stage.querySelector('[data-bi-dist-val]');
   const progVal = stage.querySelector('[data-bi-prog-val]');
   const tabs = Array.prototype.slice.call(stage.querySelectorAll('[data-bi-view]'));
@@ -4533,8 +4534,8 @@ function bindBondIntro(stage) {
     if (!dir) return { cls: '', text: '先拖动滑块，看看两个氢原子离远、离近时，能量怎么变。' };
     if (d > 2.3) {
       return dir === 'in'
-        ? { cls: '', text: '离得还很远，两个原子几乎感觉不到对方。再靠近一点，才开始互相吸引。' }
-        : { cls: '', text: '离得更远了，原子间的作用越来越弱，能量几乎不变。' };
+        ? { cls: '', text: '两个氢原子离得很远，还没成键。再靠近，才开始互相吸引。' }
+        : { cls: '', text: '已经拉得够远了：键断了，两个氢原子各走各的。再远，能量几乎不变。' };
     }
     if (d > 1.12) {
       return dir === 'in'
@@ -4548,7 +4549,7 @@ function bindBondIntro(stage) {
     }
     return dir === 'in'
       ? { cls: 'warn', text: '挤得太近了：两个原子核都带正电，互相顶住，越挤能量越高。' }
-      : { cls: 'warn', text: '正在退开：排斥变小，能量降下来。但还没回到键长，不算成键。' };
+      : { cls: 'warn', text: '正在退开：排斥变小，能量降下来。还没回到键长，还不是稳定的键。' };
   }
 
   function updateBond() {
@@ -4603,12 +4604,12 @@ function bindBondIntro(stage) {
     barrierLabel.setAttribute('y', (py - 12).toFixed(1));
     progVal.textContent = Math.round(t * 100) + '%';
     let msg, cls = '';
-    if (t < 0.08) msg = '反应物：旧键还没断，能量较低。';
-    else if (Math.abs(t - tMax) < 0.06) msg = '过渡态：旧键快断、新键将成，这是最费劲的一步。';
-    else if (t < tMax) msg = '爬坡：拉开旧键要吸收能量。';
-    else if (t > 0.92) { msg = '产物：新键形成，能量降低，多余能量放出。'; cls = 'good'; }
-    else msg = '下坡：形成新键，放出能量。';
-    if (cat) msg = '催化剂把坡削低（活化能变小），但反应热不变。' + msg;
+    if (t < 0.08) msg = '反应物：原来的键还没断，能量比较低。';
+    else if (Math.abs(t - tMax) < 0.06) msg = '过渡态：原来的键快断了，新键还没完全形成，这一步最费劲。';
+    else if (t < tMax) msg = '爬坡：要把原来的键拉开，得先吸收能量。';
+    else if (t > 0.92) { msg = '产物：新键已经形成，能量比反应物低，多出来的能量放出去了。'; cls = 'good'; }
+    else msg = '下坡：新键形成了，能量降下来，多出来的能量放出去。';
+    if (cat) msg = '催化剂只是把坡变矮，让反应更容易发生；反应物和产物的能量差不变。' + msg;
     readout.className = 'bi-readout' + (cls ? ' ' + cls : '');
     dirEl.textContent = lastTDir === 'fwd' ? '向右推进 →' : lastTDir === 'back' ? '← 往回拖' : '拖动滑块试试';
     status.textContent = msg;
@@ -4628,8 +4629,15 @@ function bindBondIntro(stage) {
       bondCtrl.classList.toggle('bi-off', view !== 'bond');
       reactCtrl.classList.toggle('bi-off', view !== 'react');
       catWrap.classList.toggle('bi-off', view !== 'react');
-      if (view === 'bond') { lastD = Number(dist.value) / 100; lastDir = ''; tip.textContent = '拖动滑块，让两个氢原子靠近或远离。'; }
-      else { lastT = Number(prog.value) / 100; lastTDir = ''; tip.textContent = '拖动滑块，让反应从反应物走到产物。'; }
+      if (view === 'bond') {
+        lastD = Number(dist.value) / 100; lastDir = '';
+        tip.textContent = '拖动滑块，让两个氢原子靠近或远离。';
+        note.textContent = '图里的「能量」，指两个原子之间储存的势能。';
+      } else {
+        lastT = Number(prog.value) / 100; lastTDir = '';
+        tip.textContent = '拖动滑块，让反应从反应物走到产物。';
+        note.textContent = '这张图按放热反应画：产物能量比反应物低。图里的「能量」也是势能。';
+      }
       update();
     });
   });
