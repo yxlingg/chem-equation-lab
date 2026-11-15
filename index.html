@@ -1115,7 +1115,14 @@ summary:focus-visible,
 .expcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:6px;}
 .expcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s;}
 .expcard:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:var(--shadow);}
-.expcard h3{margin:6px 0 4px;font-size:17px;}
+.expcard h3{margin:6px 0 4px;font-size:17px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.exp-role{font-size:10.5px;font-weight:600;line-height:1.5;border-radius:999px;padding:1px 8px;white-space:nowrap;}
+.exp-role.exam2026{background:#E3F7EC;color:#0E7A43;}
+.exp-role.support{background:var(--panel-2);color:var(--ink-2);}
+.exp-role.core{background:var(--brand-soft);color:var(--brand-ink);}
+html[data-theme="dark"] .exp-role.exam2026{background:#143D28;color:#6EE7A8;}
+.exp-notice{background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--brand);border-radius:12px;padding:10px 14px;margin:10px 0 16px;font-size:13px;color:var(--ink-2);line-height:1.7;}
+.exp-notice b{color:var(--ink);}
 .expcard p{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.65;}
 .expcard .exp-meta{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-2);}
 .expcard .exp-best{margin-left:auto;color:var(--brand);font-weight:600;}
@@ -1255,7 +1262,7 @@ html[data-theme="dark"] .exp-feedback.bad{background:#301A1A;border-color:#6B2D2
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v4.0 · 2026-11-15</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v4.1 · 2026-11-15</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -3000,7 +3007,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v4.0 · 2026-11-15</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v4.1 · 2026-11-15</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -8253,7 +8260,7 @@ function pracNav() {
 /* ---------- 中考实验考场 ---------- */
 const EXP_STATIONS = [
   {
-    id: 'salt', name: '粗盐提纯', tag: '基本操作', exam: '河北中考·粗盐提纯',
+    id: 'salt', name: '粗盐提纯', tag: '基本操作', exam: '河北中考·粗盐提纯', examRole: 'support',
     lead: '从粗盐到精盐：称、溶、滤、蒸、算。每一步都对应实验操作考试的评分点。',
     review: '#/g9/u-ops',
     steps: [
@@ -8272,7 +8279,7 @@ const EXP_STATIONS = [
     ]
   },
   {
-    id: 'solution', name: '溶液配制', tag: '定量实验', exam: '实验操作·配制溶液',
+    id: 'solution', name: '溶液配制', tag: '定量实验', exam: '2026 廊坊操作·试题三', examRole: 'exam2026',
     lead: '配制 50 g 6% 的 NaCl 溶液：先算，再称、量、溶、装瓶。',
     review: '#/g9/u4',
     steps: [
@@ -8289,7 +8296,7 @@ const EXP_STATIONS = [
     ]
   },
   {
-    id: 'gas', name: '气体制取与净化', tag: '综合实验', exam: '河北中考·气体制备',
+    id: 'gas', name: '气体制取与净化', tag: '综合实验', exam: '河北中考·气体制备', examRole: 'support',
     lead: '以 CO₂ 为例：选装置、查气密性、加药品、除杂、干燥、收集、验满、检验。',
     review: '#/g9/u-gas',
     steps: [
@@ -8309,7 +8316,7 @@ const EXP_STATIONS = [
     ]
   },
   {
-    id: 'oxygen', name: '氧气的制取与性质', tag: '气体制备', exam: '河北中考·氧气制取与性质',
+    id: 'oxygen', name: '氧气的制取与性质', tag: '气体制备', exam: '河北中考·氧气制取与性质', examRole: 'core',
     lead: '从过氧化氢到铁丝燃烧：选装置、看气泡、验满、认现象、说清瓶底为什么放水。',
     review: '#/g9a/u2',
     steps: [
@@ -8328,7 +8335,7 @@ const EXP_STATIONS = [
     ]
   },
   {
-    id: 'burn', name: '燃烧条件的探究', tag: '探究实验', exam: '河北中考·燃烧条件',
+    id: 'burn', name: '燃烧条件的探究', tag: '探究实验', exam: '河北中考·燃烧条件', examRole: 'core',
     lead: '白磷、红磷、热水、氧气：一步步对比，把「燃烧需要什么」问清楚。',
     review: '#/g9a/u7',
     steps: [
@@ -8347,7 +8354,7 @@ const EXP_STATIONS = [
     ]
   },
   {
-    id: 'metal', name: '金属的化学性质', tag: '物质性质', exam: '河北中考·金属化学性质',
+    id: 'metal', name: '金属的化学性质', tag: '物质性质', exam: '河北中考·金属化学性质', examRole: 'core',
     lead: '铜不冒泡、铁能换铜、铝有氧化膜：用四支试管把金属活动性排个队。',
     review: '#/g9/unit8',
     steps: [
@@ -8366,7 +8373,7 @@ const EXP_STATIONS = [
     ]
   },
   {
-    id: 'neutral', name: '酸碱中和反应', tag: '探究实验', exam: '河北中考·酸碱中和',
+    id: 'neutral', name: '酸碱中和反应', tag: '探究实验', exam: '河北中考·酸碱中和', examRole: 'core',
     lead: '酚酞变红又褪色，pH 停在 7：把「恰好完全反应」的证据找出来。',
     review: '#/g9/unit10',
     steps: [
@@ -8382,6 +8389,44 @@ const EXP_STATIONS = [
       { q: '下列反应属于中和反应的是？', opts: ['Ca(OH)₂ + 2HCl = CaCl₂ + 2H₂O', 'CO₂ + Ca(OH)₂ = CaCO₃↓ + H₂O', 'Fe + 2HCl = FeCl₂ + H₂↑'], ans: 0, why: ['酸与碱作用生成盐和水，是中和反应。', '二氧化碳不是酸，这个反应不属于中和反应。', '铁是单质，不是碱，这个反应是置换反应。'] },
       { q: '向稀盐酸中逐滴加入氢氧化钠溶液，pH 会怎样变化？', opts: ['由小于 7 逐渐增大，可到 7 甚至大于 7', '一直减小', '始终等于 7'], ans: 0, why: ['盐酸显酸性，加碱后酸性减弱，pH 增大，过量后显碱性。', '加氢氧化钠不会让溶液更酸。', '恰好完全反应时才等于 7，继续加碱会大于 7。'] },
       { q: '农业上用熟石灰改良酸性土壤，利用的是？', opts: ['中和反应', '置换反应', '分解反应'], ans: 0, why: ['熟石灰是碱，与土壤中的酸反应生成盐和水，属于中和反应。', '置换反应是单质与化合物反应，这里没有单质参加。', '分解反应是一种物质生成多种物质，这里不是。'] }
+    ]
+  },
+  {
+    id: 'filter', name: '过滤专项', tag: '基本操作', exam: '2026 廊坊操作·试题一', examRole: 'exam2026',
+    lead: '一张滤纸、一根玻璃棒、一个漏斗：把「过滤」这道操作题的评分点逐条做对。',
+    review: '#/g9/u-ops',
+    steps: [
+      { q: '过滤前，滤纸怎么折？', opts: ['对折两次，打开成圆锥形', '只对折一次', '不折，直接平放'], ans: 0, why: ['对折两次能得到与漏斗匹配的圆锥形，是标准折法。', '只折一次是半圆，放不进漏斗。', '平放贴不住漏斗壁，液体会从缝隙流下。'], record: '滤纸对折两次' },
+      { q: '滤纸放进漏斗后，边缘怎么处理？', opts: ['低于漏斗口约 0.5 cm，多余部分剪掉', '高于漏斗口', '与漏斗口齐平'], ans: 0, why: ['滤纸边缘低于漏斗口，液体才不会从边缘溢出。', '高于漏斗口，液体会顺着滤纸外壁流走。', '齐平时稍一晃动就会溢出。'], record: '滤纸边缘低于漏斗口' },
+      { q: '怎么让滤纸紧贴漏斗内壁？', opts: ['少量水润湿，手指压住三层处，玻璃棒赶气泡', '用玻璃棒在漏斗里搅拌', '不用管，倒液体自然会贴'], ans: 0, why: ['润湿后赶走气泡，滤纸才能贴紧，液体不会从缝隙流下。', '搅拌会戳破滤纸，也不能赶走气泡。', '不赶气泡，液体会从气泡处漏下去，滤液浑浊。'], record: '润湿滤纸，赶尽气泡' },
+      { q: '过滤装置怎么放？', opts: ['漏斗下端管口伸入烧杯约 2 cm，尖端紧贴烧杯内壁', '漏斗悬在烧杯口上方', '漏斗下端伸到烧杯底部'], ans: 0, why: ['管口伸入约 2 cm 并贴壁，滤液沿壁流下，不会溅出。', '悬空时滤液会溅出。', '伸到底部容易碰倒或污染滤液。'], record: '漏斗下端贴烧杯内壁' },
+      { q: '倾倒浑浊液时，玻璃棒怎么放？', opts: ['靠在三层滤纸一侧', '靠在单层滤纸一侧', '悬空在漏斗中央'], ans: 0, why: ['三层处更结实，玻璃棒靠在这里不容易戳破滤纸。', '单层处薄，容易被戳破。', '悬空引流会让液体洒到漏斗外。'], record: '玻璃棒靠三层滤纸' },
+      { q: '漏斗里的液面高度要求？', opts: ['低于滤纸边缘', '高于滤纸边缘', '装满漏斗'], ans: 0, why: ['液面低于滤纸边缘，液体才会全部经过滤纸。', '高于滤纸边缘，液体会从滤纸与漏斗间流下，滤液浑浊。', '装满会溢出，同样起不到过滤作用。'], record: '液面低于滤纸边缘' },
+      { q: '过滤后滤液仍然浑浊，怎么办？', opts: ['查滤纸是否破损、液面是否过高，换滤纸重新过滤', '直接倒掉，不做了', '加更多水再滤一次'], ans: 0, why: ['先找原因：滤纸破、液面高、仪器脏，再重新过滤。', '倒掉就得不到滤液，实验没有完成。', '加水只会让滤液更多，不能解决浑浊。'], record: '查原因，换滤纸重滤' }
+    ],
+    practice: [
+      { q: '过滤时能不能用玻璃棒在漏斗里搅拌？', opts: ['不能，会戳破滤纸', '能，可以加快过滤', '能，但只能轻轻搅'], ans: 0, why: ['玻璃棒在漏斗里搅动容易戳破滤纸，滤液会变浑浊。', '搅拌不能加快过滤，反而会破坏滤纸。', '再轻的搅动也可能碰破滤纸，标准操作是不搅。'] },
+      { q: '过滤能除去哪类杂质？', opts: ['不溶性固体', '可溶性杂质', '颜色和异味'], ans: 0, why: ['过滤把不溶性固体截留在滤纸上，液体透过滤纸。', '可溶性杂质会随液体一起透过滤纸，过滤除不掉。', '颜色和异味要靠活性炭吸附，不是过滤。'] },
+      { q: '滤液仍浑浊的三个常见原因？', opts: ['滤纸破损、液面高于滤纸边缘、仪器不干净', '水温太低、过滤太慢、滤纸太干', '漏斗太大、烧杯太小、玻璃棒太短'], ans: 0, why: ['这三条都会让液体绕过或带着杂质进入滤液。', '水温、速度、滤纸干湿不会让不溶性固体透过滤纸。', '仪器大小与滤液是否浑浊没有直接关系。'] }
+    ]
+  },
+  {
+    id: 'airtight', name: '气密性专项', tag: '基本操作', exam: '2026 廊坊操作·试题二', examRole: 'exam2026',
+    lead: '装好装置、查好气密性，再谈收集气体：把试题二的评分点一步步做对。',
+    review: '#/g9/u-gas',
+    steps: [
+      { q: '玻璃管和乳胶管怎么连接？', opts: ['玻璃管端用水润湿，毛巾握住玻璃管，轻轻旋入乳胶管', '直接用力插进去', '涂食用油再插'], ans: 0, why: ['润湿减小摩擦，握住玻璃管防止折断，旋转插入更稳。', '硬插容易压碎玻璃管或划破乳胶管。', '油会污染导管，也不是实验要求。'], record: '玻璃管润湿后旋入乳胶管' },
+      { q: '橡胶塞怎么塞进锥形瓶？', opts: ['慢慢旋转塞进瓶口', '用力压进去', '涂水后硬压'], ans: 0, why: ['旋转受力均匀，塞得紧且不易压碎瓶口。', '硬压容易压碎锥形瓶或塞不严。', '涂水后容易打滑，反而塞不紧。'], record: '橡胶塞旋转塞紧' },
+      { q: '检查气密性第一步做什么？', opts: ['把导管一端浸入水中', '先加药品', '先给锥形瓶加热'], ans: 0, why: ['先把导管口浸入水中，才能观察气泡。', '加了药品可能产生气体，无法判断是否漏气。', '直接加热可能损坏仪器，也不是标准做法。'], record: '导管一端浸入水中' },
+      { q: '怎么让装置里的气体膨胀？', opts: ['双手紧握锥形瓶外壁', '用手堵住导管口', '往瓶里吹气'], ans: 0, why: ['手的温度让瓶内气体膨胀，气压变大，导管口冒泡。', '堵住导管口看不到气泡，还可能憋坏装置。', '往瓶里吹气不是改变温度，不能检验装置本身。'], record: '双手紧握锥形瓶外壁' },
+      { q: '气密性良好的现象是？', opts: ['导管口冒气泡，松手后导管内形成一段稳定水柱', '一直冒气泡，松手后水柱消失', '没有任何变化'], ans: 0, why: ['冒泡说明气体被压出，松手冷却后水柱上升并保持，说明不漏气。', '水柱消失说明装置漏气。', '没有变化说明手温不够或装置漏气。'], record: '冒泡后水柱稳定' },
+      { q: '松手后为什么要等一会儿再判断？', opts: ['瓶内气体冷却收缩，水柱上升并保持，才说明不漏气', '等玻璃管冷却，防止烫手', '等水变清'], ans: 0, why: ['冷却收缩形成负压，水柱稳定才证明装置密封。', '导管不会烫手，这一步的目的不是防烫。', '水柱是否清澈与气密性无关。'], record: '冷却后看水柱是否保持' },
+      { q: '发现漏气，先查哪里？', opts: ['按橡胶塞、乳胶管、玻璃管口依次分段排查', '直接换一个新锥形瓶', '把导管拔掉重装'], ans: 0, why: ['漏气多在连接处，分段检查最快找到问题。', '没找到原因就换仪器，可能还是漏。', '拔掉重装可能更松，应先查连接处。'], record: '分段排查连接处' }
+    ],
+    practice: [
+      { q: '长颈漏斗装置查气密性前要先做什么？', opts: ['把长颈漏斗下端液封', '把漏斗拔掉', '给漏斗加水至满'], ans: 0, why: ['下端液封后装置才密封，手握瓶身的气体才会从导管排出。', '拔掉漏斗装置就漏气，无法检查。', '加满漏斗不是液封，气体仍可能从漏斗口跑出。'] },
+      { q: '只握锥形瓶外壁，长颈漏斗没液封，会怎样？', opts: ['气体会从长颈漏斗跑出，导管口不冒泡，无法判断', '仍然能准确判断', '锥形瓶会爆炸'], ans: 0, why: ['装置不密封，气体从漏斗口逸出，导管口自然没有气泡。', '没有液封就不是密封装置，现象不能说明气密性。', '手握瓶身不会让锥形瓶爆炸。'] },
+      { q: '装置漏气对实验有什么影响？', opts: ['气体泄漏，收集不到或收集不纯', '反应更快', '药品用量减少'], ans: 0, why: ['漏气会让生成的气体跑掉，收集不到或混入空气。', '漏气不会加快反应速率。', '药品用量由你加入的量决定，与漏气无关。'] }
     ]
   }
 ];
@@ -8446,6 +8491,8 @@ function expStageHtml(st, step, done, justStep) {
   if (st.id === 'burn') return expSvgBurn(step, done, justStep);
   if (st.id === 'metal') return expSvgMetal(step, done, justStep);
   if (st.id === 'neutral') return expSvgNeutral(step, done, justStep);
+  if (st.id === 'filter') return expSvgFilter(step, done, justStep);
+  if (st.id === 'airtight') return expSvgAirtight(step, done, justStep);
   return expSvgGas(step, done, justStep);
 }
 
@@ -8846,6 +8893,91 @@ function expSvgNeutral(step, done, justStep) {
     + '</svg>';
 }
 
+function expSvgFilter(step, done, justStep) {
+  const active = ['fold', 'fold', 'fold', 'assemble', 'pour', 'pour', 'again'][step] || '';
+  const dFold = done || step >= 3;
+  const dMain = done || step >= 4;
+  const dAgain = done || step >= 6;
+  return '<svg class="exp-svg" viewBox="0 90 640 240" role="img" aria-label="过滤操作实验台">'
+    + expG(active === 'fold', dFold, justStep === 0 || justStep === 1 || justStep === 2)
+    + '<rect x="62" y="152" width="66" height="66" rx="4" fill="var(--panel-2)" stroke="var(--line)" stroke-width="2"/>'
+    + '<line x1="95" y1="152" x2="95" y2="218" stroke="var(--line)" stroke-dasharray="4 4"/>'
+    + '<line x1="62" y1="185" x2="128" y2="185" stroke="var(--line)" stroke-dasharray="4 4"/>'
+    + '<text x="95" y="142" text-anchor="middle" class="exp-label">对折两次</text>'
+    + '<line x1="140" y1="185" x2="158" y2="185" stroke="var(--ink-2)" stroke-width="2"/>'
+    + '<path d="M158 185 l-6 -3 l0 6 z" fill="var(--ink-2)"/>'
+    + '<path d="M164 152 L232 152 L198 202 Z" fill="var(--panel-2)" stroke="var(--line)" stroke-width="2"/>'
+    + '<text x="198" y="232" text-anchor="middle" class="exp-label">圆锥形</text>'
+    + expCheck(226, 136)
+    + '</g>'
+    + expG(active === 'assemble' || active === 'pour', dMain, justStep === 3 || justStep === 4 || justStep === 5)
+    + '<line x1="200" y1="272" x2="380" y2="272" stroke="var(--line)" stroke-width="4"/>'
+    + '<line x1="230" y1="134" x2="230" y2="272" stroke="var(--line)" stroke-width="3"/>'
+    + '<line x1="230" y1="140" x2="266" y2="140" stroke="var(--line)" stroke-width="3"/>'
+    + '<circle cx="300" cy="140" r="34" fill="none" stroke="var(--line)" stroke-width="3"/>'
+    + '<path d="M266 140 L334 140 L300 186 Z" fill="var(--panel-2)" stroke="var(--line)" stroke-width="2"/>'
+    + '<line x1="300" y1="186" x2="300" y2="222" stroke="var(--line)" stroke-width="4"/>'
+    + '<rect x="268" y="224" width="64" height="46" rx="4" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + (step >= 3 || done ? '<rect x="272" y="250" width="56" height="16" fill="var(--brand-soft)" opacity=".8"/>' : '')
+    + (step >= 3 || done ? '<circle class="exp-bubble" cx="300" cy="230" r="2.4"/>' : '')
+    + (step >= 4 || done ? '<line x1="266" y1="136" x2="330" y2="178" stroke="var(--line)" stroke-width="3"/>' : '')
+    + (step >= 5 || done ? '<path d="M280 150 L320 150 L300 182 Z" class="exp-liquid water" opacity=".65"/>' : '')
+    + '<text x="230" y="292" text-anchor="middle" class="exp-label">铁架台</text>'
+    + expCheck(366, 128)
+    + '</g>'
+    + expG(active === 'again', dAgain, justStep === 6)
+    + '<rect x="430" y="200" width="54" height="62" rx="4" fill="var(--panel-2)" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="434" y="232" width="46" height="26" fill="#C9B79A"/>'
+    + '<text x="457" y="282" text-anchor="middle" class="exp-label">浑浊</text>'
+    + '<line x1="496" y1="230" x2="524" y2="230" stroke="var(--ink-2)" stroke-width="2"/>'
+    + '<path d="M524 230 l-7 -4 l0 8 z" fill="var(--ink-2)"/>'
+    + '<rect x="536" y="200" width="54" height="62" rx="4" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="540" y="232" width="46" height="26" class="exp-liquid water" opacity=".8"/>'
+    + '<text x="563" y="282" text-anchor="middle" class="exp-label">重新过滤</text>'
+    + expCheck(598, 184)
+    + '</g>'
+    + '<text x="320" y="318" text-anchor="middle" class="exp-label">一贴：滤纸贴紧内壁　二低：滤纸边缘、液面低于漏斗边缘　三靠：玻璃棒靠三层滤纸</text>'
+    + '</svg>';
+}
+
+function expSvgAirtight(step, done, justStep) {
+  const dLeak = done || step >= 7;
+  return '<svg class="exp-svg" viewBox="0 90 640 240" role="img" aria-label="组装装置与检查气密性实验台">'
+    + expG(true, false, justStep === 0 || justStep === 1)
+    + '<path d="M128 170 L128 196 L92 250 Q86 260 98 260 L202 260 Q214 260 208 250 L172 196 L172 170 Z" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="122" y="152" width="56" height="16" rx="4" fill="var(--ink-2)"/>'
+    + '<path d="M150 152 L150 114 Q150 106 158 106 L238 106" fill="none" stroke="var(--ink-2)" stroke-width="4"/>'
+    + '<line x1="238" y1="106" x2="300" y2="106" stroke="#5B6273" stroke-width="9" stroke-linecap="round"/>'
+    + '<path d="M300 106 Q332 106 332 132 L332 240" fill="none" stroke="var(--ink-2)" stroke-width="4"/>'
+    + '<path d="M292 200 L292 252 Q292 260 302 260 L430 260 Q440 260 440 252 L440 200" fill="none" stroke="var(--line)" stroke-width="2"/>'
+    + '<rect x="296" y="218" width="140" height="36" class="exp-liquid water" opacity=".7"/>'
+    + '<text x="150" y="284" text-anchor="middle" class="exp-label">锥形瓶</text>'
+    + '<text x="184" y="164" class="exp-label">橡胶塞</text>'
+    + '<text x="268" y="96" text-anchor="middle" class="exp-label">乳胶管</text>'
+    + '<text x="366" y="284" text-anchor="middle" class="exp-label">水槽</text>'
+    + expCheck(250, 140)
+    + '</g>'
+    + (step >= 2 || done ? '<circle class="exp-bubble" cx="332" cy="228" r="3"/>' : '')
+    + (step >= 4 || done ? '<g class="exp-fx-show">'
+      + '<rect x="84" y="214" width="18" height="44" rx="9" fill="#F2C9A0"/>'
+      + '<rect x="198" y="214" width="18" height="44" rx="9" fill="#F2C9A0"/>'
+      + '<circle class="exp-bubble" cx="340" cy="236" r="2.6"/>'
+      + '<circle class="exp-bubble d2" cx="346" cy="246" r="2.2"/>'
+      + '</g>' : '')
+    + (step >= 5 || done ? '<g class="exp-fx-show">'
+      + '<rect x="328" y="186" width="8" height="20" rx="2" fill="#9CC7F5"/>'
+      + '<text x="352" y="198" class="exp-label">水柱</text></g>' : '')
+    + expG(step >= 6, dLeak, justStep === 6)
+    + '<circle cx="150" cy="160" r="16" fill="none" stroke="var(--danger)" stroke-width="2" stroke-dasharray="4 3"/>'
+    + '<circle cx="268" cy="106" r="16" fill="none" stroke="var(--danger)" stroke-width="2" stroke-dasharray="4 3"/>'
+    + '<circle cx="332" cy="122" r="16" fill="none" stroke="var(--danger)" stroke-width="2" stroke-dasharray="4 3"/>'
+    + '<text x="400" y="102" text-anchor="middle" class="exp-label">分段查漏：塞、管、口</text>'
+    + expCheck(480, 120)
+    + '</g>'
+    + '<text x="320" y="318" text-anchor="middle" class="exp-label">气密性良好：导管口冒泡，松手后导管内水柱稳定</text>'
+    + '</svg>';
+}
+
 function expOptionsHtml(q, picked, locked, attr) {
   return '<div class="exp-opts">' + q.opts.map(function (o, i) {
     let cls = 'exp-opt';
@@ -8969,13 +9101,17 @@ function renderLab(id, keepScroll) {
   if (!st) {
     const cards = EXP_STATIONS.map(function (s) {
       const best = expBest(s.id);
+      const roleText = s.examRole === 'exam2026' ? '2026 抽考' : (s.examRole === 'support' ? '操作配套' : '纸笔核心');
+      const roleCls = s.examRole === 'exam2026' ? 'exam2026' : (s.examRole === 'support' ? 'support' : 'core');
       return '<div class="expcard" data-exp-go="' + s.id + '" role="button" tabindex="0">'
         + '<div class="exp-meta"><span class="tag">' + s.tag + '</span><span>' + s.exam + '</span>'
         + '<span class="exp-best">' + (best ? '最好 ' + best + ' 分' : '未完成') + '</span></div>'
-        + '<h3>' + s.name + '</h3><p>' + s.lead + '</p></div>';
+        + '<h3>' + s.name + '<span class="exp-role ' + roleCls + '">' + roleText + '</span></h3>'
+        + '<p>' + s.lead + '</p></div>';
     }).join('');
     view.innerHTML = '<div class="detail-head"><span class="l-tag">中考</span><h2 style="margin:0">中考实验考场</h2></div>'
       + '<p class="hintline">按中考评分点完整做一遍：选仪器、排顺序、看现象、写结论。每站满分 10 分，配 3 道中考改编题。</p>'
+      + '<div class="exp-notice"><b>廊坊 2026 年化学操作考试共 3 题：</b>过滤浑浊食盐水、组装装置并查气密性、配制 10% 食盐水。标「2026 抽考」的 3 个实验就是这三题；<b>2027 年范围尚未公布</b>，公布后按新题更新。</div>'
       + '<div class="expcards">' + cards + '</div>';
     document.querySelectorAll('[data-exp-go]').forEach(function (el) {
       el.addEventListener('click', function () { window.location.hash = '#/lab/' + el.dataset.expGo; });
