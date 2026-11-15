@@ -533,15 +533,36 @@ html[data-theme="dark"] .anim-info-line .vtag{color:#1B1533;}
 .bi-label.b{font-weight:600;fill:var(--ink);}
 .bi-atom{fill:#EDEFF3;stroke:#B9BFCC;stroke-width:1.5;}
 .bi-atom-t{font-size:12px;font-weight:700;fill:#22262F;text-anchor:middle;dominant-baseline:central;}
-.bi-controls{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:center;margin-top:6px;font-size:12.5px;color:var(--ink-2);}
+.bi-note{max-width:620px;margin:2px auto 0;text-align:center;font-size:11.5px;color:var(--ink-2);}
+.bi-readout{max-width:620px;margin:8px auto 0;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);padding:9px 12px;transition:border-color .2s,background .2s;}
+.bi-status-head{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ink-2);margin-bottom:3px;}
+.bi-status-tag{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:1px 7px;font-weight:600;}
+.bi-dir{margin-left:auto;font-weight:700;color:var(--brand);}
+.bi-status{margin:0;padding:0;background:none;font-size:14px;line-height:1.65;color:var(--ink);}
+.bi-readout.good{border-color:#BFE3CC;background:#F2FBF6;}
+.bi-readout.warn{border-color:#F2C7C0;background:#FFF6F4;}
+.bi-readout.good .bi-dir{color:var(--ok);}
+.bi-readout.warn .bi-dir{color:var(--danger);}
+html[data-theme="dark"] .bi-readout.good{background:#12291F;border-color:#245C3F;}
+html[data-theme="dark"] .bi-readout.good .bi-dir{color:#A7E8C2;}
+html[data-theme="dark"] .bi-readout.warn{background:#301A1A;border-color:#6B2D2A;}
+html[data-theme="dark"] .bi-readout.warn .bi-dir{color:#FFB4AC;}
+.bi-control-card{max-width:620px;margin:10px auto 0;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:9px 12px 10px;}
+.bi-control-tip{margin:0 0 7px;font-size:12px;color:var(--ink-2);}
+.bi-controls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:flex-start;margin-top:0;font-size:12.5px;color:var(--ink-2);}
+.bi-ctrl-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
 .bi-controls input[type=range]{width:150px;accent-color:var(--brand);vertical-align:middle;}
-.bi-controls b{color:var(--ink);min-width:52px;display:inline-block;text-align:center;}
+.bi-controls b{color:var(--ink);min-width:42px;display:inline-block;text-align:center;}
+.bi-end{font-size:11px;color:var(--ink-2);white-space:nowrap;}
+.bi-bondnote{font-size:11px;color:var(--ink-2);white-space:nowrap;}
 .bi-cat{display:inline-flex;align-items:center;gap:6px;cursor:pointer;}
-.bi-status{margin:10px 0 0;padding:8px 12px;border-radius:10px;background:var(--panel-2);font-size:13px;line-height:1.7;color:var(--ink-2);}
-.bi-status.good{background:#EAF7EF;color:var(--ok);}
-.bi-status.warn{background:#FFF3F1;color:var(--danger);}
-html[data-theme="dark"] .bi-status.good{background:#12291F;color:#A7E8C2;}
-html[data-theme="dark"] .bi-status.warn{background:#301A1A;color:#FFB4AC;}
+.bi-summary{text-align:center;margin:8px auto 0;max-width:620px;line-height:1.75;font-size:11.5px;color:var(--ink-2);}
+@media (max-width:700px){
+  .bi-note,.bi-readout,.bi-control-card,.bi-summary{max-width:none;}
+  .bi-controls{justify-content:center;}
+  .bi-ctrl-row{justify-content:center;}
+  .bi-controls input[type=range]{width:130px;}
+}
 .bi-off{display:none !important;}
 .modebtn{
   border:1px solid var(--line);background:var(--panel);color:var(--ink-2);
@@ -1225,7 +1246,7 @@ html[data-theme="dark"] .exp-feedback.bad{background:#301A1A;border-color:#6B2D2
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v3.2 · 2026-11-15</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v3.3 · 2026-11-15</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -2970,7 +2991,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.2 · 2026-11-15</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.3 · 2026-11-15</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -4458,13 +4479,22 @@ function bondIntroScene() {
     + '<text class="bi-label" x="520" y="300" text-anchor="end">反应进程 →</text>'
     + '</g>'
     + '</svg>'
-    + '<div class="bi-controls">'
-    + '<div data-bi-bond-ctrl><span>原子距离</span> <input type="range" min="50" max="300" value="160" data-bi-dist> <b data-bi-dist-val>1.60</b></div>'
-    + '<div data-bi-react-ctrl class="bi-off"><span>反应进程</span> <input type="range" min="0" max="100" value="0" data-bi-prog> <b data-bi-prog-val>0%</b></div>'
-    + '<label class="bi-cat bi-off" data-bi-cat-wrap><input type="checkbox" data-bi-cat> 加催化剂</label>'
-    + '</div>'
+    + '<p class="bi-note">图里的「能量」，指两个原子之间储存的势能。</p>'
+    + '<div class="bi-readout" data-bi-readout>'
+    + '<div class="bi-status-head"><span class="bi-status-tag">当前状态</span><span class="bi-dir" data-bi-dir></span></div>'
     + '<p class="bi-status" data-bi-status></p>'
-    + '<p class="bi-label" style="text-align:center;margin:6px 0 0">井深是键能，坡高是活化能；催化剂只削坡，不填井。</p>'
+    + '</div>'
+    + '<div class="bi-control-card">'
+    + '<p class="bi-control-tip" data-bi-tip>拖动滑块，让两个氢原子靠近或远离。</p>'
+    + '<div class="bi-controls">'
+    + '<div class="bi-ctrl-row" data-bi-bond-ctrl><span>原子距离</span><span class="bi-end">← 靠近</span>'
+    + '<input type="range" min="50" max="300" value="160" data-bi-dist>'
+    + '<span class="bi-end">远离 →</span><b data-bi-dist-val>1.60</b><span class="bi-bondnote">键长记为 1.00</span></div>'
+    + '<div class="bi-ctrl-row bi-off" data-bi-react-ctrl><span>反应进程</span>'
+    + '<input type="range" min="0" max="100" value="0" data-bi-prog> <b data-bi-prog-val>0%</b></div>'
+    + '<label class="bi-cat bi-off" data-bi-cat-wrap><input type="checkbox" data-bi-cat> 加催化剂</label>'
+    + '</div></div>'
+    + '<p class="bi-label bi-summary">井越深，键越牢：井深 = 键能。<br>坡越高，反应越难启动：坡高 = 活化能。<br>催化剂只把坡削低，井深不变。</p>'
     + '</div>';
 }
 
@@ -4490,12 +4520,44 @@ function bindBondIntro(stage) {
   const barrier = stage.querySelector('[data-bi-barrier]');
   const barrierLabel = stage.querySelector('[data-bi-barrier-label]');
   const status = stage.querySelector('[data-bi-status]');
+  const readout = stage.querySelector('[data-bi-readout]');
+  const dirEl = stage.querySelector('[data-bi-dir]');
+  const tip = stage.querySelector('[data-bi-tip]');
   const distVal = stage.querySelector('[data-bi-dist-val]');
   const progVal = stage.querySelector('[data-bi-prog-val]');
   const tabs = Array.prototype.slice.call(stage.querySelectorAll('[data-bi-view]'));
+  let lastD = null, lastDir = '';
+  let lastT = null, lastTDir = '';
+
+  function bondCopy(d, dir) {
+    if (!dir) return { cls: '', text: '先拖动滑块，看看两个氢原子离远、离近时，能量怎么变。' };
+    if (d > 2.3) {
+      return dir === 'in'
+        ? { cls: '', text: '离得还很远，两个原子几乎感觉不到对方。再靠近一点，才开始互相吸引。' }
+        : { cls: '', text: '离得更远了，原子间的作用越来越弱，能量几乎不变。' };
+    }
+    if (d > 1.12) {
+      return dir === 'in'
+        ? { cls: 'good', text: '正在靠近：两个原子互相吸引，能量往下走。降下来的能量会放出去，这就是成键放能。' }
+        : { cls: 'good', text: '正在远离：想把它们拉开，就得消耗能量。拉得越远，越接近断键。' };
+    }
+    if (d >= 0.88) {
+      return dir === 'in'
+        ? { cls: 'good', text: '现在差不多是键长：能量最低，最稳定。再往里挤，就要开始排斥了。' }
+        : { cls: 'good', text: '现在差不多是键长：能量最低，最稳定。再往外拉，就要消耗能量了。' };
+    }
+    return dir === 'in'
+      ? { cls: 'warn', text: '挤得太近了：两个原子核都带正电，互相顶住，越挤能量越高。' }
+      : { cls: 'warn', text: '正在退开：排斥变小，能量降下来。但还没回到键长，不算成键。' };
+  }
 
   function updateBond() {
     const d = Number(dist.value) / 100;
+    if (lastD == null) lastD = d;
+    else if (Math.abs(d - lastD) > 0.004) {
+      lastDir = d < lastD ? 'in' : 'out';
+      lastD = d;
+    }
     const x = biBondX(d), y = biBondY(biBondE(d));
     bondDot.setAttribute('cx', x.toFixed(1));
     bondDot.setAttribute('cy', y.toFixed(1));
@@ -4506,25 +4568,19 @@ function bindBondIntro(stage) {
     atomLt.setAttribute('x', lx.toFixed(1));
     atomRt.setAttribute('x', rx.toFixed(1));
     distVal.textContent = d.toFixed(2);
-    let msg, cls = '';
-    if (d > 2.3) {
-      msg = '太远：两个原子几乎没有作用，能量接近 0。';
-    } else if (d > 1.12) {
-      msg = '靠近：能量下降，成键会放出能量。';
-      cls = 'good';
-    } else if (d >= 0.88) {
-      msg = '键长附近：能量最低，最稳定；井深就是键能。';
-      cls = 'good';
-    } else {
-      msg = '太近：原子核互相排斥，能量急剧升高。';
-      cls = 'warn';
-    }
-    status.className = 'bi-status' + (cls ? ' ' + cls : '');
-    status.textContent = msg;
+    const m = bondCopy(d, lastDir);
+    readout.className = 'bi-readout' + (m.cls ? ' ' + m.cls : '');
+    dirEl.textContent = lastDir === 'in' ? '← 正在靠近' : lastDir === 'out' ? '正在远离 →' : '拖动滑块试试';
+    status.textContent = m.text;
   }
 
   function updateReact() {
     const t = Number(prog.value) / 100;
+    if (lastT == null) lastT = t;
+    else if (Math.abs(t - lastT) > 0.004) {
+      lastTDir = t > lastT ? 'fwd' : 'back';
+      lastT = t;
+    }
     const peak = cat ? 70 : 160;
     const tMax = biReactPeakT(peak);
     const x = biReactX(t), y = biReactY(biReactE(t, peak));
@@ -4553,7 +4609,8 @@ function bindBondIntro(stage) {
     else if (t > 0.92) { msg = '产物：新键形成，能量降低，多余能量放出。'; cls = 'good'; }
     else msg = '下坡：形成新键，放出能量。';
     if (cat) msg = '催化剂把坡削低（活化能变小），但反应热不变。' + msg;
-    status.className = 'bi-status' + (cls ? ' ' + cls : '');
+    readout.className = 'bi-readout' + (cls ? ' ' + cls : '');
+    dirEl.textContent = lastTDir === 'fwd' ? '向右推进 →' : lastTDir === 'back' ? '← 往回拖' : '拖动滑块试试';
     status.textContent = msg;
   }
 
@@ -4571,6 +4628,8 @@ function bindBondIntro(stage) {
       bondCtrl.classList.toggle('bi-off', view !== 'bond');
       reactCtrl.classList.toggle('bi-off', view !== 'react');
       catWrap.classList.toggle('bi-off', view !== 'react');
+      if (view === 'bond') { lastD = Number(dist.value) / 100; lastDir = ''; tip.textContent = '拖动滑块，让两个氢原子靠近或远离。'; }
+      else { lastT = Number(prog.value) / 100; lastTDir = ''; tip.textContent = '拖动滑块，让反应从反应物走到产物。'; }
       update();
     });
   });
