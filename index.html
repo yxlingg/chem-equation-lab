@@ -1158,7 +1158,26 @@ html[data-theme="dark"] .exp-toast{background:#12291F;border-color:#245C3F;color
 .exp-opts{display:flex;flex-direction:column;gap:8px;}
 .exp-opt{text-align:left;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);border-radius:10px;padding:9px 11px;font-family:inherit;font-size:13px;line-height:1.5;cursor:pointer;transition:border-color .15s,background .15s;}
 .exp-opt:hover:not(:disabled){border-color:var(--brand);background:var(--brand-soft);}
-.exp-opt:disabled{opacity:.55;cursor:default;}
+.exp-opt:disabled{opacity:.8;cursor:default;}
+.exp-opt.ok{background:#EAF7EF;border-color:#BFE3CC;color:var(--ok);font-weight:600;}
+.exp-opt.bad{background:#FFF3F1;border-color:#F2C7C0;color:var(--danger);font-weight:600;}
+.exp-opt.ok:disabled,.exp-opt.bad:disabled{opacity:1;}
+.exp-analysis{margin-top:10px;display:flex;flex-direction:column;gap:6px;}
+.exp-why{border:1px solid var(--line);border-radius:9px;padding:7px 10px;font-size:12.5px;line-height:1.65;background:var(--panel-2);color:var(--ink-2);}
+.exp-why b{display:block;color:var(--ink);font-size:12.5px;margin-bottom:2px;}
+.exp-why.ok{background:#EAF7EF;border-color:#BFE3CC;}
+.exp-why.ok b{color:var(--ok);}
+.exp-why.bad{background:#FFF3F1;border-color:#F2C7C0;}
+.exp-why.bad b{color:var(--danger);}
+html[data-theme="dark"] .exp-opt.ok{background:#12291F;border-color:#245C3F;color:#A7E8C2;}
+html[data-theme="dark"] .exp-opt.bad{background:#301A1A;border-color:#6B2D2A;color:#FFB4AC;}
+html[data-theme="dark"] .exp-why.ok{background:#12291F;border-color:#245C3F;}
+html[data-theme="dark"] .exp-why.ok b{color:#A7E8C2;}
+html[data-theme="dark"] .exp-why.bad{background:#301A1A;border-color:#6B2D2A;}
+html[data-theme="dark"] .exp-why.bad b{color:#FFB4AC;}
+.exp-next{margin-top:10px;}
+.exp-practice-note{font-size:11.5px;color:var(--ink-2);margin:8px 0 0;line-height:1.6;}
+.exp-practice-btn{padding:6px 12px;font-size:12.5px;}
 .exp-feedback{margin-top:10px;border-radius:10px;padding:8px 11px;font-size:12.5px;line-height:1.65;border:1px solid var(--line);background:var(--panel-2);color:var(--ink-2);}
 .exp-feedback.good{background:#EAF7EF;border-color:#BFE3CC;color:var(--ok);}
 .exp-feedback.bad{background:#FFF3F1;border-color:#F2C7C0;color:var(--danger);}
@@ -1206,7 +1225,7 @@ html[data-theme="dark"] .exp-feedback.bad{background:#301A1A;border-color:#6B2D2
     </div>
     <div>
       <h1>化学方程式实验室</h1>
-      <p class="tagline">分子会变，原子不会变<span class="ver">v3.1 · 2026-11-14</span></p>
+      <p class="tagline">分子会变，原子不会变<span class="ver">v3.2 · 2026-11-15</span></p>
     </div>
   </div>
   <div class="top-right">
@@ -2951,7 +2970,7 @@ function buildExportSvg(r) {
     + ledMk
     + '<line x1="50" y1="' + (pointsTitleY - 20) + '" x2="950" y2="' + (pointsTitleY - 20) + '" stroke="' + T.line + '"/>'
     + pointMk
-    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.1 · 2026-11-14</text>'
+    + '<text x="950" y="' + (totalH - 14) + '" text-anchor="end" font-size="12" fill="' + T.ink2 + '">化学方程式实验室 v3.2 · 2026-11-15</text>'
     + '</svg>';
 
   const V = exportVarMap(T);
@@ -8156,48 +8175,52 @@ const EXP_STATIONS = [
     lead: '从粗盐到精盐：称、溶、滤、蒸、算。每一步都对应实验操作考试的评分点。',
     review: '#/g9/u-ops',
     steps: [
-      { q: '称取 5.0 g 粗盐，选什么仪器？', opts: ['托盘天平', '100 mL 量筒', '蒸发皿'], ans: 0, ok: '粗盐是固体，用托盘天平称质量。', bad: '量筒量的是体积，蒸发皿不能称量；称固体要用托盘天平。', record: '称取 5.0 g 粗盐' },
-      { q: '量取 20 mL 水，选哪个量筒？', opts: ['100 mL 量筒', '25 mL 量筒 + 胶头滴管', '烧杯'], ans: 1, ok: '量程越接近越准，25 mL 量筒配胶头滴管定容到 20 mL。', bad: '100 mL 量筒量 20 mL 误差大；烧杯没有刻度，不能准确量取。', record: '量取 20 mL 水' },
-      { q: '粗盐和水放入烧杯后，怎样加速溶解？', opts: ['用玻璃棒搅拌', '用酒精灯加热至沸腾', '静置不动'], ans: 0, ok: '搅拌是标准操作，加快溶解且不改变结果。', bad: '直接煮沸不安全，也不是溶解粗盐的必需操作；静置太慢。', record: '粗盐溶解，得到浑浊溶液' },
-      { q: '过滤前，滤纸怎么处理？', opts: ['润湿后紧贴漏斗内壁', '干滤纸直接放入', '滤纸高出漏斗边缘'], ans: 0, ok: '滤纸润湿贴紧，排掉气泡，过滤才快。', bad: '滤纸不紧贴会有气泡；高出漏斗边缘会让浑浊液漏下去。', record: '滤纸润湿贴紧漏斗' },
-      { q: '过滤时，正确的操作是？', opts: ['玻璃棒引流，液面低于滤纸边缘', '直接倒入漏斗，液面高于滤纸边缘', '用玻璃棒在漏斗内搅拌'], ans: 0, ok: '玻璃棒引流，液面低于滤纸边缘，滤液才澄清。', bad: '液面高于滤纸边缘，浑浊液会从缝隙流下，滤液仍浑浊。', record: '过滤，滤液澄清' },
-      { q: '蒸发时，什么时候停止加热？', opts: ['出现较多固体时停止，余热蒸干', '一直加热到完全蒸干', '水一沸腾就停止'], ans: 0, ok: '出现较多固体就停，余热把剩余水分蒸干，避免飞溅。', bad: '蒸干才停会飞溅；沸腾就停还没结晶。', record: '蒸发，出现白色晶体' },
-      { q: '产率怎么算？', opts: ['精盐质量 ÷ 粗盐质量 × 100%', '粗盐质量 ÷ 精盐质量 × 100%', '水的质量 ÷ 精盐质量 × 100%'], ans: 0, ok: '产率是得到的精盐占粗盐的质量分数。', bad: '产率 = 精盐质量 ÷ 粗盐质量 × 100%，分母是粗盐。', record: '产率 = 精盐质量 ÷ 粗盐质量 × 100%' }
+      { q: '称取 5.0 g 粗盐，选什么仪器？', opts: ['托盘天平', '100 mL 量筒', '蒸发皿'], ans: 0, why: ['粗盐是固体，称质量要用托盘天平，左物右码。', '量筒量的是液体体积，不能称固体质量。', '蒸发皿用来蒸发液体，不能当称量容器。'], record: '称取 5.0 g 粗盐' },
+      { q: '量取 20 mL 水，选哪个量筒？', opts: ['100 mL 量筒', '25 mL 量筒 + 胶头滴管', '烧杯'], ans: 1, why: ['100 mL 量筒量 20 mL，量程太大，误差大。', '25 mL 量程接近 20 mL，再用胶头滴管定容，误差最小。', '烧杯没有精确刻度，只能粗略量取，不能准确量 20 mL。'], record: '量取 20 mL 水' },
+      { q: '粗盐和水放入烧杯后，怎样加速溶解？', opts: ['用玻璃棒搅拌', '用酒精灯加热至沸腾', '静置不动'], ans: 0, why: ['玻璃棒搅拌加快溶解，操作安全，也不改变结果。', '加热至沸腾容易溅出，不是溶解粗盐的必要操作。', '静置溶解太慢，不能有效加速。'], record: '粗盐溶解，得到浑浊溶液' },
+      { q: '过滤前，滤纸怎么处理？', opts: ['润湿后紧贴漏斗内壁', '干滤纸直接放入', '滤纸高出漏斗边缘'], ans: 0, why: ['滤纸润湿后贴紧内壁，排掉气泡，过滤才快。', '干滤纸不易贴紧，容易留气泡，过滤慢。', '滤纸高出漏斗边缘，浑浊液会从边缘漏下，滤液仍浑浊。'], record: '滤纸润湿贴紧漏斗' },
+      { q: '过滤时，正确的操作是？', opts: ['玻璃棒引流，液面低于滤纸边缘', '直接倒入漏斗，液面高于滤纸边缘', '用玻璃棒在漏斗内搅拌'], ans: 0, why: ['玻璃棒引流，液面低于滤纸边缘，滤液才澄清。', '液面高于滤纸边缘，浑浊液会从滤纸和漏斗的缝隙流下。', '在漏斗内搅拌会弄破滤纸，杂质进入滤液。'], record: '过滤，滤液澄清' },
+      { q: '蒸发时，什么时候停止加热？', opts: ['出现较多固体时停止，余热蒸干', '一直加热到完全蒸干', '水一沸腾就停止'], ans: 0, why: ['出现较多固体就停，余热把剩余水分蒸干，避免晶体飞溅。', '蒸干才停容易飞溅，损失精盐。', '水刚沸腾就停，大部分水还没蒸发，得不到晶体。'], record: '蒸发，出现白色晶体' },
+      { q: '产率怎么算？', opts: ['精盐质量 ÷ 粗盐质量 × 100%', '粗盐质量 ÷ 精盐质量 × 100%', '水的质量 ÷ 精盐质量 × 100%'], ans: 0, why: ['产率是得到的精盐占粗盐的质量分数，分母是粗盐。', '分子分母颠倒，算出来不是产率。', '产率与水的质量无关，分母不能用水的质量。'], record: '产率 = 精盐质量 ÷ 粗盐质量 × 100%' }
     ],
-    final: { q: '下列操作会使产率偏低的是？', opts: ['蒸发时晶体飞溅', '过滤时液面高于滤纸边缘', '称量精盐时砝码生锈', '精盐未完全干燥'], ans: 0, why: '晶体飞溅会损失精盐，产率偏低；其余三项都会让精盐质量偏大或杂质偏多，产率偏高。' }
+    final: { q: '下列操作会使产率偏低的是？', opts: ['蒸发时晶体飞溅', '过滤时液面高于滤纸边缘', '称量精盐时砝码生锈', '精盐未完全干燥'], ans: 0, why: ['晶体飞溅会损失精盐，产率偏低。', '液面高于滤纸边缘，杂质进入滤液，精盐质量偏大，产率偏高。', '砝码生锈质量偏大，称得的精盐偏多，产率偏高。', '精盐未完全干燥，含水使质量偏大，产率偏高。'] }
   },
   {
     id: 'solution', name: '溶液配制', tag: '定量实验', exam: '实验操作·配制溶液',
     lead: '配制 50 g 6% 的 NaCl 溶液：先算，再称、量、溶、装瓶。',
     review: '#/g9/u4',
     steps: [
-      { q: '配制 50 g 6% NaCl 溶液，需要 NaCl 和水各多少？', opts: ['3 g NaCl，47 g 水', '6 g NaCl，44 g 水', '5 g NaCl，45 g 水'], ans: 0, ok: '50 g × 6% = 3 g NaCl，水 = 50 − 3 = 47 g。', bad: '溶质 = 溶液质量 × 质量分数 = 50 × 6% = 3 g；水是 47 g。', record: '计算：3.0 g NaCl + 47.0 g 水' },
-      { q: '称取 3.0 g NaCl，选什么？', opts: ['托盘天平', '量筒', '漏斗'], ans: 0, ok: '固体称量用托盘天平。', bad: '量筒量体积，漏斗不能称量；称固体用托盘天平。', record: '称取 3.0 g NaCl' },
-      { q: '量取 47 mL 水，选哪个量筒？', opts: ['50 mL 量筒', '100 mL 量筒', '10 mL 量筒'], ans: 0, ok: '选量程接近的 50 mL 量筒，误差最小。', bad: '10 mL 量程不够，100 mL 误差大；应选 50 mL。', record: '量取 47 mL 水' },
-      { q: '把 NaCl 放入水中后，怎样溶解？', opts: ['烧杯 + 玻璃棒搅拌', '试管 + 酒精灯加热', '蒸发皿 + 漏斗'], ans: 0, ok: '烧杯内用玻璃棒搅拌，加快溶解。', bad: '配制溶液不需要加热；蒸发皿和漏斗不是溶解容器。', record: '搅拌溶解' },
-      { q: '配好后怎么处理？', opts: ['装入试剂瓶，贴标签「NaCl 溶液 6%」', '敞口放在烧杯里', '装瓶但不贴标签'], ans: 0, ok: '装瓶并贴标签，写清名称和质量分数。', bad: '敞口会蒸发、不贴标签会混淆；必须装瓶贴标签。', record: '装瓶，贴标签「NaCl 溶液 6%」' }
+      { q: '配制 50 g 6% NaCl 溶液，需要 NaCl 和水各多少？', opts: ['3 g NaCl，47 g 水', '6 g NaCl，44 g 水', '5 g NaCl，45 g 水'], ans: 0, why: ['溶质 = 50 × 6% = 3 g，水 = 50 − 3 = 47 g。', '6 g 是按 12% 算的，质量分数不对。', '5 g 是按 10% 算的，质量分数不对。'], record: '计算：3.0 g NaCl + 47.0 g 水' },
+      { q: '称取 3.0 g NaCl，选什么？', opts: ['托盘天平', '量筒', '漏斗'], ans: 0, why: ['固体称量用托盘天平。', '量筒量液体体积，不能称固体。', '漏斗用来过滤，不能称量。'], record: '称取 3.0 g NaCl' },
+      { q: '量取 47 mL 水，选哪个量筒？', opts: ['50 mL 量筒', '100 mL 量筒', '10 mL 量筒'], ans: 0, why: ['50 mL 量程最接近 47 mL，误差最小。', '100 mL 量程太大，读数误差大。', '10 mL 量程不够，要量多次，误差更大。'], record: '量取 47 mL 水' },
+      { q: '把 NaCl 放入水中后，怎样溶解？', opts: ['烧杯 + 玻璃棒搅拌', '试管 + 酒精灯加热', '蒸发皿 + 漏斗'], ans: 0, why: ['烧杯内用玻璃棒搅拌，加快溶解。', '配制溶液不需要加热，试管也不适合大量配制。', '蒸发皿和漏斗不是溶解容器，漏斗更不能装液体搅拌。'], record: '搅拌溶解' },
+      { q: '配好后怎么处理？', opts: ['装入试剂瓶，贴标签「NaCl 溶液 6%」', '敞口放在烧杯里', '装瓶但不贴标签'], ans: 0, why: ['装瓶并贴标签，写清名称和质量分数，便于取用。', '敞口放置水分会蒸发，浓度改变，还会落入杂质。', '不贴标签容易和其他溶液混淆。'], record: '装瓶，贴标签「NaCl 溶液 6%」' }
     ],
-    final: { q: '量水时仰视读数，配得溶液的质量分数会？', opts: ['偏小', '偏大', '不变'], ans: 0, why: '仰视读数时实际水量偏多，溶质质量不变，质量分数偏小。' }
+    final: { q: '量水时仰视读数，配得溶液的质量分数会？', opts: ['偏小', '偏大', '不变'], ans: 0, why: ['仰视读数时实际水量偏多，溶质质量不变，质量分数偏小。', '俯视读数才会水量偏少、质量分数偏大；仰视正好相反。', '水量改变了，溶液质量和质量分数都会变。'] }
   },
   {
     id: 'gas', name: '气体制取与净化', tag: '综合实验', exam: '河北中考·气体制备',
     lead: '以 CO₂ 为例：选装置、查气密性、加药品、除杂、干燥、收集、验满、检验。',
     review: '#/g9/u-gas',
     steps: [
-      { q: '实验室制 CO₂，选哪套发生装置？', opts: ['固液常温：锥形瓶 + 长颈漏斗', '固固加热：试管 + 酒精灯', '电解水装置'], ans: 0, ok: '石灰石和稀盐酸在常温下反应，用固液常温装置。', bad: '制 CO₂ 不需要加热；电解水是制氢气和氧气。', record: '选择固液常温发生装置' },
-      { q: '装药品前先做什么？', opts: ['检查装置气密性', '直接加石灰石', '先加热锥形瓶'], ans: 0, ok: '先查气密性，装置漏气就白做了。', bad: '不查气密性，可能收集不到气体；也不能先加热。', record: '检查气密性，导管口冒泡' },
-      { q: '制 CO₂ 的药品是？', opts: ['石灰石 + 稀盐酸，长颈漏斗下端液封', '石灰石 + 稀硫酸', '碳酸钠粉末 + 稀盐酸'], ans: 0, ok: '石灰石与稀盐酸，长颈漏斗下端液封防止气体逸出。', bad: '稀硫酸生成微溶的 CaSO₄ 覆盖石灰石；粉末反应太快；长颈漏斗必须液封。', record: '石灰石 + 稀盐酸，长颈漏斗液封' },
-      { q: '除去 CO₂ 中混有的 HCl，用？', opts: ['饱和 NaHCO₃ 溶液', 'NaOH 溶液', '澄清石灰水'], ans: 0, ok: '饱和 NaHCO₃ 吸收 HCl，不吸收 CO₂。', bad: 'NaOH 和石灰水都会吸收 CO₂；不能用它们除 HCl。', record: '饱和 NaHCO₃ 除去 HCl' },
-      { q: '干燥 CO₂，用？', opts: ['浓硫酸', 'NaOH 固体', '无水硫酸铜'], ans: 0, ok: '浓硫酸干燥酸性气体 CO₂。', bad: 'NaOH 会吸收 CO₂；无水硫酸铜只检验水，不能干燥。', record: '浓硫酸干燥' },
-      { q: '收集 CO₂，怎么放导管？', opts: ['向上排空气，导管伸到集气瓶底部', '向下排空气，导管伸到瓶口', '排水法收集'], ans: 0, ok: 'CO₂ 密度比空气大，向上排空气，导管伸到底部。', bad: 'CO₂ 能溶于水，不用排水法；导管不伸到底部，空气排不干净。', record: '向上排空气收集' },
-      { q: '验满 CO₂，怎么做？', opts: ['燃着木条放在集气瓶口', '燃着木条伸入瓶内', '闻气味'], ans: 0, ok: '燃着木条放瓶口，熄灭说明已满。', bad: '伸入瓶内会受瓶内气体影响；CO₂ 无味，不能闻气味。', record: '木条熄灭，已收集满' },
-      { q: '检验 CO₂，用？', opts: ['澄清石灰水，变浑浊', '燃着木条，熄灭', '紫色石蕊，变蓝'], ans: 0, ok: '澄清石灰水变浑浊是 CO₂ 的特征检验。', bad: '木条熄灭只能说明不支持燃烧；石蕊遇 CO₂ 变红，不是变蓝。', record: '澄清石灰水变浑浊，是 CO₂' }
+      { q: '实验室制 CO₂，选哪套发生装置？', opts: ['固液常温：锥形瓶 + 长颈漏斗', '固固加热：试管 + 酒精灯', '电解水装置'], ans: 0, why: ['石灰石和稀盐酸在常温下反应，用固液常温装置。', '制 CO₂ 不需要加热，固固加热装置用不上。', '电解水是制氢气和氧气，不是制 CO₂。'], record: '选择固液常温发生装置' },
+      { q: '装药品前先做什么？', opts: ['检查装置气密性', '直接加石灰石', '先加热锥形瓶'], ans: 0, why: ['先查气密性，装置漏气就收集不到气体。', '不查气密性直接加药，可能白做。', '制 CO₂ 不需要加热，先加热没有意义。'], record: '检查气密性，导管口冒泡' },
+      { q: '制 CO₂ 的药品是？', opts: ['石灰石 + 稀盐酸，长颈漏斗下端液封', '石灰石 + 稀硫酸', '碳酸钠粉末 + 稀盐酸'], ans: 0, why: ['石灰石与稀盐酸反应，长颈漏斗下端液封防止气体逸出。', '稀硫酸生成微溶的 CaSO₄，覆盖在石灰石表面，反应很快停止。', '碳酸钠粉末反应太快，不便控制；长颈漏斗也未液封。'], record: '石灰石 + 稀盐酸，长颈漏斗液封' },
+      { q: '除去 CO₂ 中混有的 HCl，用？', opts: ['饱和 NaHCO₃ 溶液', 'NaOH 溶液', '澄清石灰水'], ans: 0, why: ['饱和 NaHCO₃ 吸收 HCl，不吸收 CO₂。', 'NaOH 会同时吸收 CO₂，不能用来除 HCl。', '澄清石灰水也会吸收 CO₂，还会生成沉淀。'], record: '饱和 NaHCO₃ 除去 HCl' },
+      { q: '干燥 CO₂，用？', opts: ['浓硫酸', 'NaOH 固体', '无水硫酸铜'], ans: 0, why: ['浓硫酸干燥酸性气体 CO₂，不与其反应。', 'NaOH 固体吸收 CO₂，不能用来干燥。', '无水硫酸铜遇水变蓝，只能检验水，不能干燥。'], record: '浓硫酸干燥' },
+      { q: '收集 CO₂，怎么放导管？', opts: ['向上排空气，导管伸到集气瓶底部', '向下排空气，导管伸到瓶口', '排水法收集'], ans: 0, why: ['CO₂ 密度比空气大，向上排空气，导管伸到底部才能排净空气。', '向下排空气适用密度比空气小的气体，CO₂ 会沉在瓶底。', 'CO₂ 能溶于水，不能用排水法。'], record: '向上排空气收集' },
+      { q: '验满 CO₂，怎么做？', opts: ['燃着木条放在集气瓶口', '燃着木条伸入瓶内', '闻气味'], ans: 0, why: ['燃着木条放瓶口，熄灭说明瓶口已充满 CO₂。', '伸入瓶内会受瓶内气体影响，不能判断瓶口是否满。', 'CO₂ 无色无味，闻气味不能验满。'], record: '木条熄灭，已收集满' },
+      { q: '检验 CO₂，用？', opts: ['澄清石灰水，变浑浊', '燃着木条，熄灭', '紫色石蕊，变蓝'], ans: 0, why: ['澄清石灰水变浑浊是 CO₂ 的特征检验。', '木条熄灭只能说明不支持燃烧，不能确定是 CO₂。', 'CO₂ 使紫色石蕊变红，不是变蓝。'], record: '澄清石灰水变浑浊，是 CO₂' }
     ],
-    final: { q: '长颈漏斗下端没有液封，后果是？', opts: ['气体从长颈漏斗逸出', 'CO₂ 更纯', '反应停止'], ans: 0, why: '长颈漏斗下端必须浸在液面以下，否则生成的气体会从漏斗口跑掉。' }
+    final: { q: '长颈漏斗下端没有液封，后果是？', opts: ['气体从长颈漏斗逸出', 'CO₂ 更纯', '反应停止'], ans: 0, why: ['下端没有浸入液面，生成的气体会从长颈漏斗口跑掉。', '气体逸出不会让 CO₂ 更纯，反而收集不到。', '石灰石和稀盐酸仍会反应，只是气体跑了。'] }
   }
 ];
 
-const EXPSTATE = { id: null, step: 0, score: 10, records: [], fb: null, done: false, finalDone: false, justStep: null };
+const EXPSTATE = {
+  id: null, step: 0, score: 10, records: [], done: false,
+  finalPicked: -1, justStep: null, picked: -1, answered: false,
+  practice: false, practicePicked: -1
+};
 
 function expStation(id) { return EXP_STATIONS.find(function (s) { return s.id === id; }) || null; }
 function expBest(id) { return (PROG.lab && PROG.lab[id] && PROG.lab[id].best) || 0; }
@@ -8392,35 +8415,79 @@ function expSvgGas(step, done, justStep) {
     + '</svg>';
 }
 
-function expPanelHtml(st, s) {
+function expOptionsHtml(q, picked, locked, attr) {
+  return '<div class="exp-opts">' + q.opts.map(function (o, i) {
+    let cls = 'exp-opt';
+    if (picked >= 0) {
+      if (i === q.ans) cls += ' ok';
+      else if (i === picked) cls += ' bad';
+    }
+    return '<button class="' + cls + '" ' + attr + '="' + i + '"' + (locked ? ' disabled' : '') + '>' + o + '</button>';
+  }).join('') + '</div>';
+}
+
+function expAnalysisHtml(q, picked) {
+  return '<div class="exp-analysis">' + q.opts.map(function (o, i) {
+    const isOk = i === q.ans;
+    const cls = isOk ? ' ok' : (i === picked ? ' bad' : '');
+    return '<div class="exp-why' + cls + '"><b>' + (isOk ? '✓' : '✗') + ' ' + String.fromCharCode(65 + i) + '. ' + o + '</b>'
+      + '<span>' + (q.why && q.why[i] ? q.why[i] : '') + '</span></div>';
+  }).join('') + '</div>';
+}
+
+function expStepPanelHtml(st, s) {
   const n = st.steps.length;
   const cur = st.steps[Math.min(s.step, n - 1)];
-  let head = '<div class="exp-step">第 ' + Math.min(s.step + 1, n) + ' / ' + n + ' 步'
-    + '<span class="exp-score">' + s.score + ' 分</span></div>';
-  if (!s.done) {
-    return '<aside class="explab-panel">' + head
-      + '<h3>' + cur.q + '</h3>'
-      + '<div class="exp-opts">' + cur.opts.map(function (o, i) {
-        return '<button class="exp-opt" data-exp-opt="' + i + '">' + o + '</button>';
-      }).join('') + '</div>'
-      + (s.fb ? '<div class="exp-feedback ' + s.fb.type + '">' + s.fb.text + '</div>' : '')
-      + expRecordsHtml(s)
-      + '<div class="exp-reset"><button class="btn" data-exp-reset="1">重新开始</button></div>'
-      + '</aside>';
-  }
-  return '<aside class="explab-panel">' + head
+  return '<aside class="explab-panel">'
+    + '<div class="exp-step">第 ' + Math.min(s.step + 1, n) + ' / ' + n + ' 步'
+    + '<span class="exp-score">' + s.score + ' 分</span></div>'
+    + '<h3>' + cur.q + '</h3>'
+    + expOptionsHtml(cur, s.picked, s.answered, 'data-exp-opt')
+    + (s.picked >= 0 ? expAnalysisHtml(cur, s.picked) : '')
+    + (s.answered ? '<div class="exp-next"><button class="btn primary" data-exp-next>'
+      + (s.step + 1 >= n ? '完成实验 →' : '下一步 →') + '</button></div>' : '')
+    + expRecordsHtml(s)
+    + '<div class="exp-reset"><button class="btn" data-exp-reset="1">重新开始</button></div>'
+    + '</aside>';
+}
+
+function expPracticePanelHtml(st, s) {
+  const f = st.final;
+  const picked = s.practicePicked;
+  return '<aside class="explab-panel">'
+    + '<div class="exp-step">练习模式 · 中考改编题'
+    + '<span class="exp-score" style="color:var(--ink-2)">不计分</span></div>'
+    + '<h3>' + f.q + '</h3>'
+    + expOptionsHtml(f, picked, picked >= 0, 'data-exp-practice-opt')
+    + (picked >= 0 ? expAnalysisHtml(f, picked) : '')
+    + '<p class="exp-practice-note">练习不计分，也不会改变实验最好成绩。</p>'
+    + '<div class="exp-reset">'
+    + (picked >= 0 ? '<button class="btn" data-exp-practice-reset>再做一次</button>' : '')
+    + '<button class="btn" data-exp-practice-back>← 回到实验</button></div>'
+    + '</aside>';
+}
+
+function expFinalPanelHtml(st, s) {
+  const f = st.final;
+  const picked = s.finalPicked;
+  return '<aside class="explab-panel">'
+    + '<div class="exp-step">第 ' + st.steps.length + ' / ' + st.steps.length + ' 步'
+    + '<span class="exp-score">' + s.score + ' 分</span></div>'
     + '<div class="exp-done"><b>实验完成，操作得分 ' + s.score + ' / 10</b><br>'
     + '刚才的操作已经记录在下面。再做一道中考改编题，检查你有没有真正理解。</div>'
-    + '<h3 style="margin-top:12px">' + st.final.q + '</h3>'
-    + '<div class="exp-opts">' + st.final.opts.map(function (o, i) {
-      return '<button class="exp-opt" data-exp-final="' + i + '"' + (s.finalDone ? ' disabled' : '') + '>' + o + '</button>';
-    }).join('') + '</div>'
-    + (s.fb ? '<div class="exp-feedback ' + s.fb.type + '">' + s.fb.text + '</div>' : '')
-    + (s.finalDone ? '<div class="exp-done" style="margin-top:10px">本题解析：' + st.final.why + '</div>' : '')
+    + '<h3 style="margin-top:12px">' + f.q + '</h3>'
+    + expOptionsHtml(f, picked, picked >= 0, 'data-exp-final')
+    + (picked >= 0 ? expAnalysisHtml(f, picked) : '')
     + expRecordsHtml(s)
     + '<div class="exp-reset"><button class="btn" data-exp-reset="1">重做实验</button>'
     + '<a class="btn" href="' + st.review + '">去看相关复习 →</a></div>'
     + '</aside>';
+}
+
+function expPanelHtml(st, s) {
+  if (s.practice) return expPracticePanelHtml(st, s);
+  if (s.done) return expFinalPanelHtml(st, s);
+  return expStepPanelHtml(st, s);
 }
 
 function expRecordsHtml(s) {
@@ -8434,10 +8501,13 @@ function expReset() {
   EXPSTATE.step = 0;
   EXPSTATE.score = 10;
   EXPSTATE.records = [];
-  EXPSTATE.fb = null;
   EXPSTATE.done = false;
-  EXPSTATE.finalDone = false;
+  EXPSTATE.finalPicked = -1;
   EXPSTATE.justStep = null;
+  EXPSTATE.picked = -1;
+  EXPSTATE.answered = false;
+  EXPSTATE.practice = false;
+  EXPSTATE.practicePicked = -1;
 }
 
 function expSave(st) {
@@ -8479,7 +8549,9 @@ function renderLab(id, keepScroll) {
   }).join('');
   view.innerHTML = '<div class="detail-head"><button class="back" data-exp-back="1">← 实验列表</button>'
     + '<span class="l-tag">' + st.tag + '</span><h2 style="margin:0">' + st.name + '</h2>'
-    + '<span class="hintline" style="margin:0">' + st.exam + '</span></div>'
+    + '<span class="hintline" style="margin:0">' + st.exam + '</span>'
+    + (!EXPSTATE.done && !EXPSTATE.practice ? '<span class="head-btns"><button class="btn exp-practice-btn" data-exp-practice>直接做练习</button></span>' : '')
+    + '</div>'
     + '<p class="hintline">' + st.lead + '</p>'
     + '<div class="explab"><aside class="explab-nav">' + nav + '</aside>'
     + '<section class="explab-stage' + (EXPSTATE.done ? ' done' : '') + '">'
@@ -8491,8 +8563,23 @@ function renderLab(id, keepScroll) {
   document.querySelectorAll('[data-exp-opt]').forEach(function (b) {
     b.addEventListener('click', function () { expAnswer(st, Number(b.dataset.expOpt)); });
   });
+  document.querySelectorAll('[data-exp-next]').forEach(function (b) {
+    b.addEventListener('click', function () { expNext(st); });
+  });
   document.querySelectorAll('[data-exp-final]').forEach(function (b) {
     b.addEventListener('click', function () { expFinal(st, Number(b.dataset.expFinal)); });
+  });
+  document.querySelectorAll('[data-exp-practice]').forEach(function (b) {
+    b.addEventListener('click', function () { EXPSTATE.practice = true; renderLab(st.id, true); });
+  });
+  document.querySelectorAll('[data-exp-practice-opt]').forEach(function (b) {
+    b.addEventListener('click', function () { expPractice(st, Number(b.dataset.expPracticeOpt)); });
+  });
+  document.querySelectorAll('[data-exp-practice-back]').forEach(function (b) {
+    b.addEventListener('click', function () { EXPSTATE.practice = false; renderLab(st.id, true); });
+  });
+  document.querySelectorAll('[data-exp-practice-reset]').forEach(function (b) {
+    b.addEventListener('click', function () { EXPSTATE.practicePicked = -1; renderLab(st.id, true); });
   });
   document.querySelectorAll('[data-exp-reset]').forEach(function (b) {
     b.addEventListener('click', function () { expReset(); renderLab(st.id); });
@@ -8506,21 +8593,17 @@ function renderLab(id, keepScroll) {
 }
 
 function expAnswer(st, i) {
-  if (EXPSTATE.done) return;
+  if (EXPSTATE.done || EXPSTATE.answered || EXPSTATE.practice) return;
+  if (i === EXPSTATE.picked) return;
   const cur = st.steps[EXPSTATE.step];
   EXPSTATE.justStep = null;
+  EXPSTATE.picked = i;
   if (i === cur.ans) {
     EXPSTATE.records.push(cur.record);
+    EXPSTATE.answered = true;
     EXPSTATE.justStep = EXPSTATE.step;
-    EXPSTATE.step++;
-    EXPSTATE.fb = { type: 'good', text: cur.ok };
-    if (EXPSTATE.step >= st.steps.length) {
-      EXPSTATE.done = true;
-      expSave(st);
-    }
   } else {
     EXPSTATE.score = Math.max(0, EXPSTATE.score - 1);
-    EXPSTATE.fb = { type: 'bad', text: cur.bad };
   }
   renderLab(st.id, true);
   if (EXPSTATE.justStep != null) {
@@ -8528,15 +8611,28 @@ function expAnswer(st, i) {
   }
 }
 
-function expFinal(st, i) {
-  if (EXPSTATE.finalDone) return;
-  if (i === st.final.ans) {
-    EXPSTATE.finalDone = true;
-    EXPSTATE.fb = { type: 'good', text: '答对了：' + st.final.why };
-  } else {
-    EXPSTATE.fb = { type: 'bad', text: '再想想：' + st.final.why };
+function expNext(st) {
+  if (!EXPSTATE.answered) return;
+  EXPSTATE.step++;
+  EXPSTATE.picked = -1;
+  EXPSTATE.answered = false;
+  EXPSTATE.justStep = null;
+  if (EXPSTATE.step >= st.steps.length) {
+    EXPSTATE.done = true;
+    expSave(st);
   }
-  expSave(st);
+  renderLab(st.id, true);
+}
+
+function expFinal(st, i) {
+  if (EXPSTATE.finalPicked >= 0) return;
+  EXPSTATE.finalPicked = i;
+  renderLab(st.id, true);
+}
+
+function expPractice(st, i) {
+  if (EXPSTATE.practicePicked >= 0) return;
+  EXPSTATE.practicePicked = i;
   renderLab(st.id, true);
 }
 
